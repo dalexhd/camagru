@@ -7,18 +7,18 @@
 ---
 
 ## Contents 📚
-- I. Forewords
-- II. Introduction
-- III. Objectives
-- IV. General instructions
-- V. Mandatory Part
-  - V.1. Common features
-  - V.2. User features
-  - V.3. Gallery features
-  - V.4. Editing features
-  - V.5. Constraints and Mandatory things
-- VI. Bonus part
-- VII. Submission and peer-evaluation
+- [I. Forewords](#chapter-i-forewords-📝)
+- [II. Introduction](#chapter-ii-introduction-🌐)
+- [III. Objectives](#chapter-iii-objectives-🎯)
+- [IV. General Instructions](#chapter-iv-general-instructions-📋)
+- [V. Mandatory Part](#chapter-v-mandatory-part-📌)
+  - [V.1. Common Features](#v1-common-features-🌍)
+  - [V.2. User Features](#v2-user-features-👤)
+  - [V.3. Gallery Features](#v3-gallery-features-🖼️)
+  - [V.4. Editing Features](#v4-editing-features-✏️)
+  - [V.5. Constraints and Mandatory Things](#v5-constraints-and-mandatory-things-🚧)
+- [VI. Bonus Part](#chapter-vi-bonus-part-🌟)
+- [VII. Submission and Peer-Evaluation](#chapter-vii-submission-and-peer-evaluation-📮)
 
 ---
 
