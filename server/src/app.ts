@@ -7,6 +7,11 @@ const server = http.createServer((req, res) => {
     res.writeHead(200, { 'Content-Type': 'application/json' });
     res.end(JSON.stringify({ message: 'Hello from the server!' }));
   }
+
+  if (req.url === '/api/me' && req.method === 'GET') {
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ isLoggedIn: true, userName: 'aborboll' }));
+  }
 });
 
 server.listen(port, () => {
