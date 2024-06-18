@@ -1,5 +1,7 @@
 export default class {
-	constructor() {}
+	constructor() {
+		this.activeListeners = [];
+	}
 
 	// DOM Manipulation
 	createElement(tag, attrs = {}, ...children) {
@@ -26,6 +28,7 @@ export default class {
 	// Event Handling
 	on(element, event, handler) {
 		element.addEventListener(event, handler);
+		this.activeListeners.push({ element, event, handler });
 	}
 
 	once(element, event, handler) {
@@ -33,7 +36,10 @@ export default class {
 	}
 
 	off(element, event, handler) {
-		console.log('off');
+		console.info(`[View] Removing listener on ${element.tagName} for event ${event}.`);
 		element.removeEventListener(event, handler);
+		this.activeListeners = this.activeListeners.filter((listener) => {
+			return listener.element !== element || listener.event !== event || listener.callback !== handler;
+		});
 	}
 }
