@@ -2,14 +2,10 @@ FROM node:20.14.0
 
 WORKDIR /app
 
-COPY package*.json ./
-
-RUN npm install -g nodemon typescript && npm install
+COPY package.json ./
 
 COPY . .
 
-RUN tsc
-
 EXPOSE 5000
 
-CMD ["node", "dist/app.js"]
+ENTRYPOINT yarn global add nodemon typescript && yarn install && yarn run dev

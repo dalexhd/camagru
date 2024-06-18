@@ -1,4 +1,4 @@
-class Dom {
+export default class {
 	constructor() {}
 
 	// DOM Manipulation
@@ -33,8 +33,7 @@ class Dom {
 	}
 
 	off(element, event, handler) {
+		console.log('off');
 		element.removeEventListener(event, handler);
 	}
 }
-
-export default new Dom();

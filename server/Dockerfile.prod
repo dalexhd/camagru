@@ -4,12 +4,8 @@ WORKDIR /app
 
 COPY package.json ./
 
-RUN npm install -g nodemon typescript && npm install
-
 COPY . .
-
-RUN npm run build
 
 EXPOSE 5000
 
-CMD ["node", "dist/app.js"]
+ENTRYPOINT yarn global add nodemon typescript && yarn install && yarn run build && yarn run start
