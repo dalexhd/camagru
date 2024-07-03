@@ -4,6 +4,6 @@ WORKDIR /app
 
 COPY . .
 
-EXPOSE 3000
+EXPOSE 4000
 
 ENTRYPOINT yarn install && yarn run build && yarn run serve
