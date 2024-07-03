@@ -10,7 +10,7 @@ const server = http.createServer((req, res) => {
 
   if (req.url === '/api/me' && req.method === 'GET') {
     res.writeHead(200, { 'Content-Type': 'application/json' });
-    res.end(JSON.stringify({ isLoggedIn: true, userName: 'aborboll' }));
+    res.end(JSON.stringify({ isLoggedIn: false, userName: 'aborboll' }));
   }
 });
 

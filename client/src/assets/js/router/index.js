@@ -35,6 +35,10 @@ export default class extends Router {
 		}
 	}
 
+	changeTitle(title) {
+		document.title = `${this.prefix} | ${title}`;
+	}
+
 	loadRoute(route, pushState = true) {
 		const { isLoggedIn } = authStore.getStore();
 		if (this.currentRoute) this.beforeNavigate();
@@ -52,6 +56,8 @@ export default class extends Router {
 		this.currentRoute.render();
 		if (pushState) {
 			this.changeRoute(route);
+		} else {
+			this.changeTitle(route.name);
 		}
 		this.afterNavigate();
 	}
