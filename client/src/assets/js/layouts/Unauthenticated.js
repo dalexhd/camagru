@@ -3,6 +3,7 @@ import Layout from "../lib/framework/dom/layout"
 // Components
 import Header from "../components/Header";
 import Main from "../components/Main";
+import Footer from "../components/Footer";
 
 // Store
 import authStore from "../store/auth";
@@ -23,6 +24,7 @@ export default class extends Layout {
 		main.innerHTML = `
 			<router-view></router-view>
 		`;
+		app.appendChild(Footer());
 		this.listenHeaderEvents();
 	}
 
