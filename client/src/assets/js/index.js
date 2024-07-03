@@ -1,24 +1,27 @@
-import Router from "./lib/framework/router";
+import Router from "./router";
+import AuthStore from "./store/auth";
 
-// Utils
-// - Auth
-import Auth from "./lib/utils/auth";
-
-// Config
-import { routes, title } from "./config";
-
-const setupLayout = (AuthenticatedLayout) => {
+const setupLayout = async (AuthenticatedLayout) => {
 	const app = document.getElementById('app');
-
 }
 
 const setupRoutes = async () => {
-	const router = new Router(routes, title);
-	await router.checkAuth();
-	router.init();
+	import("./config").then(({ routes, title }) => {
+		const router = new Router(routes, title);
+		router.init();
+	});
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-	setupLayout();
+const setupStore = async () => {
+	await AuthStore.initializeAuthStore();
+	let { isLoggedIn } = AuthStore.getStore();
+	if (isLoggedIn) {
+		console.info('[App] User is logged in');
+	}
+}
+
+document.addEventListener('DOMContentLoaded', async () => {
+	await setupStore();
+	await setupLayout();
 	setupRoutes();
 });

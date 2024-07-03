@@ -3,7 +3,7 @@ import view from "../lib/framework/dom/view"
 export default class extends view {
 	constructor() {
 		super();
-		this.name = 'AppPage';
+		this.name = 'App Page';
 	}
 
 	async render() {

@@ -6,17 +6,6 @@ export default class extends View {
 		super();
 	}
 
-	set state(state) {
-		this._state = state;
-		console.info(`[Layout] ${this.name} layout state updated`, this.state);
-		this.applyDirectives(this.state, 'header');
-		this.applyDirectives(this.state, 'footer');
-	}
-
-	get state() {
-		return this._state;
-	}
-
 	async render() {
 		const main = document.querySelector('main');
 		main.innerHTML = `
@@ -28,7 +17,6 @@ export default class extends View {
 
 	onBeforeMount() {
 		console.info(`[Layout] ${this.name} layout before mounted`);
-		this.applyDirectives(this.state);
 	}
 
 	onMount() {

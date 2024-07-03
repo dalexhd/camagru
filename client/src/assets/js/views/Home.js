@@ -1,4 +1,5 @@
 import view from "../lib/framework/dom/view"
+import authStore from "../store/auth"
 
 export default class extends view {
 	constructor() {
@@ -8,10 +9,10 @@ export default class extends view {
 
 	async render() {
 		const main = document.querySelector('main');
+		const authStoreData = authStore.getStore();
 		main.innerHTML = `
 			<div class="container">
-				<h1>${this.name}</h1>
-				<p>Home content goes here</p>
+				${ (authStoreData.isLoggedIn) ? `<h1>${this.name} ${ authStoreData.userName }</h1>` : `<h1>${this.name}</h1>` }
 			</div>
 		`;
 	}

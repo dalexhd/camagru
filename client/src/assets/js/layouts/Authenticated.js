@@ -5,21 +5,87 @@ import Footer from "../components/Footer";
 import Header from "../components/Header";
 import Main from "../components/Main";
 
+// Store
+import authStore from "../store/auth";
 
 export default class extends Layout {
 	constructor() {
 		super();
 		this.name = 'Authenticated';
+		this.handleAuthStoreChange = this.handleAuthStoreChange.bind(this);
 	}
 
 	async render() {
 		const app = document.getElementById('app');
-		app.appendChild(Header);
-		app.appendChild(Main);
+		app.innerHTML = '';
+		app.appendChild(Header());
+		app.appendChild(Main());
 		const main = document.querySelector('main');
 		main.innerHTML = `
 			<router-view></router-view>
 		`;
-		app.appendChild(Footer);
+		app.appendChild(Footer());
+		this.listenHeaderEvents();
+	}
+
+	onMount() {
+		authStore.subscribe(this.handleAuthStoreChange);
+		console.info(`[Layout] ${this.name} layout mounted`);
+	}
+
+	onDestroy() {
+		authStore.unsubscribe(this.handleAuthStoreChange);
+		this.removeHeaderEvents();
+		console.info(`[Layout] ${this.name} layout destroyed`);
+	}
+
+
+	handleAuthStoreChange(newStore) {
+		const { isLoggedIn } = newStore;
+		if (isLoggedIn) {
+			this.render();
+		}
+	}
+
+	// Event listeners
+	listenHeaderEvents() {
+		const header = document.querySelector('header');
+		// Logout button
+		const logoutButton = header?.querySelector('.logout');
+		if (logoutButton) {
+			logoutButton.addEventListener('click', this.logout);
+		}
+
+		// Login button
+		const loginButton = header?.querySelector('.login');
+		if (loginButton) {
+			console.log('loginButton', loginButton);
+
+			loginButton.addEventListener('click', this.login);
+		}
+	}
+
+	removeHeaderEvents() {
+		const header = document.querySelector('header');
+		// Logout button
+		const logoutButton = header?.querySelector('.logout');
+		if (logoutButton) {
+			logoutButton.removeEventListener('click', this.logout);
+		}
+
+		// Login button
+		const loginButton = header?.querySelector('.login');
+		if (loginButton) {
+			loginButton.removeEventListener('click', this.login);
+		}
+	}
+
+	// Actions
+	async logout() {
+		authStore.updateStore({ isLoggedIn: false });
+	}
+
+	async login() {
+		authStore.updateStore({ isLoggedIn: true });
 	}
 }

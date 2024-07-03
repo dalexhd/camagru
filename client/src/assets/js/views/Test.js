@@ -1,43 +1,26 @@
 import view from "../lib/framework/dom/view"
-import { Dom, Observer } from "../lib/framework";
+import authStore from "../store/auth";
 
 export default class extends view {
 	constructor() {
 		super();
 		this.name = 'Test';
-		this._state = {
-			isLoggedIn: false,
-			userName: ''
-		};
+		this.handleAuthStoreChange = this.handleAuthStoreChange.bind(this);
 	}
 
 	async render() {
 		const main = document.querySelector('main');
+		const authStoreData = authStore.getStore();
 		main.innerHTML = `
 			<div class="container">
-				<div x-if="state.isLoggedIn">
-					<p>Welcome, {{ state.userName }}</p>
-				</div>
-				<div x-else-if="!state.isLoggedIn">
-					<p>Not logged in</p>
-				</div>
-				<a href="/app/test" x-href="/app/test" class="nav-link px-2 text-secondary">Home</a>
+				${ (authStoreData.isLoggedIn) ? `<h1>${this.name} ${ authStoreData.userName }</h1>` : `<h1>${this.name}</h1>` }
 			</div>
 		`;
 	}
 
 	onMount() {
+		authStore.subscribe(this.handleAuthStoreChange);
 		console.info('[View] Test view mounted');
-		fetch('/api/me')
-			.then((response) => response.json())
-			.then((data) => {
-				this.state = {
-					isLoggedIn: data.isLoggedIn,
-					userName: data.userName
-				};
-				console.info('[View] Test view state updated');
-			});
-
 		fetch('/api/data')
 			.then((response) => response.json())
 			.then((data) => {
@@ -61,6 +44,11 @@ export default class extends view {
 	}
 
 	onDestroy() {
+		authStore.unsubscribe(this.handleAuthStoreChange);
 		console.info('[View] Test view destroyed');
+	}
+
+	handleAuthStoreChange(newStore) {
+		this.render();
 	}
 }
