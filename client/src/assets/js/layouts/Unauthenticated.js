@@ -28,7 +28,6 @@ export default class extends Layout {
 	renderHeader() {
 		const header = document.querySelector('header');
 		const headerComponentHTML = Header();
-		debugger;
 		if (header === null) {
 			document.getElementById('app').prepend(Header());
 		} else if (header && header.innerHTML !== headerComponentHTML.innerHTML) {
