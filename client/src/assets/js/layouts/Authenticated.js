@@ -1,4 +1,4 @@
-import Layout from "../lib/framework/dom/layout"
+import Layout from "../lib/framework/dom/layout";
 
 // Components
 import Footer from "../components/Footer";
@@ -13,19 +13,47 @@ export default class extends Layout {
 		super();
 		this.name = 'Authenticated';
 		this.handleAuthStoreChange = this.handleAuthStoreChange.bind(this);
+		this.logout = this.logout.bind(this);
+		this.login = this.login.bind(this);
 	}
 
 	async render() {
 		const app = document.getElementById('app');
-		app.innerHTML = '';
-		app.appendChild(Header());
-		app.appendChild(Main());
+		this.renderHeader();
+		this.renderMain();
+		this.renderFooter();
+		this.listenHeaderEvents();
+	}
+
+	renderHeader() {
+		const header = document.querySelector('header');
+		const headerComponentHTML = Header();
+		if (header === null) {
+			document.getElementById('app').prepend(Header());
+		} else if (header && header.innerHTML !== headerComponentHTML.innerHTML) {
+			header.replaceWith(Header());
+		}
+	}
+
+	renderMain() {
 		const main = document.querySelector('main');
-		main.innerHTML = `
+		if (main === null) {
+			document.getElementById('app').appendChild(Main());
+		}
+		const mainContent = document.querySelector('main');
+		mainContent.innerHTML = `
 			<router-view></router-view>
 		`;
-		app.appendChild(Footer());
-		this.listenHeaderEvents();
+	}
+
+	renderFooter() {
+		const footer = document.querySelector('footer');
+		const footerComponentHTML = Footer();
+		if (footer === null) {
+			document.getElementById('app').appendChild(Footer());
+		} else if (footer && footer.innerHTML !== footerComponentHTML.innerHTML) {
+			footer.replaceWith(Footer());
+		}
 	}
 
 	onMount() {
@@ -39,12 +67,13 @@ export default class extends Layout {
 		console.info(`[Layout] ${this.name} layout destroyed`);
 	}
 
-
 	handleAuthStoreChange(newStore) {
 		const { isLoggedIn } = newStore;
+		this.renderHeader();
 		if (isLoggedIn) {
-			this.render();
+			this.renderMain();
 		}
+		this.listenHeaderEvents();
 	}
 
 	// Event listeners
@@ -59,8 +88,6 @@ export default class extends Layout {
 		// Login button
 		const loginButton = header?.querySelector('.login');
 		if (loginButton) {
-			console.log('loginButton', loginButton);
-
 			loginButton.addEventListener('click', this.login);
 		}
 	}

@@ -5,7 +5,6 @@ export default class {
 		this.name = name;
 		this.dom = new Dom();
 		this.observer = new Observer();
-		this.directivesSelector = 'main';
 	}
 
 	async render() {

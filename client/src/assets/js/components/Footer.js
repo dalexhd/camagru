@@ -1,7 +1,7 @@
 import { Dom } from "../lib/framework";
 const dom = new Dom();
 
-export default function () {
+export default () => {
 	const footer = dom.createElement('footer', { class: 'footer mt-auto py-3 bg-light' });
 	footer.innerHTML = `
 		<div class="container">

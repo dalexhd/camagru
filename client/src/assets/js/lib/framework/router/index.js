@@ -103,7 +103,6 @@ export default class {
 			this.currentRoute.onBeforeDestroy();
 			this.currentRoute.onDestroy();
 		}
-		app.innerHTML = '';
 	}
 
 	afterNavigate() {

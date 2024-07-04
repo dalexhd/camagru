@@ -1,7 +1,7 @@
 import { Dom } from "../lib/framework";
 const dom = new Dom();
 
-export default function () {
+export default () => {
 	const main = dom.createElement('main', { class: 'main flex-shrink-0' });
 	main.innerHTML = `
 		<div class="container">
