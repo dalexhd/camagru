@@ -1,9 +1,7 @@
+# Stage 1: Build the Vite.js application
 FROM node:20.14.0
 
 WORKDIR /app
-
 COPY . .
 
-EXPOSE 4000
-
-ENTRYPOINT yarn install && yarn run build && yarn run serve
+RUN yarn install && yarn run build

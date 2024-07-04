@@ -1,0 +1,31 @@
+header {
+  background-color: $primary-color;
+  color: white;
+  padding: 1rem;
+
+  .container {
+    @include center;
+    flex-direction: column;
+
+    a {
+      color: white;
+      text-decoration: none;
+
+      &.text-white {
+        color: white;
+      }
+
+      &.text-secondary {
+        color: $secondary-color;
+      }
+    }
+
+    .nav-link {
+      padding: 0.5rem 1rem;
+    }
+
+    .btn {
+      margin: 0 0.5rem;
+    }
+  }
+}

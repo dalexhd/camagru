@@ -1,4 +1,4 @@
-import { Dom, Observer } from "../../";
+import { Dom, Observer } from "../..";
 import View from "../view";
 
 export default class extends View {

@@ -8,7 +8,7 @@ import AppPage from './views/AppPage';
 import Authenticated from './layouts/Authenticated';
 import Unauthenticated from './layouts/Unauthenticated';
 
-export const title = 'Camagru';
+export const title = import.meta.env.VITE_APP_TITLE;
 
 export const routes = [
 	{

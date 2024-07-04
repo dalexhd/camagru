@@ -1,0 +1,18 @@
+main {
+  padding: 2rem 0;
+
+  .container {
+    @include center;
+    flex-direction: column;
+
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+
+    p {
+      font-size: 1rem;
+      margin-bottom: 1rem;
+    }
+  }
+}

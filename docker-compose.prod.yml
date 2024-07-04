@@ -7,10 +7,10 @@ services:
       dockerfile: Dockerfile.prod
     volumes:
       - ./server:/app
-      - /app/node_modules
-      - server_data:/app/uploads
     ports:
       - "5000:5000"
+    networks:
+      - camagru-network
     depends_on:
       - db
 
@@ -20,20 +20,21 @@ services:
       dockerfile: Dockerfile.prod
     volumes:
       - ./client:/app
-      - /app/node_modules
-    ports:
-      - "4000:4000"
+      - client-dist:/app/dist
 
   nginx:
     image: nginx:alpine
     volumes:
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/default.prod.conf:/etc/nginx/conf.d/default.conf
+      - client-dist:/usr/share/nginx/html
     ports:
       - "80:80"
+    networks:
+      - camagru-network
     depends_on:
       - server
       - client
-      - phpmyadmin
+      - adminer
 
   db:
     image: mysql:5.7
@@ -44,19 +45,28 @@ services:
       MYSQL_PASSWORD: 1234
     ports:
       - "3306:3306"
+    networks:
+      - camagru-network
     volumes:
       - db_data:/var/lib/mysql
 
-  phpmyadmin:
-    image: phpmyadmin/phpmyadmin
-    environment:
-      PMA_HOST: db
-      MYSQL_ROOT_PASSWORD: 1234
+  adminer:
+    image: adminer
     ports:
-      - "8080:80"
+      - 8080:8080
+    environment:
+      - ADMINER_DEFAULT_SERVER=db
     depends_on:
       - db
+    networks:
+      - camagru-network
+    restart: always
 
 volumes:
   db_data:
-  server_data:
+  client-dist:
+
+networks:
+  camagru-network:
+    name: camagru-network
+    driver: bridge

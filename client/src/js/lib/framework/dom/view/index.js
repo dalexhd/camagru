@@ -1,4 +1,4 @@
-import { Dom, Observer } from "../../";
+import { Dom, Observer } from "../..";
 
 export default class {
 	constructor(name) {
