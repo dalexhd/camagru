@@ -7,8 +7,9 @@ export default defineConfig({
   },
   build: {
     outDir: "../dist",
+    emptyOutDir: true,
+    minify: false
   },
-
   root: "src",
-  envDir: "../config"
+  envDir: "../config",
 });

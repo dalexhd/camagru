@@ -1,20 +1,23 @@
 import { Dom, Observer } from "../..";
+import { bindDirectives } from "../directives";
 
 export default class {
 	constructor(name) {
 		this.name = name;
 		this.dom = new Dom();
 		this.observer = new Observer();
+		this.data = this.data();
+		this.bindDirectives = bindDirectives;
 	}
 
-	async render() {
+	data() {
+		return {};
+	}
+
+	render(template) {
 		const main = document.querySelector('main');
-		main.innerHTML = `
-			<div class="container">
-				<h1>${this.name}</h1>
-				<p>Content goes here</p>
-			</div>
-		`;
+		main.innerHTML = template;
+		this.bindDirectives(this.data);
 	}
 
 	onBeforeMount() {

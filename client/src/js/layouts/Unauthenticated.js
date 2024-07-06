@@ -109,10 +109,10 @@ export default class extends Layout {
 
 	// Actions
 	async logout() {
-		authStore.updateStore({ isLoggedIn: false });
+		authStore.setStore({ isLoggedIn: false });
 	}
 
 	async login() {
-		authStore.updateStore({ isLoggedIn: true });
+		authStore.setStore({ isLoggedIn: true });
 	}
 }

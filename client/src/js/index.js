@@ -3,9 +3,6 @@ import '../scss/style.scss';
 import Router from "./router";
 import AuthStore from "./store/auth";
 
-console.log(import.meta.env.VITE_APP_TITLE) // "123"
-console.log(import.meta.env) // "123"
-
 const setupLayout = async (AuthenticatedLayout) => {
 	const app = document.getElementById('app');
 }

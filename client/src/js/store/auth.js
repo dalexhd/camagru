@@ -12,7 +12,7 @@ class AuthStore extends Store {
 		try {
 			const response = await fetch('/api/me');
 			const data = await response.json();
-			this.updateStore({
+			this.setStore({
 				isLoggedIn: data.isLoggedIn,
 				userName: data.userName
 			});
@@ -22,14 +22,14 @@ class AuthStore extends Store {
 	}
 
 	login(userName) {
-		this.updateStore({
+		this.setStore({
 			isLoggedIn: true,
 			userName: userName
 		});
 	}
 
 	logout() {
-		this.updateStore({
+		this.setStore({
 			isLoggedIn: false,
 			userName: ''
 		});
