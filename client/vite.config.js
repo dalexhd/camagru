@@ -8,7 +8,10 @@ export default defineConfig({
   build: {
     outDir: "../dist",
     emptyOutDir: true,
-    minify: false
+    minify: false,
+    modulePreload: {
+      polyfill: false
+    }
   },
   root: "src",
   envDir: "../config",

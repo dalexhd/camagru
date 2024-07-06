@@ -10,7 +10,7 @@ import Unauthenticated from './layouts/Unauthenticated';
 
 export const title = import.meta.env.VITE_APP_TITLE;
 
-export const routes = [
+export const routes = () => [
 	{
 		path: '/',
 		view: Home,

@@ -2,16 +2,15 @@ import '../scss/style.scss';
 
 import Router from "./router";
 import AuthStore from "./store/auth";
+import { routes, title } from "./config";
 
 const setupLayout = async (AuthenticatedLayout) => {
 	const app = document.getElementById('app');
 }
 
 const setupRoutes = async () => {
-	import("./config").then(({ routes, title }) => {
-		const router = new Router(routes, title);
-		router.init();
-	});
+	const router = new Router(routes(), title);
+	router.init();
 }
 
 const setupStore = async () => {
