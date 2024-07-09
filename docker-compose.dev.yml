@@ -7,23 +7,10 @@ services:
       dockerfile: Dockerfile.dev
     volumes:
       - ./server:/app
-    ports:
-      - "5000:5000"
     networks:
       - camagru-network
     depends_on:
       - db
-
-  client:
-    build:
-      context: ./client
-      dockerfile: Dockerfile.dev
-    volumes:
-      - ./client:/app
-    networks:
-      - camagru-network
-    ports:
-      - "4000:4000"
 
   nginx:
     image: nginx:alpine
@@ -35,7 +22,6 @@ services:
       - camagru-network
     depends_on:
       - server
-      - client
       - adminer
 
   db:

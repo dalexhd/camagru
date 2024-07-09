@@ -1,11 +1,12 @@
-FROM node:20.14.0
+# Use the official PHP image
+FROM php:8.1-fpm
 
+# Set the working directory
 WORKDIR /app
 
-COPY package.json ./
-
+# Copy the application code
 COPY . .
 
-EXPOSE 5000
-
-ENTRYPOINT yarn global add nodemon typescript && yarn install && yarn run dev
+# Expose port 9000 and start php-fpm server
+EXPOSE 9000
+CMD ["php-fpm"]
