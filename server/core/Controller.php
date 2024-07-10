@@ -1,21 +1,21 @@
 <?php
 
-class Controller {
-    protected $layout = 'layouts/default'; // Default layout
+namespace core;
 
-    public function __construct() {
-        // Any initialization logic for controllers can go here
-    }
+use core\helpers\UrlHelper;
+use core\Session;
+use core\View;
 
-    protected function setLayout($layout) {
-        $this->layout = $layout;
-    }
+class Controller
+{
+    protected $Url;
+    protected $View;
+    protected $Session;
 
-    protected function render($view, $data = [], $title = null) {
-        extract($data);
-        ob_start();
-        require "../app/templates/{$view}.php";
-        $content = ob_get_clean();
-        require "../app/templates/{$this->layout}.php";
+    public function __construct($router)
+    {
+        $this->Url = new UrlHelper($router);
+        $this->View = new View($router);
+        $this->Session = new Session();
     }
 }

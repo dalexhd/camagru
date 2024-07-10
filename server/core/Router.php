@@ -1,90 +1,122 @@
 <?php
 
-class Router {
+namespace core;
+
+use Exception;
+use core\View;
+
+
+class NotFoundException extends Exception
+{
+    public function __construct($message = 'Not Found', $code = 404, Exception $previous = null)
+    {
+        parent::__construct($message, $code, $previous);
+    }
+}
+
+class Route
+{
+    public $method;
+    public $route;
+    public $callback;
+    public $name;
+    public $patterns = [];
+    public $pass = [];
+
+    public function setPatterns(array $patterns)
+    {
+        $this->patterns = $patterns;
+        return $this;
+    }
+
+    public function setPass(array $pass)
+    {
+        $this->pass = $pass;
+        return $this;
+    }
+}
+
+class Router
+{
     private $routes = [];
     private $namedRoutes = [];
-    private $scopes = [];
 
-    public function addRoute($method, $route, $callback, $name = null, $scopes = []) {
-        $this->routes[] = [
-            'method' => strtoupper($method),
-            'route' => $route,
-            'callback' => $callback,
-            'scopes' => $scopes
-        ];
+    public function connect($route, $callback, $name = null)
+    {
+        $routeObj = new Route();
+        $routeObj->route = $this->convertToRegex($route);
+        $routeObj->callback = "{$callback['controller']}@{$callback['action']}";
+        $routeObj->name = $name;
+        $this->routes[] = $routeObj;
         if ($name) {
             $this->namedRoutes[$name] = $route;
         }
+        return $routeObj;
     }
 
-    public function addRoutes($routes, $prefix = '') {
-        foreach ($routes as $route) {
-            $method = $route['method'];
-            $uri = $prefix . $route['route'];
-            $callback = $route['callback'];
-            $name = $route['name'] ?? null;
-            $scopes = $route['scopes'] ?? [];
-            $this->addRoute($method, $uri, $callback, $name, $scopes);
-
-            if (isset($route['children'])) {
-                $this->addRoutes($route['children'], $uri);
-            }
-        }
+    private function convertToRegex($route)
+    {
+        return '@^' . preg_replace('/\{(\w+)\}/', '(?P<\1>[^/]+)', $route) . '$@';
     }
 
-    public function resolve($url, $method) {
+    public function resolve($url, $method)
+    {
         foreach ($this->routes as $route) {
-            if ($route['method'] === strtoupper($method) && preg_match($this->convertToRegex($route['route']), $url, $matches)) {
-                array_shift($matches);
-                if ($this->checkScopes($route['scopes'])) {
-                    if (is_callable($route['callback'])) {
-                        return call_user_func_array($route['callback'], $matches);
-                    } elseif (is_string($route['callback'])) {
-                        $parts = explode('@', $route['callback']);
-                        $controller = $parts[0];
-                        $method = $parts[1];
-                        // Ensure the controller file is included
-                        $controllerFile = '../app/controllers/' . $controller . '.php';
-                        if (file_exists($controllerFile)) {
-                            require_once $controllerFile;
-                        } else {
-                            throw new Exception("Controller file $controllerFile not found");
-                        }
-
-                        $controller = new $controller;
-                        return call_user_func_array([$controller, $method], $matches);
+            if (preg_match($route->route, $url, $matches)) {
+                $params = [];
+                foreach ($route->pass as $param) {
+                    if (isset($matches[$param])) {
+                        $params[] = $matches[$param];
                     }
-                } else {
-                    header("HTTP/1.0 403 Forbidden");
-                    echo "403 Forbidden";
+                }
+                if (isset($route->patterns['method']) && $method != $route->patterns['method']) {
+                    $this->renderErrorPage(405, 'Method Not Allowed');
                     return;
                 }
+                return $this->invokeCallback($route->callback, $params);
             }
         }
-        header("HTTP/1.0 404 Not Found");
-        echo "404 Not Found";
+        $this->renderErrorPage(404, 'Page Not Found');
     }
 
-    private function convertToRegex($route) {
-        $route = preg_replace('/\{(\w+)\}/', '(\w+)', $route);
-        return "@^" . $route . "$@";
+    private function renderErrorPage($code, $message)
+    {
+        http_response_code($code);
+        $view = new View($this);
+        $view->render('errors/' . $code, ['message' => $message]);
     }
 
-    private function checkScopes($scopes) {
-        if (empty($scopes)) {
-            return true;
-        }
-
-        foreach ($scopes as $scope) {
-            if (!isset($_SESSION['scopes']) || !in_array($scope, $_SESSION['scopes'])) {
-                return false;
+    private function invokeCallback($callback, $params)
+    {
+        if (is_callable($callback)) {
+            return call_user_func_array($callback, $params);
+        } elseif (is_string($callback)) {
+            try {
+                return $this->callControllerMethod($callback, $params);
+            } catch (NotFoundException $e) {
+                $this->renderErrorPage(404, 'Not Found');
+            } catch (Exception $e) {
+                $this->renderErrorPage(500, 'Internal Server Error');
             }
         }
-
-        return true;
     }
 
-    public function generate($name, $params = []) {
+    private function callControllerMethod($callback, $params)
+    {
+        list($controller, $action) = explode('@', $callback);
+        if (!file_exists('../controllers/' . $controller . '.php')) {
+            throw new NotFoundException();
+        }
+        require_once '../controllers/' . $controller . '.php';
+        $controller = new $controller($this);
+        if (!method_exists($controller, $action)) {
+            throw new Exception();
+        }
+        return call_user_func_array([$controller, $action], $params);
+    }
+
+    public function generate($name, $params = [])
+    {
         if (!isset($this->namedRoutes[$name])) {
             throw new Exception("No route found with the name '{$name}'");
         }
@@ -92,6 +124,6 @@ class Router {
         foreach ($params as $key => $value) {
             $route = str_replace("{" . $key . "}", $value, $route);
         }
-        return getenv('BASE_URL') . $route;
+        return $route;
     }
 }

@@ -1,5 +1,15 @@
 <?php
 
-class Model {
-    // Database interaction code can go here
+namespace core;
+
+use core\Database;
+
+class Model
+{
+    protected $db;
+
+    public function __construct()
+    {
+        $this->db = Database::getInstance()->getConnection();
+    }
 }

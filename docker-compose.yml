@@ -1,0 +1,78 @@
+services:
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    env_file: .env
+    environment:
+      - DB_HOST=db
+    volumes:
+      - ./server:/app
+    networks:
+      - camagru
+    depends_on:
+      - db
+
+  nginx:
+    image: nginx:alpine
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - ./server:/app
+    ports:
+      - ${NGINX_PORT}:80
+    networks:
+      - camagru
+    depends_on:
+      - server
+      - phpmyadmin
+
+  db:
+    image: mariadb:11.4
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+    env_file: .env
+    volumes:
+      - db_data:/var/lib/mysql
+    ports:
+      - ${DB_PORT}:3306
+    networks:
+      - camagru
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    ports:
+      - ${PHPMYADMIN_PORT}:80
+    links:
+      - db
+    env_file: .env
+    environment:
+      PMA_HOST: db
+      #PMA_USER: ${DB_USERNAME}
+      #PMA_PASSWORD: ${DB_PASSWORD}
+      PMA_PORT: ${DB_PORT}
+      PMA_ARBITRARY: 1
+    networks:
+      - camagru
+    restart: always
+
+  redis:
+    image: "redis:alpine"
+    volumes:
+      - "redis_data:/data"
+    ports:
+      - ${REDIS_PORT}:6379
+    networks:
+      - camagru
+    restart: always
+
+volumes:
+  db_data:
+  redis_data:
+
+networks:
+  camagru:
+    name: camagru
+    driver: bridge
