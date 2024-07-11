@@ -3,6 +3,7 @@ services:
     build:
       context: ./server
       dockerfile: Dockerfile
+    container_name: camagru_server
     env_file: .env
     environment:
       - DB_HOST=db
@@ -15,6 +16,7 @@ services:
 
   nginx:
     image: nginx:alpine
+    container_name: camagru_nginx
     volumes:
       - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
       - ./server:/app
@@ -28,6 +30,7 @@ services:
 
   db:
     image: mariadb:11.4
+    container_name: camagru_db
     environment:
       MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
       MYSQL_DATABASE: ${DB_DATABASE}
@@ -43,6 +46,7 @@ services:
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin:latest
+    container_name: camagru_phpmyadmin
     ports:
       - ${PHPMYADMIN_PORT}:80
     links:
@@ -60,6 +64,7 @@ services:
 
   redis:
     image: "redis:alpine"
+    container_name: camagru_redis
     volumes:
       - "redis_data:/data"
     ports:
