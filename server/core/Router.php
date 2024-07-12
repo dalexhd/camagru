@@ -22,6 +22,7 @@ class Route
     public $name;
     public $patterns = [];
     public $pass = [];
+    public $middleware = [];
 
     public function setPatterns(array $patterns)
     {
@@ -32,6 +33,12 @@ class Route
     public function setPass(array $pass)
     {
         $this->pass = $pass;
+        return $this;
+    }
+
+    public function setMiddleware(array $middleware)
+    {
+        $this->middleware = $middleware;
         return $this;
     }
 }
@@ -72,6 +79,14 @@ class Router
                 if (isset($route->patterns['method']) && $method != $route->patterns['method']) {
                     $this->renderErrorPage(405, 'Method Not Allowed');
                     return;
+                }
+                if (!empty($route->middleware)) {
+                    foreach ($route->middleware as $middleware) {
+                        $middleware = new $middleware();
+                        if (!$middleware->handle()) {
+                            return;
+                        }
+                    }
                 }
                 return $this->invokeCallback($route->callback, $params);
             }

@@ -9,6 +9,7 @@ require_once '../core/View.php';
 require_once '../core/Controller.php';
 require_once '../core/Model.php';
 require_once '../core/Mail.php';
+require_once '../core/Middleware.php';
 require_once '../core/Router.php';
 require_once '../core/Session.php';
 require_once '../core/Helpers.php';
@@ -16,6 +17,11 @@ require_once '../config/routes.php';
 
 // Dynamically include all model files
 foreach (glob("../models/*.php") as $filename) {
+    require_once $filename;
+}
+
+// Dynamically include all middleware files
+foreach (glob("../middlewares/*.php") as $filename) {
     require_once $filename;
 }
 

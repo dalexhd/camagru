@@ -1,9 +1,9 @@
 <?php
 
 use core\Router;
+use app\middlewares\AuthMiddleware;
 
 $router = new Router();
-
 
 // Post routes
 $router->connect(
@@ -16,7 +16,7 @@ $router->connect(
 	'/create',
 	['controller' => 'PostController', 'action' => 'create'],
 	'create'
-);
+)->setMiddleware([AuthMiddleware::class]);
 
 
 // Auth routes
@@ -43,19 +43,19 @@ $router->connect(
 	'/profile',
 	['controller' => 'UserController', 'action' => 'profile'],
 	'profile'
-);
+)->setMiddleware([AuthMiddleware::class]);
 
 $router->connect(
 	'/settings',
 	['controller' => 'UserController', 'action' => 'settings'],
 	'settings'
-);
+)->setMiddleware([AuthMiddleware::class]);
 
 $router->connect(
 	'/users/{nickname}',
 	['controller' => 'UserController', 'action' => 'view'],
 	'user_view'
-)->setPatterns(['nickname' => '[a-zA-Z0-9]+']);
+)->setPatterns(['nickname' => '[a-zA-Z0-9]+'])->setMiddleware([AuthMiddleware::class]);
 
 // Search routes
 $router->connect(
