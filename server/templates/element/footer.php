@@ -3,28 +3,42 @@
 /**
  * @var \core\View $this
  */
+
+$links = [
+	[
+		'route' => 'home',
+		'icon' => 'fas fa-home',
+	],
+	[
+		'route' => 'search',
+		'icon' => 'fas fa-search',
+	],
+	[
+		'route' => 'create',
+		'icon' => 'fas fa-plus',
+	],
+	[
+		'route' => 'profile',
+		'icon' => 'fas fa-user',
+	],
+	[
+		'route' => 'settings',
+		'icon' => 'fas fa-cog',
+	]
+];
 ?>
 <footer class="footer is-hidden-tablet is-fixed-bottom">
-	<div class="tabs is-fullwidth is-toggle is-toggle-rounded p-2">
+	<div class="tabs is-fullwidth">
 		<ul>
-			<li class="is-active">
-				<a>
-					<span class="icon is-small"><i class="fas fa-image"></i></span>
-					<span>Pictures</span>
-				</a>
-			</li>
-			<li>
-				<a>
-					<span class="icon is-small"><i class="fas fa-music"></i></span>
-					<span>Music</span>
-				</a>
-			</li>
-			<li>
-				<a>
-					<span class="icon is-small"><i class="fas fa-film"></i></span>
-					<span>Videos</span>
-				</a>
-			</li>
+			<?php foreach ($links as $link) : ?>
+				<li class="<?= $this->Url->isActive($link['route']) ? 'is-active' : '' ?>">
+					<a href="<?= $this->Url->link($link['route']) ?>">
+						<span class="icon">
+							<i class="<?= $link['icon'] ?>"></i>
+						</span>
+					</a>
+				</li>
+			<?php endforeach; ?>
 		</ul>
 	</div>
 </footer>

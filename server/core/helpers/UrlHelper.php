@@ -24,6 +24,13 @@ class UrlHelper
 		return $this->baseUrl . $url;
 	}
 
+	public function isActive($name)
+	{
+		$currentUrl = $_SERVER['REQUEST_URI'];
+		$generatedUrl = $this->router->generate($name);
+		return $currentUrl === $generatedUrl;
+	}
+
 	public function asset($path)
 	{
 		return $this->baseUrl . '/' . $path;
