@@ -6,7 +6,7 @@
 ?>
 
 <!DOCTYPE html>
-<html class="has-navbar-fixed-top">
+<html class="has-navbar-fixed-top has-navbar-fixed-bottom-touch" lang="en">
 
 <head>
     <title><?php echo $this->title ?? 'My App'; ?></title>
@@ -21,7 +21,9 @@
     <?php $this->element('nav'); ?>
     <main class="section">
         <div class="columns">
-            <div class="column is-hidden-touch is-1-desktop is-1-widescreen is-2-fullhd"></div>
+            <div class="column is-hidden-touch is-1-widescreen is-2-fullhd s-fixed-top">
+
+            </div>
             <div class="column is-12-tablet is-10-desktop is-10-widescreen is-8-fullhd">
                 <?php if ($this->Session->hasFlash('success')) : ?>
                     <div class="flash-message success">
@@ -37,7 +39,7 @@
             </div>
         </div>
     </main>
-    <!-- <?php $this->element('footer'); ?> -->
+    <?php $this->element('footer'); ?>
 </body>
 
 </html>

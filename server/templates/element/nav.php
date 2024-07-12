@@ -4,27 +4,9 @@
  * @var \core\View $this
  */
 ?>
-<!-- <header>
-	<h1>Welcome to <? echo $this->name; ?></h1>
-	<?php if ($this->Session->has('user_id')) : ?>
-		<nav>
-			<ul>
-				<li><a href="/">Home</a></li>
-				<li><a href="/logout">Logout</a></li>
-			</ul>
-		</nav>
-	<?php else : ?>
-		<nav>
-			<ul>
-				<li><a href="/login">Login</a></li>
-				<li><a href="/register">Register</a></li>
-			</ul>
-		</nav>
-	<?php endif; ?>
-</header> -->
 
 <nav class="navbar is-dark is-fixed-top" role="navigation" aria-label="main navigation">
-	<div class="nav-container column is-paddingless is-12-tablet is-10-desktop is-10-widescreen is-8-fullhd">
+	<div class="nav-container column is-paddingless">
 		<div class="navbar-brand">
 			<a class="navbar-item" href="/">
 				<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -32,30 +14,32 @@
 				</svg>
 				<span class="has-text-weight-bold ml-2"><? echo $this->name; ?></span>
 			</a>
-			<a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
-				<span aria-hidden="true"></span>
-				<span aria-hidden="true"></span>
-				<span aria-hidden="true"></span>
-				<span aria-hidden="true"></span>
-			</a>
+			<div class="buttons ml-auto is-hidden-desktop">
+				<a class="button is-light is-outlined is-hidden-mobile">
+					Upload
+				</a>
+				<a class="button is-primary" href="/login">
+					<strong>Login</strong>
+				</a>
+			</div>
 		</div>
 		<div id="navbarBasicExample" class="navbar-menu">
-			<div class="navbar-start">
+			<div class="navbar-start is-hidden-mobile">
 				<a class="navbar-item">
-					Home
+					Profile
 				</a>
 				<a class="navbar-item">
-					Documentation
+					Settings
 				</a>
 			</div>
 			<div class="navbar-end">
 				<div class="navbar-item">
 					<div class="buttons">
-						<a class="button is-primary">
-							<strong>Sign up</strong>
+						<a class="button is-light is-outlined">
+							Upload
 						</a>
-						<a class="button is-light">
-							Log in
+						<a class="button is-primary" href="/login">
+							<strong>Login</strong>
 						</a>
 					</div>
 				</div>
@@ -63,3 +47,32 @@
 		</div>
 	</div>
 </nav>
+
+<script>
+	document.addEventListener('DOMContentLoaded', () => {
+		let screenWidth = window.innerWidth;
+		if (screenWidth > 1023) {
+			document.querySelector('.navbar').classList.remove('is-fixed-bottom');
+		}
+
+
+		// Get all "navbar-burger" elements
+		const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
+
+		// Add a click event on each of them
+		$navbarBurgers.forEach(el => {
+			el.addEventListener('click', () => {
+
+				// Get the target from the "data-target" attribute
+				const target = el.dataset.target;
+				const $target = document.getElementById(target);
+
+				// Toggle the "is-active" class on both the "navbar-burger" and the "navbar-menu"
+				el.classList.toggle('is-active');
+				$target.classList.toggle('is-active');
+
+			});
+		});
+
+	});
+</script>

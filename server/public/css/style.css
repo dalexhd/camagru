@@ -20,6 +20,7 @@ html {
     overflow: auto;
 }
 
+
 @media screen and (min-width: 1024px) {
     .nav-container {
         margin: 0 auto;
@@ -27,10 +28,13 @@ html {
     }
 }
 
-footer {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: var(--bulma-navbar-height) !important;
-    padding: 0 !important;
+@media screen and (max-width: 768px) {
+    footer.footer {
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        padding: 0;
+    }
+
+    footer>.tabs a {}
 }
