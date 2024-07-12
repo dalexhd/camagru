@@ -8,5 +8,5 @@ $this->setTitle('Profile');
 ?>
 
 <h1>
-	Profile Page
+	Profile Page for <?= $this->Session->get('user_name') ?>
 </h1>

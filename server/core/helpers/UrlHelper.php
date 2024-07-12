@@ -42,4 +42,10 @@ class UrlHelper
 		header("Location: {$this->baseUrl}{$url}");
 		exit;
 	}
+
+	public function redirectToUrl($url)
+	{
+		header("Location: {$url}");
+		exit;
+	}
 }

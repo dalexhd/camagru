@@ -5,12 +5,40 @@
  */
 
 $this->setTitle('Login');
+
+$redirect = isset($_GET['redirect']) ? $_GET['redirect'] : null;
+$link = $this->Url->link('login') . ($redirect ? '?redirect=' . urlencode($redirect) : '');
 ?>
 
-<form action="<?php echo $this->Url->link('login'); ?>" method="post">
-	<label for="email">Email:</label>
-	<input type="email" id="email" name="email" required>
-	<label for="password">Password:</label>
-	<input type="password" id="password" name="password" required>
-	<button type="submit">Login</button>
-</form>
+
+<div class="columns">
+	<div class="column is-half is-offset-one-quarter">
+		<form action="<?= $link ?>" method="post" class="box">
+			<h1 class="title">Login</h1>
+			<div class="field">
+				<label class="label">Email</label>
+				<div class="control">
+					<input class="input" type="email" name="email" required>
+				</div>
+			</div>
+			<div class="field">
+				<label class="label">Password</label>
+				<div class="control">
+					<input class="input" type="password" name="password" required>
+				</div>
+			</div>
+			<div class="field">
+				<div class="control">
+					<div class="columns">
+						<div class="column">
+							<button class="button is-primary">Login</button>
+						</div>
+						<div class="column has-text-right">
+							<a href="<?= $this->Url->link('register') ?>">Don't have an account?</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>

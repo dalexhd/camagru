@@ -24,12 +24,20 @@
             <div class="column is-hidden-touch is-1-widescreen is-2-fullhd s-fixed-top"></div>
             <div class="column is-12-tablet is-10-desktop is-10-widescreen is-8-fullhd">
                 <?php if ($this->Session->hasFlash('success')) : ?>
-                    <div class="flash-message success">
+                    <div class="notification success">
+                        <button class="delete"></button>
                         <?php echo $this->Session->getFlash('success'); ?>
                     </div>
                 <?php endif; ?>
+                <?php if ($this->Session->hasFlash('info')) : ?>
+                    <div class="notification is-info">
+                        <button class="delete"></button>
+                        <?php echo $this->Session->getFlash('info'); ?>
+                    </div>
+                <?php endif; ?>
                 <?php if ($this->Session->hasFlash('error')) : ?>
-                    <div class="flash-message error">
+                    <div class="notification is-danger">
+                        <button class="delete"></button>
                         <?php echo $this->Session->getFlash('error'); ?>
                     </div>
                 <?php endif; ?>
@@ -38,6 +46,26 @@
         </div>
     </main>
     <?php $this->element('footer'); ?>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Close notification
+            (document.querySelectorAll('.notification .delete') || []).forEach(($delete) => {
+                const $notification = $delete.parentNode;
+
+                $delete.addEventListener('click', () => {
+                    $notification.parentNode.removeChild($notification);
+                });
+            });
+
+            // Auto-hide notification
+            (document.querySelectorAll('.notification') || []).forEach(($notification) => {
+                setTimeout(() => {
+                    $notification.parentNode.removeChild($notification);
+                }, 3000);
+            });
+        });
+    </script>
 </body>
 
 </html>

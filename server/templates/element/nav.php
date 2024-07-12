@@ -18,9 +18,15 @@
 				<a class="button is-light is-outlined is-hidden-mobile">
 					Upload
 				</a>
-				<a class="button is-primary" href="/login">
-					<strong>Login</strong>
-				</a>
+				<?php if ($this->Session->has('user_id')) : ?>
+					<a class="button is-danger" href="/logout">
+						<strong>Logout</strong>
+					</a>
+				<?php else : ?>
+					<a class="button is-primary" href="/login">
+						<strong>Login</strong>
+					</a>
+				<?php endif; ?>
 			</div>
 		</div>
 		<div id="navbarBasicExample" class="navbar-menu">
@@ -38,9 +44,15 @@
 						<a class="button is-light is-outlined">
 							Upload
 						</a>
-						<a class="button is-primary" href="/login">
-							<strong>Login</strong>
-						</a>
+						<?php if ($this->Session->has('user_id')) : ?>
+							<a class="button is-danger" href="/logout">
+								<strong>Logout</strong>
+							</a>
+						<?php else : ?>
+							<a class="button is-primary" href="/login">
+								<strong>Login</strong>
+							</a>
+						<?php endif; ?>
 					</div>
 				</div>
 			</div>

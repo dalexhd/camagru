@@ -3,13 +3,15 @@
 namespace app\middlewares;
 
 use core\Middleware;
+use core\Session;
 
 class AuthMiddleware extends Middleware
 {
 	public function handle()
 	{
-		if (!isset($_SESSION['user'])) {
-			header('Location: /login');
+		if (!isset($_SESSION['user_id'])) {
+			Session::setFlash('error', 'Please login to access this page');
+			header('Location: /login' . '?redirect=' . urlencode($_SERVER['REQUEST_URI']));
 			exit;
 		}
 		return true;

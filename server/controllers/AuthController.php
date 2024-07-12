@@ -30,7 +30,8 @@ class AuthController extends Controller
                 $this->Session->set('user_name', $user['name']);
 
                 // Redirect to home page
-                $this->Url->redirect('home');
+                $redirect = isset($_GET['redirect']) ? $_GET['redirect'] : 'home';
+                $this->Url->{isset($_GET['redirect']) ? 'redirectToUrl' : 'redirect'}($redirect);
             } else {
                 // Invalid login
                 $this->Session->setFlash('error', 'Invalid email or password');
@@ -76,6 +77,6 @@ class AuthController extends Controller
         $this->Session->destroy();
 
         // Redirect to login page
-        $this->Url->redirect('login');
+        $this->Url->redirect('home');
     }
 }
