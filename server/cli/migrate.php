@@ -51,7 +51,7 @@ class MigrationRunner
 		$migrations = [];
 		foreach (glob($directory . '/*.php') as $filename) {
 			require_once $filename;
-			$className = basename($filename, '.php');
+			$className = basename(preg_replace('/[0-9]+_/', '', basename($filename)), '.php');
 			if (class_exists($className)) {
 				$migrations[$className] = new $className();
 			}
@@ -82,14 +82,10 @@ class MigrationRunner
 	{
 		$runMigrations = $this->getRunMigrations();
 		$migrations = $this->loadMigrations('migrations');
-
-		foreach (array_reverse($migrations) as $className => $migration) {
-			if (in_array($className, $runMigrations)) {
-				echo "Rolling back migration: $className\n";
-				$migration->down();
-				$this->deleteMigration($className);
-			}
-		}
+		$migrationToRollback = array_pop($runMigrations);
+		echo "Rolling back migration: $migrationToRollback\n";
+		$migrations[$migrationToRollback]->down();
+		$this->deleteMigration($migrationToRollback);
 	}
 }
 
