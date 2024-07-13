@@ -21,8 +21,7 @@
     <?php $this->element('nav'); ?>
     <main class="section">
         <div class="columns">
-            <div class="column is-hidden-touch is-1-widescreen is-2-fullhd s-fixed-top"></div>
-            <div class="column is-12-tablet is-10-desktop is-10-widescreen is-8-fullhd">
+            <div class="column is-12-tablet is-10-desktop is-10-widescreen is-8-fullhd is-offset-1-widescreen is-offset-2-fullhd">
                 <?php if ($this->Session->hasFlash('success')) : ?>
                     <div class="notification success">
                         <button class="delete"></button>
@@ -44,9 +43,14 @@
                 <?php echo $content; ?>
             </div>
         </div>
+        <a class="button is-primary is-hidden-mobile" id="create-post" href="<?php echo $this->Url->link('create'); ?>">
+            <span class="icon">
+                <i class="fas fa-plus"></i>
+            </span>
+            <span>Upload</span>
+        </a>
     </main>
     <?php $this->element('footer'); ?>
-
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             // Close notification
