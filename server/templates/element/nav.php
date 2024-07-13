@@ -48,7 +48,7 @@
 				</a>
 			<?php endif; ?>
 			<div class="navbar-item">
-				<div class="buttons">
+				<div class="buttons are-small">
 					<?php if ($this->Session->has('user_id')) : ?>
 						<a class="button is-danger" href="<?php echo $this->Url->link('logout'); ?>">
 							<strong>Logout</strong>

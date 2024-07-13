@@ -6,7 +6,7 @@
 ?>
 
 <!DOCTYPE html>
-<html class="has-navbar-fixed-top has-navbar-fixed-bottom-touch" lang="en">
+<html class="has-navbar-fixed-top" lang="en">
 
 <head>
     <title><?php echo $this->title ?? 'My App'; ?></title>
@@ -19,36 +19,28 @@
 
 <body>
     <?php $this->element('nav'); ?>
-    <main class="section">
-        <div class="columns">
-            <div class="column is-12-tablet is-10-desktop is-10-widescreen is-8-fullhd is-offset-1-widescreen is-offset-2-fullhd">
-                <?php if ($this->Session->hasFlash('success')) : ?>
-                    <div class="notification success">
-                        <button class="delete"></button>
-                        <?php echo $this->Session->getFlash('success'); ?>
-                    </div>
-                <?php endif; ?>
-                <?php if ($this->Session->hasFlash('info')) : ?>
-                    <div class="notification is-info">
-                        <button class="delete"></button>
-                        <?php echo $this->Session->getFlash('info'); ?>
-                    </div>
-                <?php endif; ?>
-                <?php if ($this->Session->hasFlash('error')) : ?>
-                    <div class="notification is-danger">
-                        <button class="delete"></button>
-                        <?php echo $this->Session->getFlash('error'); ?>
-                    </div>
-                <?php endif; ?>
-                <?php echo $content; ?>
+    <main class="container">
+        <?php if ($this->Session->hasFlash('success')) : ?>
+            <div class="notification success">
+                <button class="delete"></button>
+                <?php echo $this->Session->getFlash('success'); ?>
             </div>
+        <?php endif; ?>
+        <?php if ($this->Session->hasFlash('info')) : ?>
+            <div class="notification is-info">
+                <button class="delete"></button>
+                <?php echo $this->Session->getFlash('info'); ?>
+            </div>
+        <?php endif; ?>
+        <?php if ($this->Session->hasFlash('error')) : ?>
+            <div class="notification is-danger">
+                <button class="delete"></button>
+                <?php echo $this->Session->getFlash('error'); ?>
+            </div>
+        <?php endif; ?>
+        <div id="<?php echo $this->Url->getActiveName(); ?>-view">
+            <?php echo $content; ?>
         </div>
-        <a class="button is-primary is-hidden-mobile" id="create-post" href="<?php echo $this->Url->link('create'); ?>">
-            <span class="icon">
-                <i class="fas fa-plus"></i>
-            </span>
-            <span>Upload</span>
-        </a>
     </main>
     <?php $this->element('footer'); ?>
     <script>

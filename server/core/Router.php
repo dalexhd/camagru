@@ -61,6 +61,11 @@ class Router
         return $routeObj;
     }
 
+    public function getRoutes()
+    {
+        return $this->routes;
+    }
+
     private function convertToRegex($route)
     {
         return '@^' . preg_replace('/\{(\w+)\}/', '(?P<\1>[^/]+)', $route) . '$@';

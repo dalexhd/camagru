@@ -15,6 +15,7 @@ class View
 
 	private $title;
 	private $name;
+	private $view;
 
 	public function __construct($router)
 	{
@@ -39,6 +40,7 @@ class View
 	{
 		extract($data);
 		ob_start();
+		$this->view = $view;
 		require "../templates/{$view}.php";
 		$content = ob_get_clean();
 		require "../templates/{$this->layout}.php";

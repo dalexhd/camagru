@@ -31,6 +31,18 @@ class UrlHelper
 		return $currentUrl === $generatedUrl;
 	}
 
+	public function getActiveName()
+	{
+		$currentUrl = $_SERVER['REQUEST_URI'];
+		foreach ($this->router->getRoutes() as $route) {
+			$generatedUrl = $this->router->generate($route->name);
+			if ($currentUrl === $generatedUrl) {
+				return $route->name;
+			}
+		}
+		return null;
+	}
+
 	public function asset($path)
 	{
 		return $this->baseUrl . '/' . $path;
