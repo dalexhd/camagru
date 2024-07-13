@@ -11,6 +11,10 @@ main.section {
     }
 }
 
+html {
+    overflow: auto !important;
+}
+
 #create-post {
     position: fixed;
     bottom: 20px;
