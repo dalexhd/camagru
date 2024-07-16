@@ -38,9 +38,7 @@
                 <?php echo $this->Session->getFlash('error'); ?>
             </div>
         <?php endif; ?>
-        <div id="<?php echo $this->Url->getActiveName(); ?>-view">
-            <?php echo $content; ?>
-        </div>
+        <?php echo $content; ?>
     </main>
     <?php $this->element('footer'); ?>
     <script>

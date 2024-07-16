@@ -1,0 +1,17 @@
+html {
+  overflow: auto !important;
+  main {
+    height: calc(100vh - var(--bulma-navbar-height));
+    @include mobile {
+      height: calc(100vh - var(--bulma-navbar-height) - 40px);
+    }
+  }
+  @include mobile {
+    footer.footer {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      padding: 0;
+    }
+  }
+}
