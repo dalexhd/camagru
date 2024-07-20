@@ -6,22 +6,11 @@
 
 $this->setTitle('Home');
 ?>
-
-<style>
-	#post-index {
-		height: 100%;
-	}
-
-	#post-index .column {
-		height: 100%;
-	}
-</style>
-
-<div class="columns m-0" id="post-index">
-	<div class="column is-three-quarters">
+<div class="columns m-0" id="post-wrapper">
+	<div class="column is-three-quarters" id="post-container-wrapper">
 		<?php $this->element('post/container'); ?>
 	</div>
-	<div class="column is-hidden-mobile">
+	<div class="column" id="post-comments-wrapper">
 		<?php $this->element('post/comments'); ?>
 	</div>
 </div>

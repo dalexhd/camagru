@@ -21,9 +21,11 @@ class HtmlHelper
         return "<link rel='stylesheet' href='{$this->baseUrl}/css/{$filename}'>";
     }
 
-    public function js($filename)
+    public function js($filename, $attributes = [])
     {
-        return "<script src='{$this->baseUrl}/js/{$filename}'></script>";
+        return "<script src='{$this->baseUrl}/js/{$filename}' " . implode(' ', array_map(function ($key, $value) {
+            return "$key='$value'";
+        }, array_keys($attributes), $attributes)) . "></script>";
     }
 
     public function img($filename, $alt = '', $class = '')

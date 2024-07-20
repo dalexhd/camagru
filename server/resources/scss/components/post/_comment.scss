@@ -1,0 +1,49 @@
+.post-comment-wrapper {
+	display: grid;
+	grid-template-columns: 30px auto;
+	grid-template-rows: 20px auto 20px;
+	grid-template-areas: "avatar author"
+		"avatar text"
+		"avatar actions";
+	padding: 10px;
+	gap: 5px;
+
+	>.comment-avatar {
+		grid-area: avatar;
+
+		>img {
+			width: 30px;
+			height: 30px;
+			border-radius: 50%;
+		}
+	}
+
+	>.comment-author {
+		grid-area: author;
+	}
+
+	>.comment-text {
+		grid-area: text;
+	}
+
+	>.comment-actions {
+		grid-area: actions;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+
+		>.comment-action-labels {
+			display: flex;
+			justify-content: space-around;
+			align-items: center;
+			gap: 10px;
+		}
+
+		>.comment-action-icons {
+			display: flex;
+			justify-content: space-around;
+			align-items: center;
+			gap: 10px;
+		}
+	}
+}

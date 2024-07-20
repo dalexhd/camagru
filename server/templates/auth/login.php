@@ -11,7 +11,7 @@ $link = $this->Url->link('login') . ($redirect ? '?redirect=' . urlencode($redir
 ?>
 
 
-<div class="columns">
+<div class="columns m-0">
 	<div class="column is-half is-offset-one-quarter">
 		<form action="<?= $link ?>" method="post" class="box">
 			<h1 class="title">Login</h1>

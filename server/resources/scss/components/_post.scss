@@ -1,2 +1,63 @@
 @import "post/comments";
 @import "post/container";
+@import "post/comment";
+
+#post-wrapper {
+	height: 100%;
+
+	>.column {
+		height: 100%;
+	}
+
+	#post-comments-wrapper {
+		z-index: 1;
+
+		@include mobile {
+			position: absolute;
+			bottom: 0;
+			width: 100%;
+			padding: 0;
+			background-color: var(--bulma-hr-background-color);
+			border-radius: 10px 10px 0 0;
+			max-height: 50%;
+			box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+
+
+			@keyframes slide-down {
+				from {
+					max-height: 50%;
+					display: block;
+				}
+
+				to {
+					max-height: 0;
+					display: none;
+				}
+			}
+
+			&.is-closing {
+				animation: slide-down 0.2s ease-in-out;
+				display: none;
+			}
+
+			@keyframes slide-up {
+				from {
+					max-height: 0;
+				}
+
+				to {
+					max-height: 50%;
+				}
+			}
+
+			&.is-active {
+				animation: slide-up 0.2s ease-in;
+				display: block;
+			}
+
+			&:not(.is-active, .is-closing) {
+				display: none;
+			}
+		}
+	}
+}

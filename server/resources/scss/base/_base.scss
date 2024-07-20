@@ -1,11 +1,20 @@
 html {
   overflow: auto !important;
+
   main {
     height: calc(100vh - var(--bulma-navbar-height));
+
     @include mobile {
       height: calc(100vh - var(--bulma-navbar-height) - 40px);
     }
+
+    &.container {
+      @include mobile {
+        position: static;
+      }
+    }
   }
+
   @include mobile {
     footer.footer {
       position: fixed;

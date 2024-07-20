@@ -16,7 +16,7 @@
 					<i class="fas fa-heart"></i>
 				</span>
 			</button>
-			<button class="button is-rounded">
+			<button class="button is-rounded is-hidden-desktop open-comments">
 				<span class="icon">
 					<i class="fas fa-comment"></i>
 				</span>
