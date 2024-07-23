@@ -18,6 +18,7 @@
 </head>
 
 <body>
+    <div id="app"></div>
     <?php $this->element('nav'); ?>
     <main class="container">
         <?php if ($this->Session->hasFlash('success')) : ?>

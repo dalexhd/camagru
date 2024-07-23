@@ -85,6 +85,14 @@ class Router
                     $this->renderErrorPage(405, 'Method Not Allowed');
                     return;
                 }
+                if (!empty($route->patterns)) {
+                    foreach ($route->patterns as $key => $pattern) {
+                        if (isset($matches[$key]) && !preg_match('@^' . $pattern . '$@', $matches[$key])) {
+                            $this->renderErrorPage(404, 'Page Not Found');
+                            return;
+                        }
+                    }
+                }
                 if (!empty($route->middleware)) {
                     foreach ($route->middleware as $middleware) {
                         $middleware = new $middleware();

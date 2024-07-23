@@ -1,0 +1,42 @@
+<?php
+
+/**
+ * @var \core\View $this
+ */
+
+?>
+<div class="post-container" data-id="{{ id }}">
+	<div class="post-media">
+		<img src="{{ src }}" alt="Post media">
+	</div>
+	<div class="post-actions">
+		<div class="buttons">
+			<button class="button is-rounded">
+				<span class="icon">
+					<i class="fas fa-heart"></i>
+				</span>
+			</button>
+			<button class="button is-rounded is-hidden-desktop open-comments">
+				<span class="icon">
+					<i class="fas fa-comment"></i>
+				</span>
+			</button>
+			<button class="button is-rounded">
+				<span class="icon">
+					<i class="fas fa-share"></i>
+				</span>
+			</button>
+		</div>
+	</div>
+	<div class="post-content">
+		<div class="author">
+			<figure class="image is-24x24">
+				<img class="is-rounded" src="{{ author.avatar }}" alt="Author avatar">
+			</figure>
+			<span>{{ author.username }}</span>
+		</div>
+		<p class="post-text">
+			{{ text }}
+		</p>
+	</div>
+</div>

@@ -6,6 +6,7 @@ require_once '../core/Database.php';
 require_once '../core/Migration.php';
 require_once '../core/Security.php';
 require_once '../core/View.php';
+require_once '../core/Response.php';
 require_once '../core/Controller.php';
 require_once '../core/Model.php';
 require_once '../core/Mail.php';

@@ -63,3 +63,12 @@ $router->connect(
 	['controller' => 'SearchController', 'action' => 'index'],
 	'search'
 );
+
+// Api routes
+$router->connect(
+	'/api/posts/{page}/{limit}',
+	['controller' => 'PostController', 'action' => 'posts'],
+	'posts'
+)
+	->setPass(['page', 'limit'])
+	->setPatterns(['page' => '[0-9]+', 'limit' => '[0-9]+']);

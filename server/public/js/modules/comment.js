@@ -7,35 +7,34 @@ export default class extends CamagruModule {
 	}
 
 	loadCommentsToggle() {
-		const $openComments = document.querySelectorAll('.open-comments');
-		const $closeComments = document.querySelectorAll('.close-comments');
-		const $commentsWrapper = document.querySelector('#post-comments-wrapper');
-		const $commentInput = $commentsWrapper.querySelector('.input');
-
-		$openComments.forEach(($openComment) => {
-			$openComment.addEventListener('click', () => {
-				$commentsWrapper.classList.add('is-active');
-			});
-		});
-
-		const closeComments = () => {
-			$commentsWrapper.classList.remove('is-active');
-			$commentsWrapper.classList.add('is-closing');
-			setTimeout(() => {
-				$commentsWrapper.classList.remove('is-closing');
-				$commentInput.value = '';
-			}, 200);
-		}
-
-		$closeComments.forEach(($closeComment) => {
-			$closeComment.addEventListener('click', () => {
-				closeComments();
-			});
-		});
-
-		// Close comments when clicking outside
 		document.addEventListener('click', (e) => {
-			if (!e.target.closest('#post-comments-wrapper') && !e.target.closest('.open-comments') && $commentsWrapper.classList.contains('is-active')) {
+			const closestOpenComments = e.target.closest('.open-comments');
+			if (closestOpenComments) {
+				const $postContainer = closestOpenComments.closest('.post-container');
+				const $postId = $postContainer.dataset.id;
+				const $commentsContainer = document.querySelector(`.post-comments[data-id="${$postId}"]`);
+				const $commentsContainerWrapper = document.querySelector('#post-comments-wrapper');
+				$commentsContainer.classList.add('is-active');
+				$commentsContainerWrapper.classList.add('is-active');
+			}
+
+			const closestCloseComments = e.target.closest('.close-comments');
+			if (closestCloseComments) {
+				const $postContainer = closestCloseComments.closest('.post-container');
+				const $postId = $postContainer.dataset.id;
+				const $commentsContainer = document.querySelector(`.post-comments[data-id="${$postId}"]`);
+				$commentsContainer.classList.remove('is-active');
+			}
+
+			const closeComments = () => {
+				document.querySelector('#post-comments-wrapper').classList.remove('is-active');
+				document.querySelector('#post-comments-wrapper').classList.add('is-closing');
+				document.querySelector('.post-comments.is-active').classList.remove('is-active');
+				setTimeout(() => {
+					document.querySelector('#post-comments-wrapper').classList.remove('is-closing');
+				}, 200);
+			}
+			if (!e.target.closest('#post-comments-wrapper') && !e.target.closest('.open-comments') && document.querySelector('#post-comments-wrapper').classList.contains('is-active')) {
 				closeComments();
 			}
 		});
@@ -43,7 +42,6 @@ export default class extends CamagruModule {
 
 	init() {
 		console.log('Comment init');
-
 		this.loadCommentsToggle();
 	}
 }

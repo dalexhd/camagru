@@ -51,4 +51,10 @@ class View
 		extract($data);
 		require "../templates/element/{$component}.php";
 	}
+
+	public function partial($component, $data = [])
+	{
+		extract($data);
+		require "../templates/partials/{$component}.php";
+	}
 }

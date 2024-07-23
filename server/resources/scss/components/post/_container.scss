@@ -1,4 +1,5 @@
-#post-container {
+.post-container {
+  scroll-snap-align: center;
   height: 100%;
   position: relative;
 
@@ -74,5 +75,9 @@
       text-overflow: ellipsis;
       width: 100%;
     }
+  }
+
+  &+.post-container {
+    margin-top: 0.75rem;
   }
 }
