@@ -12,7 +12,7 @@
 		<span>{{ author }}</span>
 	</div>
 	<div class="comment-text">
-		<p>{{ text }}</p>
+		<p>{{ body }}</p>
 	</div>
 	<div class="comment-actions">
 		<div class="comment-action-labels">

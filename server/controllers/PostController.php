@@ -67,6 +67,25 @@ class PostController extends Controller
 
 	public function create()
 	{
+		if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+			$creator = $this->Session->get('user_id');
+			$title = $_POST['title'];
+			$body = $_POST['body'];
+			$mediaSrc = null;
+			try {
+				$file = $_FILES['media'];
+				$mediaSrc = $this->File->upload($file, 'img/uploads');
+				$post = $this->postModel->create($creator, $title, $body, $mediaSrc);
+				if ($post) {
+					$this->Session->setFlash('Post created successfully!', 'success');
+					return $this->Url->redirect('home');
+				}
+			} catch (\Throwable $th) {
+				$this->Session->setFlash('Failed to create post!' . $th->getMessage(), 'danger');
+				echo $th->getTraceAsString();
+				return $this->View->render('post/create');
+			}
+		}
 		$this->View->render('post/create', ['message' => 'Hello, World!'], 'Post Create Page');
 	}
 }

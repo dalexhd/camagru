@@ -53,6 +53,12 @@
 						<a class="button is-danger" href="<?php echo $this->Url->link('logout'); ?>">
 							<strong>Logout</strong>
 						</a>
+						<a class="button is-success" href="<?php echo $this->Url->link('create'); ?>">
+							<span class="icon">
+								<i class="fas fa-plus"></i>
+							</span>
+							<span>Create</span>
+						</a>
 					<?php else : ?>
 						<a class="button is-primary" href="<?php echo $this->Url->link('login'); ?>">
 							<strong>Login</strong>

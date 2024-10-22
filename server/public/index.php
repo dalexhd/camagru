@@ -12,6 +12,7 @@ require_once '../core/Model.php';
 require_once '../core/Mail.php';
 require_once '../core/Middleware.php';
 require_once '../core/Router.php';
+require_once '../core/File.php';
 require_once '../core/Session.php';
 require_once '../core/Helpers.php';
 require_once '../config/routes.php';

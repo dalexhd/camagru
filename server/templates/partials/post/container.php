@@ -7,7 +7,7 @@
 ?>
 <div class="post-container" data-id="{{ id }}">
 	<div class="post-media">
-		<img src="{{ src }}" alt="Post media">
+		<img src="{{ media_src }}" alt="Post media">
 	</div>
 	<div class="post-actions">
 		<div class="buttons">
@@ -33,10 +33,10 @@
 			<figure class="image is-24x24">
 				<img class="is-rounded" src="{{ author.avatar }}" alt="Author avatar">
 			</figure>
-			<span>{{ author.username }}</span>
+			<span>{{ author.name }}</span>
 		</div>
 		<p class="post-text">
-			{{ text }}
+			{{ body }}
 		</p>
 	</div>
 </div>

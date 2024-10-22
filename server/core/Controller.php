@@ -6,6 +6,7 @@ use core\helpers\UrlHelper;
 use core\Session;
 use core\View;
 use core\Response;
+use core\File;
 
 class Controller
 {
@@ -13,6 +14,7 @@ class Controller
     protected $View;
     protected $Session;
     protected $Response;
+    protected $File;
 
     public function __construct($router)
     {
@@ -20,6 +22,7 @@ class Controller
         $this->View = new View($router);
         $this->Response = new Response();
         $this->Session = new Session();
+        $this->File = new File();
     }
 
     public function loadModel($model)
