@@ -21,15 +21,15 @@
 					{{ created_at }}
 				</time>
 			</p>
-			<p class="is-size-7 has-text-grey has-text-weight-bold">
+			<p class="is-size-7 has-text-grey has-text-weight-bold" data-needs-auth>
 				Reply
 			</p>
 		</div>
 		<div class="comment-action-icons">
-			<span class="icon">
+			<span class="icon" data-needs-auth>
 				<i class="far fa-heart"></i>
 			</span>
-			<span class="icon">
+			<span class="icon" data-needs-auth>
 				<i class="far fa-thumbs-down"></i>
 			</span>
 		</div>

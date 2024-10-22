@@ -22,19 +22,19 @@
     <?php $this->element('nav'); ?>
     <main class="container">
         <?php if ($this->Session->hasFlash('success')) : ?>
-            <div class="notification success">
+            <div class="notification success m-2">
                 <button class="delete"></button>
                 <?php echo $this->Session->getFlash('success'); ?>
             </div>
         <?php endif; ?>
         <?php if ($this->Session->hasFlash('info')) : ?>
-            <div class="notification is-info">
+            <div class="notification is-info m-2">
                 <button class="delete"></button>
                 <?php echo $this->Session->getFlash('info'); ?>
             </div>
         <?php endif; ?>
         <?php if ($this->Session->hasFlash('error')) : ?>
-            <div class="notification is-danger">
+            <div class="notification is-danger m-2">
                 <button class="delete"></button>
                 <?php echo $this->Session->getFlash('error'); ?>
             </div>
@@ -42,6 +42,9 @@
         <?php echo $content; ?>
     </main>
     <?php $this->element('footer'); ?>
+    <script>
+        const isLoggedIn = <?php echo $this->Session->has('user_id') ? 'true' : 'false'; ?>;
+    </script>
     <?php echo $this->Html->js('main.js', ['defer' => 'defer', 'type' => 'module']); ?>
 </body>
 

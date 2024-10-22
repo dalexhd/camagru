@@ -24,7 +24,7 @@
 				<input class="input" type="text" placeholder="Write a comment...">
 			</p>
 			<p class="control">
-				<button class="button is-info">
+				<button class="button is-info" data-needs-auth>
 					Send
 				</button>
 			</p>

@@ -11,7 +11,7 @@
 	</div>
 	<div class="post-actions">
 		<div class="buttons">
-			<button class="button is-rounded">
+			<button class="button is-rounded" data-needs-auth>
 				<span class="icon">
 					<i class="fas fa-heart"></i>
 				</span>
