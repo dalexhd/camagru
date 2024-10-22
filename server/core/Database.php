@@ -20,7 +20,7 @@ class Database
         }
     }
 
-    public static function getInstance()
+    public static function getInstance(): Database
     {
         if (!self::$instance) {
             self::$instance = new self();

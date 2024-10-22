@@ -21,4 +21,10 @@ class Controller
         $this->Response = new Response();
         $this->Session = new Session();
     }
+
+    public function loadModel($model)
+    {
+        $model = 'app\models\\' . $model;
+        return new $model();
+    }
 }
