@@ -21,7 +21,7 @@
 					<i class="fas fa-comment"></i>
 				</span>
 			</button>
-			<button class="button is-rounded">
+			<button class="button is-rounded post-share">
 				<span class="icon">
 					<i class="fas fa-share"></i>
 				</span>

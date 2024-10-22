@@ -61,6 +61,31 @@ export default class extends CamagruModule {
 		observer.observe(selector);
 	}
 
+	onPostShareEvent() {
+		document.querySelectorAll('#post-container-wrapper .post-share').forEach((shareButton) => {
+			shareButton.addEventListener('click', (event) => {
+				const postElement = event.target.closest('.post-container');
+				const post = this.posts.map((post) => post.post).find((post) => post.id == postElement.dataset.id);
+				if (!post) {
+					return;
+				}
+				const shareUrl = `${window.location.origin}/post/${post.id}`;
+				const shareText = `Check out this post on Camagru: ${shareUrl}`;
+				if (navigator.share) {
+					navigator.share({
+						title: 'Camagru',
+						text: shareText,
+						url: shareUrl
+					});
+				} else {
+					navigator.clipboard.writeText(shareUrl).then(() => {
+						alert('Post URL copied to clipboard');
+					});
+				}
+			});
+		});
+	}
+
 	async init() {
 		await this.loadPosts();
 		document.querySelector('#post-container-wrapper').innerHTML = this.posts.map((post) => post.html.post).join('');
@@ -70,5 +95,6 @@ export default class extends CamagruModule {
 		document.querySelectorAll('.post-container').forEach((postContainer) => {
 			this.onPostScrollEnd(postContainer);
 		});
+		this.onPostShareEvent();
 	}
 }
