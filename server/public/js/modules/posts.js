@@ -88,6 +88,10 @@ export default class extends CamagruModule {
 
 	async init() {
 		await this.loadPosts();
+		if (this.posts.length == 0) {
+			document.querySelector('#post-container-wrapper').innerHTML = '<p>No posts found</p>';
+			return
+		}
 		document.querySelector('#post-container-wrapper').innerHTML = this.posts.map((post) => post.html.post).join('');
 		document.querySelector('#post-container-wrapper').querySelector('.post-container').classList.add('is-active');
 		document.querySelector('#post-comments-wrapper').innerHTML = this.posts.map((post) => post.html.comments).join('');

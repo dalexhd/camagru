@@ -1,9 +1,18 @@
 <?php
 
 use core\Controller;
+use app\models\Post;
 
 class PostController extends Controller
 {
+    private $postModel;
+
+	public function __construct($router)
+    {
+        parent::__construct($router);
+        $this->postModel = new Post();
+    }
+
 	public function index()
 	{
 		$this->View->render('post/index', ['message' => 'Hello, World!'], 'Post Page');
@@ -11,7 +20,8 @@ class PostController extends Controller
 
 	public function posts($page, $limit)
 	{
-		$comments = [
+		$posts = $this->postModel->paginate($page, $limit);
+/* 		$comments = [
 			[
 				'author' => 'Author 1',
 				'avatar' => 'https://picsum.photos/24',
@@ -51,9 +61,7 @@ class PostController extends Controller
 				'src' => 'https://picsum.photos/1920/1080',
 				'comments' => $comments
 			];
-		}
-
-
+		} */
 		$this->Response->setHeader('Content-Type', 'application/json')->setResponse($posts)->send();
 	}
 
