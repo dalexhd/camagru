@@ -28,6 +28,8 @@ class AuthController extends Controller
                 $this->Session->set('user_id', $user['id']);
                 $this->Session->set('user_email', $user['email']);
                 $this->Session->set('user_name', $user['name']);
+                $this->Session->set('user_nickname', $user['nickname']);
+                $this->Session->set('user_avatar', $user['avatar'] ? $this->Url->asset($user['avatar']) : null);
 
                 // Redirect to home page
                 $redirect = isset($_GET['redirect']) ? $_GET['redirect'] : 'home';
@@ -46,6 +48,7 @@ class AuthController extends Controller
     {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $name = $_POST['name'];
+            $nickname = $_POST['nickname'];
             $email = $_POST['email'];
             $password = $_POST['password'];
             $confirmPassword = $_POST['confirm_password'];
@@ -61,7 +64,7 @@ class AuthController extends Controller
             $password = Security::hashPassword($password);
 
             // Register user
-            $this->userModel->create($name, $email, $password);
+            $this->userModel->create($name, $nickname, $email, $password);
 
             // Redirect to login page
             $this->Session->setFlash('success', 'You are registered and can log in');

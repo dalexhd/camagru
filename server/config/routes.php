@@ -52,6 +52,18 @@ $router->connect(
 )->setMiddleware([AuthMiddleware::class]);
 
 $router->connect(
+	'/settings/account',
+	['controller' => 'UserController', 'action' => 'accountSettings'],
+	'accountSettings'
+)->setMiddleware([AuthMiddleware::class]);
+
+$router->connect(
+	'/settings/security',
+	['controller' => 'UserController', 'action' => 'securitySettings'],
+	'securitySettings'
+)->setMiddleware([AuthMiddleware::class]);
+
+$router->connect(
 	'/users/{nickname}',
 	['controller' => 'UserController', 'action' => 'view'],
 	'user_view'

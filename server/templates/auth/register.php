@@ -25,6 +25,12 @@ $this->setTitle('Register');
 				</div>
 			</div>
 			<div class="field">
+				<label class="label">Nickname</label>
+				<div class="control">
+					<input class="input" type="text" name="nickname" required>
+				</div>
+			</div>
+			<div class="field">
 				<label class="label">Password</label>
 				<div class="control">
 					<input class="input" type="password" name="password" required>

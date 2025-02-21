@@ -1,0 +1,17 @@
+#settings-wrapper {
+  height: 100%;
+
+  .settings-tabs {
+    position: sticky;
+    top: 0;
+    background-color: var(--bulma-scheme-main);
+    z-index: 1;
+    @include mobile {
+      > .tabs {
+        > ul {
+          justify-content: center;
+        }
+      }
+    }
+  }
+}

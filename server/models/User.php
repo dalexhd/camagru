@@ -17,10 +17,32 @@ class User extends Model
 		return $stmt->fetch(PDO::FETCH_ASSOC);
 	}
 
-	public function create($name, $email, $password)
+	public function update($id, $data)
 	{
-		$stmt = $this->db->prepare("INSERT INTO {$this->table} (name, email, password) VALUES (:name, :email, :password)");
+		if (empty($data)) {
+			return false;
+		}
+
+		// Dynamically build the SET part of the query
+		$setClauses = [];
+		foreach ($data as $key => $value) {
+			$setClauses[] = "`$key` = :$key"; // Using backticks to prevent SQL keyword conflicts
+		}
+		$setQuery = implode(', ', $setClauses);
+		$stmt = $this->db->prepare("UPDATE {$this->table} SET $setQuery WHERE id = :id");
+		foreach ($data as $key => $value) {
+			$stmt->bindValue(":$key", $value);
+		}
+		$stmt->bindValue(":id", $id, PDO::PARAM_INT);
+		return $stmt->execute(); // Returns true on success, false on failure
+	}
+
+
+	public function create($name, $nickname, $email, $password)
+	{
+		$stmt = $this->db->prepare("INSERT INTO {$this->table} (name, nickname, email, password) VALUES (:name, :nickname, :email, :password)");
 		$stmt->bindParam(':name', $name);
+		$stmt->bindParam(':nickname', $nickname);
 		$stmt->bindParam(':email', $email);
 		$stmt->bindParam(':password', $password);
 		$stmt->execute();

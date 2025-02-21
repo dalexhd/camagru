@@ -34,4 +34,30 @@ class File
             throw new \Exception('You cannot upload files of this type!');
         }
     }
+
+    public function remove($file)
+    {
+        $fileDestination = $_SERVER['DOCUMENT_ROOT'] . '/' . $file;
+        if (file_exists($fileDestination)) {
+            return unlink($fileDestination);
+        } else {
+            throw new \Exception('The file could not be found on the specified location');
+        }
+    }
+
+    public function removeIfExists($file)
+    {
+        if ($this->exists($file)) {
+            $fileDestination = $_SERVER['DOCUMENT_ROOT'] . '/' . $file;
+            return unlink($fileDestination);
+        } else {
+            return false;
+        }
+    }
+
+    public function exists($file)
+    {
+        $fileDestination = $_SERVER['DOCUMENT_ROOT'] . '/' . $file;
+        return file_exists($fileDestination);
+    }
 }

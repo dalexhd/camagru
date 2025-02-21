@@ -20,9 +20,9 @@
 <body>
     <div id="app"></div>
     <?php $this->element('nav'); ?>
-    <main class="container">
+    <main class="container-fluid">
         <?php if ($this->Session->hasFlash('success')) : ?>
-            <div class="notification success m-2">
+            <div class="notification is-success m-2">
                 <button class="delete"></button>
                 <?php echo $this->Session->getFlash('success'); ?>
             </div>

@@ -30,7 +30,7 @@
 	</div>
 	<div class="post-content">
 		<div class="author">
-			<figure class="image is-24x24">
+			<figure class="image is-48x48">
 				<img class="is-rounded" src="{{ author.avatar }}" alt="Author avatar">
 			</figure>
 			<span>{{ author.name }}</span>

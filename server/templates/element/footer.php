@@ -22,7 +22,7 @@ $links = [
 		'icon' => 'fas fa-user',
 	],
 	[
-		'route' => 'settings',
+		'route' => 'accountSettings',
 		'icon' => 'fas fa-cog',
 	]
 ];

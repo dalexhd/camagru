@@ -2,6 +2,7 @@ html {
   overflow: auto !important;
 }
 html main {
+  overflow: scroll;
   height: calc(100vh - var(--bulma-navbar-height));
 }
 @media only screen and (max-width: 767px) {
@@ -241,5 +242,20 @@ html main {
   }
   #post-wrapper #post-comments-wrapper:not(.is-active, .is-closing) {
     display: none;
+  }
+}
+
+#settings-wrapper {
+  height: 100%;
+}
+#settings-wrapper .settings-tabs {
+  position: sticky;
+  top: 0;
+  background-color: var(--bulma-scheme-main);
+  z-index: 1;
+}
+@media only screen and (max-width: 767px) {
+  #settings-wrapper .settings-tabs > .tabs > ul {
+    justify-content: center;
   }
 }/*# sourceMappingURL=style.css.map */

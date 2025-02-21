@@ -7,15 +7,15 @@ use PDO;
 
 class Post extends Model
 {
-	protected $table = 'posts';
+    protected $table = 'posts';
 
-	public function findById($id)
-	{
-		$stmt = $this->db->prepare("SELECT * FROM {$this->table} WHERE id = :id LIMIT 1");
-		$stmt->bindParam(':id', $id);
-		$stmt->execute();
-		return $stmt->fetch(PDO::FETCH_ASSOC);
-	}
+    public function findById($id)
+    {
+        $stmt = $this->db->prepare("SELECT * FROM {$this->table} WHERE id = :id LIMIT 1");
+        $stmt->bindParam(':id', $id);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
 
     public function findByCreator($creatorId)
     {

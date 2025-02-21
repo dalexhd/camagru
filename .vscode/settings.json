@@ -15,5 +15,6 @@
 			// / -> denotes relative to the workspace root
 			"savePath": "/dist/css"
 		},
-	]
+	],
+	"editor.formatOnSave": true
 }

@@ -2,6 +2,7 @@ html {
   overflow: auto !important;
 
   main {
+    overflow: scroll;
     height: calc(100vh - var(--bulma-navbar-height));
 
     @include mobile {

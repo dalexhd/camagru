@@ -40,7 +40,7 @@
 					</span>
 					<span>Profile</span>
 				</a>
-				<a class="navbar-item is-hidden-mobile" href="<?php echo $this->Url->link('settings'); ?>">
+				<a class="navbar-item is-hidden-mobile" href="<?php echo $this->Url->link('accountSettings'); ?>">
 					<span class="icon">
 						<i class="fas fa-cog"></i>
 					</span>
