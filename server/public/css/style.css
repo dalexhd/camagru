@@ -1,5 +1,11 @@
+:root {
+  --bulma-body-family: "Silkscreen", sans-serif;
+}
+
 html {
   overflow: auto !important;
+  font-family: "Doto", sans-serif;
+  font-optical-sizing: auto;
 }
 html main {
   overflow: scroll;

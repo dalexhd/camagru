@@ -12,9 +12,12 @@
     <title><?php echo $this->title ?? 'My App'; ?></title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <?php echo $this->Html->css('style.css'); ?>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/1.0.1/css/bulma.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+    <?php echo $this->Html->css('style.css'); ?>
 </head>
 
 <body>
