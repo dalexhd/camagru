@@ -8,7 +8,7 @@ class AddAvatarSrcToUsersTable extends Migration
 	{
 		$this->db->exec("
             ALTER TABLE users
-            ADD COLUMN avatar VARCHAR(255) DEFAULT NULL AFTER email
+            MODIFY COLUMN avatar VARCHAR(255) DEFAULT NULL AFTER email
 		");
 	}
 
