@@ -14,7 +14,7 @@
 	<div class="comment-text">
 		<p>{{ comment }}</p>
 	</div>
-	<div class="comment-actions">
+	<!-- 	<div class="comment-actions">
 		<div class="comment-action-labels">
 			<p class="is-size-7 has-text-grey">
 				<time datetime="{{ comment.created_at }}">
@@ -33,5 +33,5 @@
 				<i class="far fa-thumbs-down"></i>
 			</span>
 		</div>
-	</div>
+	</div> -->
 </div>
