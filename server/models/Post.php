@@ -54,7 +54,7 @@ class Post extends Model
         $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         foreach ($rows as &$row) {
-            $row['comments'] = $this->db->query("SELECT * FROM post_comments WHERE post_id = {$row['id']}")->fetchAll(PDO::FETCH_ASSOC);
+            $row['comments'] = $this->db->query("SELECT *, post_comments.created_at as created_at FROM post_comments INNER JOIN users ON post_comments.user_id = users.id WHERE post_id = {$row['id']} ORDER BY post_comments.created_at DESC")->fetchAll(PDO::FETCH_ASSOC);
             $row['author'] = $this->db->query("SELECT * FROM users WHERE id = {$row['creator']}")->fetch(PDO::FETCH_ASSOC);
         }
 

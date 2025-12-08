@@ -1,14 +1,14 @@
 :root {
-  --bulma-body-family: "Silkscreen", sans-serif;
+  --bulma-body-family: "JetBrains Mono", sans-serif;
 }
 
 html {
   overflow: auto !important;
-  font-family: "Doto", sans-serif;
+  font-family: "JetBrains Mono", sans-serif;
   font-optical-sizing: auto;
 }
 html main {
-  overflow: scroll;
+  overflow: auto;
   height: calc(100vh - var(--bulma-navbar-height));
 }
 @media only screen and (max-width: 767px) {
@@ -202,7 +202,7 @@ html main {
   height: 100%;
 }
 #post-wrapper #post-container-wrapper {
-  overflow: scroll;
+  overflow: auto;
   scroll-snap-type: y mandatory;
 }
 #post-wrapper #post-comments-wrapper {

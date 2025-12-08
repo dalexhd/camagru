@@ -9,10 +9,10 @@
 		<img src="{{ avatar }}" alt="Author avatar">
 	</div>
 	<div class="comment-author">
-		<span>{{ author }}</span>
+		<span>{{ nickname }}</span>
 	</div>
 	<div class="comment-text">
-		<p>{{ body }}</p>
+		<p>{{ comment }}</p>
 	</div>
 	<div class="comment-actions">
 		<div class="comment-action-labels">

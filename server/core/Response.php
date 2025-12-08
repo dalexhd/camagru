@@ -27,6 +27,12 @@ class Response
 		echo json_encode($this->response);
 	}
 
+	public function status($code)
+	{
+		http_response_code($code);
+		return $this;
+	}
+
 	public function setHeader($key, $value)
 	{
 		header("$key: $value");

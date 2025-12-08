@@ -76,6 +76,15 @@ $router->connect(
 	'search'
 );
 
+// Post comment routes
+$router->connect(
+	'/post/{id}/comment',
+	['controller' => 'PostCommentController', 'action' => 'create'],
+	'post_comment_create'
+)
+	->setPass(['id'])
+	->setPatterns(['id' => '[0-9]+']);
+
 // Api routes
 $router->connect(
 	'/api/posts/{page}/{limit}',

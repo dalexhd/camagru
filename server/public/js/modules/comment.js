@@ -45,3 +45,4 @@ export default class extends CamagruModule {
 		this.loadCommentsToggle();
 	}
 }
+
