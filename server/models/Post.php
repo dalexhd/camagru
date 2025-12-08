@@ -3,6 +3,7 @@
 namespace app\models;
 
 use core\Model;
+use core\Session;
 use PDO;
 
 class Post extends Model
@@ -49,15 +50,53 @@ class Post extends Model
         $page = (int) $page;
         $limit = (int) $limit;
         $offset = max(0, $page * $limit);
-        $stmt = $this->db->prepare("SELECT * FROM {$this->table} ORDER BY created_at DESC LIMIT :limit OFFSET :offset");
+
+        // Get current logged-in user id if available
+        $userId = Session::get('user_id');
+
+        $sql = "SELECT {$this->table}.*, 
+                       COUNT(post_likes.id) as likes_count,
+                       CASE WHEN :user_id IS NOT NULL AND EXISTS (
+                           SELECT 1 FROM post_likes pl 
+                           WHERE pl.post_id = {$this->table}.id AND pl.user_id = :user_id
+                       ) THEN 1 ELSE 0 END AS liked_by_user
+                FROM {$this->table}
+                LEFT JOIN post_likes ON {$this->table}.id = post_likes.post_id
+                GROUP BY {$this->table}.id
+                ORDER BY {$this->table}.created_at DESC
+                LIMIT :limit OFFSET :offset";
+
+        $stmt = $this->db->prepare($sql);
         $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
         $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+        // Bind user id (can be null if not logged in)
+        $stmt->bindValue(':user_id', $userId, $userId === null ? PDO::PARAM_NULL : PDO::PARAM_INT);
         $stmt->execute();
         $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+        // Prepare reusable statements for comments and author
+        $commentsStmt = $this->db->prepare(
+            "SELECT post_comments.*, post_comments.created_at as created_at, users.*
+             FROM post_comments
+             INNER JOIN users ON post_comments.user_id = users.id
+             WHERE post_comments.post_id = :post_id
+             ORDER BY post_comments.created_at DESC"
+        );
+
+        $authorStmt = $this->db->prepare(
+            "SELECT * FROM users WHERE id = :creator_id LIMIT 1"
+        );
+
         foreach ($rows as &$row) {
-            $row['comments'] = $this->db->query("SELECT *, post_comments.created_at as created_at FROM post_comments INNER JOIN users ON post_comments.user_id = users.id WHERE post_id = {$row['id']} ORDER BY post_comments.created_at DESC")->fetchAll(PDO::FETCH_ASSOC);
-            $row['author'] = $this->db->query("SELECT * FROM users WHERE id = {$row['creator']}")->fetch(PDO::FETCH_ASSOC);
+            // Load comments safely with bound parameter
+            $commentsStmt->bindValue(':post_id', (int) $row['id'], PDO::PARAM_INT);
+            $commentsStmt->execute();
+            $row['comments'] = $commentsStmt->fetchAll(PDO::FETCH_ASSOC);
+
+            // Load author safely with bound parameter
+            $authorStmt->bindValue(':creator_id', (int) $row['creator'], PDO::PARAM_INT);
+            $authorStmt->execute();
+            $row['author'] = $authorStmt->fetch(PDO::FETCH_ASSOC);
         }
 
         return $rows;

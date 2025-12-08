@@ -33,6 +33,13 @@ $router->connect(
 	'post_comment_interaction_create'
 )->setMiddleware([AuthMiddleware::class]);
 
+// Post like routes
+$router->connect(
+	'/post/{id}/like',
+	['controller' => 'PostLikeController', 'action' => 'toggle'],
+	'post_like_toggle'
+)->setPass(['id'])
+	->setPatterns(['id' => '[0-9]+']);
 
 // Auth routes
 $router->connect(
