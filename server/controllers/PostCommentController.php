@@ -22,10 +22,10 @@ class PostCommentController extends Controller
 			try {
 				$commentId = $this->postCommentModel->create($postId, $creator, $comment);
 				$this->Session->setFlash('Post comment added successfully.', 'success');
-				return $this->Url->redirect('home');
+				return $this->Url->redirectToUrl($_SERVER['HTTP_REFERER'] ?? 'home');
 			} catch (\Throwable $th) {
 				$this->Session->setFlash('Failed to add comment: ' . $th->getMessage(), 'error');
-				return $this->Url->redirect('home');
+				return $this->Url->redirectToUrl($_SERVER['HTTP_REFERER'] ?? 'home');
 			}
 		} else {
 			$this->Response->status(405)->setHeader('Allow', 'POST')->setResponse(['error' => 'Method Not Allowed'])->send();

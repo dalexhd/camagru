@@ -13,6 +13,14 @@ $router->connect(
 );
 
 $router->connect(
+	'/post/{id}',
+	['controller' => 'PostController', 'action' => 'index'],
+	'post_view'
+)
+	->setPass(['id'])
+	->setPatterns(['id' => '[0-9]+']);
+
+$router->connect(
 	'/create',
 	['controller' => 'PostController', 'action' => 'create'],
 	'create'

@@ -6,7 +6,7 @@
 ?>
 <div class="post-comment-wrapper">
 	<div class="comment-avatar">
-		<img src="{{ avatar }}" alt="Author avatar">
+		<img src="/{{ avatar }}" alt="Author avatar">
 	</div>
 	<div class="comment-author">
 		<span>{{ nickname }}</span>
