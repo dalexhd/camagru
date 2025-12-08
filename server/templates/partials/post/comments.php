@@ -22,7 +22,7 @@
 		<form class="field is-grouped" data-post-id="{{ id }}" action="<?= $this->Url->link('post_comment_create', ['id' => '{{ id }}']) ?>" method="POST">
 			<input type="hidden" name="post_id" value="{{ id }}">
 			<p class="control is-expanded">
-				<input class="input" type="text" name="comment" placeholder="Write a comment..." id="comment-input-{{ id }}">
+				<input class="input" type="text" name="comment" placeholder="Write a comment..." id="comment-input-{{ id }}" required>
 			</p>
 			<p class="control">
 				<button class="button is-info add-comment" data-needs-auth>
