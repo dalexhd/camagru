@@ -17,6 +17,10 @@ class PostCommentInteractionController extends Controller
 	{
 		if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 			$creator = $this->Session->get('user_id');
+			if (!$creator) {
+				$this->Session->setFlash('error', 'User not logged in.');
+				return $this->Url->redirectToUrl($_SERVER['HTTP_REFERER'] ?? 'home');
+			}
 			$commentId = $_POST['comment'];
 			$type = $_POST['type'];
 			try {

@@ -5,13 +5,13 @@ use app\models\Post;
 
 class PostController extends Controller
 {
-    private $postModel;
+	private $postModel;
 
 	public function __construct($router)
-    {
-        parent::__construct($router);
-        $this->postModel = new Post();
-    }
+	{
+		parent::__construct($router);
+		$this->postModel = new Post();
+	}
 
 	public function index()
 	{
@@ -21,7 +21,7 @@ class PostController extends Controller
 	public function posts($page, $limit)
 	{
 		$posts = $this->postModel->paginate($page, $limit);
-/* 		$comments = [
+		/* 		$comments = [
 			[
 				'author' => 'Author 1',
 				'avatar' => 'https://picsum.photos/24',
@@ -69,6 +69,10 @@ class PostController extends Controller
 	{
 		if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 			$creator = $this->Session->get('user_id');
+			if (!$creator) {
+				$this->Session->setFlash('error', 'User not logged in.');
+				return $this->Url->redirectToUrl($_SERVER['HTTP_REFERER'] ?? 'home');
+			}
 			$title = $_POST['title'];
 			$body = $_POST['body'];
 			$mediaSrc = null;

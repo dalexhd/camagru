@@ -34,6 +34,9 @@ $link = $this->Url->link('login') . ($redirect ? '?redirect=' . urlencode($redir
 							<button class="button is-primary">Login</button>
 						</div>
 						<div class="column has-text-right">
+							<a href="<?= $this->Url->link('recover') ?>">Forgot your password?</a>
+						</div>
+						<div class="column has-text-right">
 							<a href="<?= $this->Url->link('register') ?>">Don't have an account?</a>
 						</div>
 					</div>

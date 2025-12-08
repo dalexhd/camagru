@@ -55,6 +55,18 @@ $router->connect(
 );
 
 $router->connect(
+	'/recover',
+	['controller' => 'AuthController', 'action' => 'recover'],
+	'recover'
+);
+
+$router->connect(
+	'/reset/{token}',
+	['controller' => 'AuthController', 'action' => 'reset'],
+	'reset'
+)->setPass(['token']);
+
+$router->connect(
 	'/logout',
 	['controller' => 'AuthController', 'action' => 'logout'],
 	'logout'

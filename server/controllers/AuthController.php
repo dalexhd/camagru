@@ -3,6 +3,7 @@
 use core\Controller;
 use core\Security;
 use app\models\User;
+use core\Mail;
 
 class AuthController extends Controller
 {
@@ -71,6 +72,37 @@ class AuthController extends Controller
             $this->Url->redirect('login');
         } else {
             $this->View->render('auth/register');
+        }
+    }
+
+    public function recover()
+    {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $email = $_POST['email'];
+
+            // Check if user exists
+            $user = $this->userModel->findByEmail($email);
+            if ($user) {
+                $data = [
+                    'user_id' => $user['id'],
+                    'email' => $user['email'],
+                    'token' => bin2hex(random_bytes(16)),
+                    'created_at' => date('Y-m-d H:i:s')
+                ];
+                $encryptedData = base64_encode(Security::encrypt(json_encode($data)));
+                // Send recovery email
+                $success = Mail::send($user['email'], 'Password Recovery', "Use the following link to recover your password: " . $this->Url->link('reset', ['token' => $encryptedData]));
+                if ($success) {
+                    $this->Session->setFlash('success', 'Password recovery instructions have been sent to your email.');
+                } else {
+                    $this->Session->setFlash('error', 'Failed to send recovery email. Please try again later.');
+                }
+            } else {
+                $this->Session->setFlash('error', 'No account found with that email address.');
+            }
+            $this->Url->redirect('recover');
+        } else {
+            $this->View->render('auth/recover');
         }
     }
 
