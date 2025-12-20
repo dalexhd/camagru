@@ -67,6 +67,12 @@ $router->connect(
 )->setPass(['token']);
 
 $router->connect(
+	'/verify/{token}',
+	['controller' => 'AuthController', 'action' => 'verify'],
+	'verify'
+)->setPass(['token']);
+
+$router->connect(
 	'/logout',
 	['controller' => 'AuthController', 'action' => 'logout'],
 	'logout'

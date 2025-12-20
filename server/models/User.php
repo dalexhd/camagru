@@ -17,6 +17,14 @@ class User extends Model
 		return $stmt->fetch(PDO::FETCH_ASSOC);
 	}
 
+	public function findByVerificationToken($token)
+	{
+		$stmt = $this->db->prepare("SELECT * FROM {$this->table} WHERE verification_token = :token LIMIT 1");
+		$stmt->bindParam(':token', $token);
+		$stmt->execute();
+		return $stmt->fetch(PDO::FETCH_ASSOC);
+	}
+
 	public function update($id, $data)
 	{
 		if (empty($data)) {
@@ -38,13 +46,14 @@ class User extends Model
 	}
 
 
-	public function create($name, $nickname, $email, $password)
+	public function create($name, $nickname, $email, $password, $verificationToken)
 	{
-		$stmt = $this->db->prepare("INSERT INTO {$this->table} (name, nickname, email, password) VALUES (:name, :nickname, :email, :password)");
+		$stmt = $this->db->prepare("INSERT INTO {$this->table} (name, nickname, email, password, verification_token, verified) VALUES (:name, :nickname, :email, :password, :verification_token, 0)");
 		$stmt->bindParam(':name', $name);
 		$stmt->bindParam(':nickname', $nickname);
 		$stmt->bindParam(':email', $email);
 		$stmt->bindParam(':password', $password);
+		$stmt->bindParam(':verification_token', $verificationToken);
 		$stmt->execute();
 		return $this->db->lastInsertId();
 	}

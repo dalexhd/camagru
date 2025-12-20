@@ -25,6 +25,11 @@ class AuthController extends Controller
             $user = $this->userModel->findByEmail($email);
 
             if ($user && Security::verifyPassword($password, $user['password'])) {
+                if ($user['verified'] == 0) {
+                    $this->Session->setFlash('error', 'Please verify your email address before logging in.');
+                    $this->View->render('auth/login');
+                    return;
+                }
                 // Create user session
                 $this->Session->set('user_id', $user['id']);
                 $this->Session->set('user_email', $user['email']);
@@ -63,12 +68,41 @@ class AuthController extends Controller
 
             // Hash password
             $password = Security::hashPassword($password);
+            $verificationToken = bin2hex(random_bytes(32));
 
             // Register user
-            $this->userModel->create($name, $nickname, $email, $password);
+            $this->userModel->create($name, $nickname, $email, $password, $verificationToken);
+
+            // Send verification email
+            $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
+            $domainName = $_SERVER['HTTP_HOST'];
+            $verifyPath = $this->Url->link('verify', ['token' => $verificationToken]);
+
+            if (strpos($verifyPath, 'http') !== 0) {
+                $verifyLink = $protocol . $domainName . $verifyPath;
+            } else {
+                $verifyLink = $verifyPath;
+            }
+
+            $subject = 'Account Verification';
+            $message = "
+            <html>
+            <head>
+                <title>Account Verification</title>
+            </head>
+            <body>
+                <h2>Welcome to Camagru!</h2>
+                <p>Thank you for registering. Please click the link below to verify your account:</p>
+                <p><a href='{$verifyLink}'>{$verifyLink}</a></p>
+                <p>If you did not register for this account, please ignore this email.</p>
+            </body>
+            </html>
+            ";
+
+            Mail::send($email, $subject, $message);
 
             // Redirect to login page
-            $this->Session->setFlash('success', 'You are registered and can log in');
+            $this->Session->setFlash('success', 'Registration successful! Please check your email to verify your account.');
             $this->Url->redirect('login');
         } else {
             $this->View->render('auth/register');
@@ -194,6 +228,19 @@ class AuthController extends Controller
         } else {
             $this->View->render('auth/reset', ['token' => $token]);
         }
+    }
+
+    public function verify($token)
+    {
+        $user = $this->userModel->findByVerificationToken($token);
+
+        if ($user) {
+            $this->userModel->update($user['id'], ['verified' => 1, 'verification_token' => null]);
+            $this->Session->setFlash('success', 'Your account has been verified. You can now log in.');
+        } else {
+            $this->Session->setFlash('error', 'Invalid verification token.');
+        }
+        $this->Url->redirect('login');
     }
 
     public function logout()
