@@ -7,6 +7,7 @@
                 <h2 class="text-center mb-4">Reset Password</h2>
 
                 <form action="<?= $this->Url->link('reset', ['token' => $token]) ?>" method="post">
+                    <input type="hidden" name="csrf_token" value="<?= \core\Security::generateCSRFToken() ?>">
                     <div class="mb-3">
                         <label for="password" class="form-label">New Password</label>
                         <input type="password" class="form-control" id="password" name="password" required>

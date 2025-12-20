@@ -2,8 +2,12 @@
 
 use core\Router;
 use app\middlewares\AuthMiddleware;
+use app\middlewares\CsrfMiddleware;
 
 $router = new Router();
+
+// Apply CSRF protection globally for all POST requests
+$router->setGlobalMiddleware([CsrfMiddleware::class]);
 
 // Post routes
 $router->connect(

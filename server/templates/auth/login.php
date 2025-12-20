@@ -15,6 +15,7 @@ $link = $this->Url->link('login') . ($redirect ? '?redirect=' . urlencode($redir
 	<div class="column is-half is-offset-one-quarter">
 		<form action="<?= $link ?>" method="post" class="box">
 			<h1 class="title">Login</h1>
+			<input type="hidden" name="csrf_token" value="<?= \core\Security::generateCSRFToken() ?>">
 			<div class="field">
 				<label class="label">Email</label>
 				<div class="control">

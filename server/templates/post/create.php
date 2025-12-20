@@ -17,6 +17,7 @@ $this->setTitle('Create');
 		<div class="block">
 			<div class="p-2">
 				<form action="<?= $this->Url->link('create') ?>" method="post" enctype="multipart/form-data">
+					<input type="hidden" name="csrf_token" value="<?= \core\Security::generateCSRFToken() ?>">
 					<div class="field columns">
 						<label class="label column is-one-quarter">Title</label>
 						<div class="control column">

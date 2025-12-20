@@ -16,8 +16,10 @@ $this->setTitle('Settings');
         <div class="block settings-tabs">
             <div class="tabs is-medium">
                 <ul>
-                    <li class="<?= $this->Url->isActive('accountSettings') ? 'is-active' : '' ?>"><a href="<?php echo $this->Url->link('accountSettings'); ?>">Account</a>
-                    <li class="<?= $this->Url->isActive('securitySettings') ? 'is-active' : '' ?>"><a href="<?php echo $this->Url->link('securitySettings'); ?>">Security</a>
+                    <li class="<?= $this->Url->isActive('accountSettings') ? 'is-active' : '' ?>"><a
+                            href="<?php echo $this->Url->link('accountSettings'); ?>">Account</a>
+                    <li class="<?= $this->Url->isActive('securitySettings') ? 'is-active' : '' ?>"><a
+                            href="<?php echo $this->Url->link('securitySettings'); ?>">Security</a>
                 </ul>
             </div>
         </div>
@@ -27,24 +29,28 @@ $this->setTitle('Settings');
                 <h5 class="subtitle is-5">Please update yout profile settings here</h5>
                 <hr>
                 <form action="<?= $this->Url->link('accountSettings') ?>" method="post" enctype="multipart/form-data">
+                    <input type="hidden" name="csrf_token" value="<?= \core\Security::generateCSRFToken() ?>">
                     <div class="field columns">
                         <label class="label column is-one-quarter">Email</label>
                         <div class="control column">
-                            <input class="input" name="email" type="text" placeholder="Email" value="<?= $this->Session->get('user_email'); ?>">
+                            <input class="input" name="email" type="text" placeholder="Email"
+                                value="<?= $this->Session->get('user_email'); ?>">
                         </div>
                     </div>
                     <hr>
                     <div class="field columns">
                         <label class="label column is-one-quarter">Nickname</label>
                         <div class="control column">
-                            <input class="input" name="nickname" type="text" placeholder="Nickname" value="<?= $this->Session->get('user_nickname'); ?>">
+                            <input class="input" name="nickname" type="text" placeholder="Nickname"
+                                value="<?= $this->Session->get('user_nickname'); ?>">
                         </div>
                     </div>
                     <hr>
                     <div class="field columns">
                         <label class="label column is-one-quarter">Name</label>
                         <div class="control column">
-                            <input class="input" name="name" type="text" placeholder="Name" value="<?= $this->Session->get('user_name'); ?>">
+                            <input class="input" name="name" type="text" placeholder="Name"
+                                value="<?= $this->Session->get('user_name'); ?>">
                         </div>
                     </div>
                     <hr>
@@ -53,7 +59,8 @@ $this->setTitle('Settings');
                             <label class="label">Avatar</label>
                             <?php if ($this->Session->has('user_avatar')) { ?>
                                 <figure class="image is-128x128 pt-5">
-                                    <img class="is-rounded" src="<?= $this->Session->get('user_avatar') ?> " alt="User avatar">
+                                    <img class="is-rounded" src="<?= $this->Session->get('user_avatar') ?> "
+                                        alt="User avatar">
                                 </figure>
                             <?php } ?>
                         </div>

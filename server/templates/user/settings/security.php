@@ -26,6 +26,7 @@ $this->setTitle('Settings');
                 <h5 class="title is-5">Security</h5>
                 <hr>
                 <form action="<?= $this->Url->link('securitySettings') ?>" method="post">
+                    <input type="hidden" name="csrf_token" value="<?= \core\Security::generateCSRFToken() ?>">
                     <div class="field columns">
                         <label class="label column is-one-quarter">Current Password</label>
                         <div class="control column">

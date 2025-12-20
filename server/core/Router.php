@@ -47,6 +47,13 @@ class Router
 {
     private $routes = [];
     private $namedRoutes = [];
+    private $globalMiddleware = [];
+
+    public function setGlobalMiddleware(array $middleware)
+    {
+        $this->globalMiddleware = $middleware;
+        return $this;
+    }
 
     public function connect($route, $callback, $name = null)
     {
@@ -93,6 +100,16 @@ class Router
                         }
                     }
                 }
+                // Run global middleware first
+                if (!empty($this->globalMiddleware)) {
+                    foreach ($this->globalMiddleware as $middleware) {
+                        $middlewareInstance = new $middleware();
+                        if (!$middlewareInstance->handle()) {
+                            return;
+                        }
+                    }
+                }
+                // Run route-specific middleware
                 if (!empty($route->middleware)) {
                     foreach ($route->middleware as $middleware) {
                         $middleware = new $middleware();
