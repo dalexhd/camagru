@@ -25,6 +25,15 @@ $router->connect(
 	->setPatterns(['id' => '[0-9]+']);
 
 $router->connect(
+	'/post/{id}/delete',
+	['controller' => 'PostController', 'action' => 'delete'],
+	'post_delete'
+)
+	->setPass(['id'])
+	->setPatterns(['id' => '[0-9]+'])
+	->setMiddleware([AuthMiddleware::class]);
+
+$router->connect(
 	'/create',
 	['controller' => 'PostController', 'action' => 'create'],
 	'create'

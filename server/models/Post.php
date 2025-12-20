@@ -18,6 +18,13 @@ class Post extends Model
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
+    public function delete($id)
+    {
+        $stmt = $this->db->prepare("DELETE FROM {$this->table} WHERE id = :id");
+        $stmt->bindParam(':id', $id);
+        return $stmt->execute();
+    }
+
     public function findByCreator($creatorId)
     {
         $stmt = $this->db->prepare("SELECT * FROM {$this->table} WHERE creator = :creatorId");
@@ -59,7 +66,8 @@ class Post extends Model
                        CASE WHEN :user_id IS NOT NULL AND EXISTS (
                            SELECT 1 FROM post_likes pl 
                            WHERE pl.post_id = {$this->table}.id AND pl.user_id = :user_id
-                       ) THEN 1 ELSE 0 END AS liked_by_user
+                       ) THEN 1 ELSE 0 END AS liked_by_user,
+                       CASE WHEN :user_id IS NOT NULL AND {$this->table}.creator = :user_id THEN 1 ELSE 0 END AS is_owner
                 FROM {$this->table}
                 LEFT JOIN post_likes ON {$this->table}.id = post_likes.post_id
                 GROUP BY {$this->table}.id
@@ -88,6 +96,9 @@ class Post extends Model
         );
 
         foreach ($rows as &$row) {
+            $row['liked_by_user'] = (bool) $row['liked_by_user'];
+            $row['is_owner'] = (bool) $row['is_owner'];
+
             // Load comments safely with bound parameter
             $commentsStmt->bindValue(':post_id', (int) $row['id'], PDO::PARAM_INT);
             $commentsStmt->execute();

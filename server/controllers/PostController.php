@@ -140,4 +140,45 @@ class PostController extends Controller
 
 		$this->View->render('post/create', ['stickers' => $stickers], 'Post Create Page');
 	}
+
+	public function delete($id)
+	{
+		if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+			$this->Session->setFlash('error', 'Invalid request method');
+			return $this->Url->redirect('home');
+		}
+
+		$userId = $this->Session->get('user_id');
+		if (!$userId) {
+			$this->Session->setFlash('error', 'Unauthorized');
+			return $this->Url->redirect('login');
+		}
+
+		$post = $this->postModel->findById($id);
+		if (!$post) {
+			$this->Session->setFlash('error', 'Post not found');
+			return $this->Url->redirect('home');
+		}
+
+		if ($post['creator'] != $userId) {
+			$this->Session->setFlash('error', 'Forbidden');
+			return $this->Url->redirect('home');
+		}
+
+		try {
+			// Remove the file if it exists
+			if ($post['media_src']) {
+				$this->File->removeIfExists($post['media_src']);
+			}
+
+			// Delete from DB
+			$this->postModel->delete($id);
+
+			$this->Session->setFlash('success', 'Post deleted successfully!');
+			return $this->Url->redirect('home');
+		} catch (\Throwable $th) {
+			$this->Session->setFlash('error', 'Failed to delete post: ' . $th->getMessage());
+			return $this->Url->redirect('home');
+		}
+	}
 }
