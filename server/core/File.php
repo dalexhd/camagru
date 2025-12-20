@@ -19,7 +19,7 @@ class File
 
         if (in_array($fileActualExt, $allowed)) {
             if ($fileError === 0) {
-                if ($fileSize < 1000000) {
+                if ($fileSize < 50000000) { // 50MB limit
                     $fileNameNew = uniqid('', true) . '.' . $fileActualExt;
                     $fileDestination = $_SERVER['DOCUMENT_ROOT'] . '/' . $path . '/' . $fileNameNew;
                     move_uploaded_file($fileTmpName, $fileDestination);
