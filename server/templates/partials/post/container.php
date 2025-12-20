@@ -11,9 +11,12 @@
 	</div>
 	<div class="post-actions">
 		<div class="buttons">
-			<form method="post" action="<?= $this->Url->link('post_like_toggle', ['id' => '{{ id }}']); ?>" class="like-form">
+			<form method="post" action="<?= $this->Url->link('post_like_toggle', ['id' => '{{ id }}']); ?>"
+				class="like-form">
 				<input type="hidden" name="post_id" value="{{ id }}">
-				<button type="submit" class="button is-rounded like-button {{#if liked_by_user}}is-danger{{/if}}" data-needs-auth>
+				<input type="hidden" name="csrf_token" value="<?= \core\Security::generateCSRFToken() ?>">
+				<button type="submit" class="button is-rounded like-button {{#if liked_by_user}}is-danger{{/if}}"
+					data-needs-auth>
 					<div class="d-block likes-count">{{ likes_count }}</div>
 					<span class="icon">
 						<i class="fas fa-heart"></i>
