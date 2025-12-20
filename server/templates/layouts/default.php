@@ -12,9 +12,11 @@
     <title><?php echo $this->title ?? 'My App'; ?></title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="favshortcut icon" href="<?php echo $this->Url->asset('img/favicon.ico'); ?>">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/1.0.1/css/bulma.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
     <?php echo $this->Html->css('style.css'); ?>
@@ -24,19 +26,19 @@
     <div id="app"></div>
     <?php $this->element('nav'); ?>
     <main class="container-fluid" style="position: relative;">
-        <?php if ($this->Session->hasFlash('success')) : ?>
+        <?php if ($this->Session->hasFlash('success')): ?>
             <div class="notification is-success m-2">
                 <button class="delete"></button>
                 <?php echo $this->Session->getFlash('success'); ?>
             </div>
         <?php endif; ?>
-        <?php if ($this->Session->hasFlash('info')) : ?>
+        <?php if ($this->Session->hasFlash('info')): ?>
             <div class="notification is-info m-2">
                 <button class="delete"></button>
                 <?php echo $this->Session->getFlash('info'); ?>
             </div>
         <?php endif; ?>
-        <?php if ($this->Session->hasFlash('error')) : ?>
+        <?php if ($this->Session->hasFlash('error')): ?>
             <div class="notification is-danger m-2">
                 <button class="delete"></button>
                 <?php echo $this->Session->getFlash('error'); ?>
