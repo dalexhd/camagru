@@ -235,7 +235,15 @@ export default class extends CamagruModule {
 		if (this.posts.length === 0) {
 			const container = document.querySelector('#post-container-wrapper');
 			if (container) {
-				container.innerHTML = '<p>No posts found</p>';
+				container.innerHTML = `
+					<div id="posts-missing-wrapper">
+						<div class="posts-missing-content content">
+							<h2>No posts found</h2>
+							<p>Click the button below to create your first post</p>
+							<a href="/create" class="button is-primary">Create Post</a>
+						</div>
+					</div>
+				`;
 			}
 			return;
 		}
