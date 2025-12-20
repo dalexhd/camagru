@@ -8,14 +8,14 @@ use core\Session;
 
 class View
 {
-	protected $layout = 'layouts/default'; // Default layout
-	protected $Html;
-	protected $Url;
-	protected $Session;
+	public $layout = 'layouts/default'; // Default layout
+	public $Html;
+	public $Url;
+	public $Session;
 
-	private $title;
-	private $name;
-	private $view;
+	public $title;
+	public $name;
+	public $view;
 
 	public function __construct($router)
 	{

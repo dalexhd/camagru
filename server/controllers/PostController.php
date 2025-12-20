@@ -1,6 +1,7 @@
 <?php
 
 use core\Controller;
+use core\ImageProcessor;
 use app\models\Post;
 
 class PostController extends Controller
@@ -73,23 +74,111 @@ class PostController extends Controller
 				$this->Session->setFlash('error', 'User not logged in.');
 				return $this->Url->redirectToUrl($_SERVER['HTTP_REFERER'] ?? 'home');
 			}
-			$title = $_POST['title'];
-			$body = $_POST['body'];
+			$title = $_POST['title'] ?? '';
+			$body = $_POST['body'] ?? '';
+			$stickerId = $_POST['sticker_id'] ?? null;
 			$mediaSrc = null;
+
 			try {
-				$file = $_FILES['media'];
-				$mediaSrc = $this->File->upload($file, 'img/uploads');
+				// Check if this is a webcam capture (Base64) or file upload
+				if (!empty($_POST['webcam_image'])) {
+					// Handle webcam Base64 image
+					$base64Image = $_POST['webcam_image'];
+					$image = ImageProcessor::base64ToImage($base64Image);
+
+					// Merge with sticker if selected
+					if ($stickerId) {
+						$stickersDir = __DIR__ . '/../public/img/stickers';
+						$stickerPath = ImageProcessor::getStickerPath($stickerId, $stickersDir);
+						$image = ImageProcessor::mergeImages($image, $stickerPath);
+					}
+
+					// Save merged image
+					$filename = 'webcam_' . uniqid() . '.png';
+					$uploadPath = __DIR__ . '/../public/img/uploads/' . $filename;
+					ImageProcessor::saveImage($image, $uploadPath);
+					imagedestroy($image);
+
+					$mediaSrc = 'img/uploads/' . $filename;
+				} elseif (isset($_FILES['media']) && $_FILES['media']['error'] === UPLOAD_ERR_OK) {
+					// Handle traditional file upload
+					$file = $_FILES['media'];
+					$uploadedPath = $this->File->upload($file, 'img/uploads');
+
+					// Merge with sticker if selected
+					if ($stickerId) {
+						$image = imagecreatefromstring(file_get_contents(__DIR__ . '/../public/' . $uploadedPath));
+						$stickersDir = __DIR__ . '/../public/img/stickers';
+						$stickerPath = ImageProcessor::getStickerPath($stickerId, $stickersDir);
+						$image = ImageProcessor::mergeImages($image, $stickerPath);
+
+						// Save merged image (overwrite uploaded file)
+						$fullPath = __DIR__ . '/../public/' . $uploadedPath;
+						ImageProcessor::saveImage($image, $fullPath);
+						imagedestroy($image);
+					}
+
+					$mediaSrc = $uploadedPath;
+				} else {
+					throw new \Exception('No image provided');
+				}
+
 				$post = $this->postModel->create($creator, $title, $body, $mediaSrc);
 				if ($post) {
-					$this->Session->setFlash('Post created successfully!', 'success');
+					$this->Session->setFlash('success', 'Post created successfully!');
 					return $this->Url->redirect('home');
 				}
 			} catch (\Throwable $th) {
-				$this->Session->setFlash('Failed to create post!' . $th->getMessage(), 'danger');
-				echo $th->getTraceAsString();
+				$this->Session->setFlash('error', 'Failed to create post! ' . $th->getMessage());
 				return $this->View->render('post/create');
 			}
 		}
-		$this->View->render('post/create', ['message' => 'Hello, World!'], 'Post Create Page');
+
+		// Get available stickers for the view
+		$stickersDir = __DIR__ . '/../public/img/stickers';
+		$stickers = ImageProcessor::getAvailableStickers($stickersDir);
+
+		$this->View->render('post/create', ['stickers' => $stickers], 'Post Create Page');
+	}
+
+	public function delete($id)
+	{
+		if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+			$this->Session->setFlash('error', 'Invalid request method');
+			return $this->Url->redirect('home');
+		}
+
+		$userId = $this->Session->get('user_id');
+		if (!$userId) {
+			$this->Session->setFlash('error', 'Unauthorized');
+			return $this->Url->redirect('login');
+		}
+
+		$post = $this->postModel->findById($id);
+		if (!$post) {
+			$this->Session->setFlash('error', 'Post not found');
+			return $this->Url->redirect('home');
+		}
+
+		if ($post['creator'] != $userId) {
+			$this->Session->setFlash('error', 'Forbidden');
+			return $this->Url->redirect('home');
+		}
+
+		try {
+			// Remove the file if it exists
+			if ($post['media_src']) {
+				$this->File->removeIfExists($post['media_src']);
+			}
+
+			// Delete from DB
+			$this->postModel->delete($id);
+
+			$this->Session->setFlash('success', 'Post deleted successfully!');
+			return $this->Url->redirect('home');
+		} catch (\Throwable $th) {
+			$this->Session->setFlash('error', 'Failed to delete post: ' . $th->getMessage());
+			return $this->Url->redirect('home');
+		}
 	}
 }
