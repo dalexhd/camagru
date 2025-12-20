@@ -54,7 +54,7 @@ export default class extends CamagruModule {
 			console.error('Error name:', error.name);
 			console.error('Error message:', error.message);
 			this.showUploadMode();
-			alert('Could not access webcam. Please use file upload instead.\n\nError: ' + error.message);
+			alert('Could not access webcam. Please use file upload instead. Make sure your browser has permission to use the camera and that no other application is using it.');
 			return false;
 		}
 	}
