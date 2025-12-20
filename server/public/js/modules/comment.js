@@ -20,10 +20,14 @@ export default class extends CamagruModule {
 
 			const closestCloseComments = e.target.closest('.close-comments');
 			if (closestCloseComments) {
-				const $postContainer = closestCloseComments.closest('.post-container');
-				const $postId = $postContainer.dataset.id;
-				const $commentsContainer = document.querySelector(`.post-comments[data-id="${$postId}"]`);
+				const $commentsContainer = closestCloseComments.closest('.post-comments');
+				const $commentsContainerWrapper = document.querySelector('#post-comments-wrapper');
 				$commentsContainer.classList.remove('is-active');
+				$commentsContainerWrapper.classList.remove('is-active');
+				$commentsContainerWrapper.classList.add('is-closing');
+				setTimeout(() => {
+					$commentsContainerWrapper.classList.remove('is-closing');
+				}, 200);
 			}
 
 			const closeComments = () => {
