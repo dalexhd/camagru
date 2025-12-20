@@ -1,26 +1,45 @@
-<?php $this->setTitle('Reset Password'); ?>
+<?php
 
-<div class="row justify-content-center">
-    <div class="col-md-6">
-        <div class="card shadow-sm">
-            <div class="card-body p-4">
-                <h2 class="text-center mb-4">Reset Password</h2>
+/**
+ * @var \core\View $this
+ */
 
+$this->setTitle('Reset Password');
+?>
+
+<div class="columns m-0" id="reset-wrapper">
+    <div class="column">
+        <div class="block pt-5 is-hidden-mobile">
+            <h3 class="title is-3 m-0">
+                Reset Password
+            </h3>
+        </div>
+        <div class="block">
+            <div class="p-2">
                 <form action="<?= $this->Url->link('reset', ['token' => $token]) ?>" method="post">
                     <input type="hidden" name="csrf_token" value="<?= \core\Security::generateCSRFToken() ?>">
-                    <div class="mb-3">
-                        <label for="password" class="form-label">New Password</label>
-                        <input type="password" class="form-control" id="password" name="password" required>
+                    <div class="field columns">
+                        <label class="label column is-one-quarter">New Password</label>
+                        <div class="control column">
+                            <input class="input" type="password" name="password" placeholder="Enter new password"
+                                required>
+                        </div>
                     </div>
-
-                    <div class="mb-3">
-                        <label for="confirm_password" class="form-label">Confirm Password</label>
-                        <input type="password" class="form-control" id="confirm_password" name="confirm_password"
-                            required>
+                    <hr>
+                    <div class="field columns">
+                        <label class="label column is-one-quarter">Confirm Password</label>
+                        <div class="control column">
+                            <input class="input" type="password" name="confirm_password"
+                                placeholder="Confirm new password" required>
+                        </div>
                     </div>
-
-                    <div class="d-grid gap-2">
-                        <button type="submit" class="btn btn-primary">Update Password</button>
+                    <div class="field is-grouped is-justify-content-end">
+                        <div class="control">
+                            <button class="button is-link">Update Password</button>
+                        </div>
+                        <div class="control">
+                            <a href="<?= $this->Url->link('login') ?>" class="button is-link is-light">Cancel</a>
+                        </div>
                     </div>
                 </form>
             </div>

@@ -4,33 +4,37 @@
  * @var \core\View $this
  */
 
-$this->setTitle('Register');
+$this->setTitle('Recover Password');
 ?>
 
-
-<div class="columns m-0">
-	<div class="column is-half is-offset-one-quarter">
-		<form action="<?php echo $this->Url->link('recover'); ?>" method="post" class="box">
-			<h1 class="title">Recover Password</h1>
-			<input type="hidden" name="csrf_token" value="<?= \core\Security::generateCSRFToken() ?>">
-			<div class="field">
-				<label class="label">Email</label>
-				<div class="control">
-					<input class="input" type="email" name="email" required>
-				</div>
-			</div>
-			<div class="field">
-				<div class="control">
-					<div class="columns">
-						<div class="column">
-							<button class="button is-primary">Recover</button>
-						</div>
-						<div class="column has-text-right">
-							<a href="<?php echo $this->Url->link('login'); ?>">Back to Login</a>
+<div class="columns m-0" id="recover-wrapper">
+	<div class="column">
+		<div class="block pt-5 is-hidden-mobile">
+			<h3 class="title is-3 m-0">
+				Recover Password
+			</h3>
+		</div>
+		<div class="block">
+			<div class="p-2">
+				<form action="<?php echo $this->Url->link('recover'); ?>" method="post">
+					<input type="hidden" name="csrf_token" value="<?= \core\Security::generateCSRFToken() ?>">
+					<div class="field columns">
+						<label class="label column is-one-quarter">Email</label>
+						<div class="control column">
+							<input class="input" type="email" name="email" placeholder="Enter your email" required>
 						</div>
 					</div>
-				</div>
+					<div class="field is-grouped is-justify-content-end">
+						<div class="control">
+							<button class="button is-link">Send Recovery Link</button>
+						</div>
+						<div class="control">
+							<a href="<?php echo $this->Url->link('login'); ?>" class="button is-link is-light">Back to
+								Login</a>
+						</div>
+					</div>
+				</form>
 			</div>
-		</form>
+		</div>
 	</div>
 </div>
