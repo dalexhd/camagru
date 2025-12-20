@@ -35,8 +35,7 @@
 			</button>
 			{{#if is_owner}}
 			<form method="post" action="<?= $this->Url->link('post_delete', ['id' => '{{ id }}']); ?>"
-				class="delete-post-form ml-auto"
-				onsubmit="return confirm('Are you sure you want to delete this post?');">
+				class="delete-post-form" onsubmit="return confirm('Are you sure you want to delete this post?');">
 				<input type="hidden" name="csrf_token" value="<?= \core\Security::generateCSRFToken() ?>">
 				<button type="submit" class="button is-rounded is-danger">
 					<span class="icon">
