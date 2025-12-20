@@ -88,12 +88,14 @@ $stickers = $stickers ?? [];
 							<div class="column">
 								<!-- Webcam Preview -->
 								<video id="webcam-preview" autoplay playsinline
-									style="width: 100%; max-width: 640px; border-radius: 8px; background: #000;"></video>
+									style="width: 100%; max-width: 640px; border-radius: 8px; background: #000;"
+									aria-label="Live webcam preview of the photo to be captured"></video>
 
 								<!-- Capture Preview (hidden initially) -->
 								<div id="preview-container" class="is-hidden">
 									<img id="capture-preview"
-										style="width: 100%; max-width: 640px; border-radius: 8px;" />
+										style="width: 100%; max-width: 640px; border-radius: 8px;"
+										alt="Preview of the captured photo" />
 								</div>
 
 								<!-- Hidden canvas for capture -->
