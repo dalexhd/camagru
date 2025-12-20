@@ -70,6 +70,11 @@ export default class extends CamagruModule {
 	}
 
 	captureImage() {
+		if (!this.selectedSticker) {
+			alert('Please select a sticker first');
+			return null;
+		}
+
 		if (!this.videoElement || !this.canvasElement) {
 			console.error('Cannot capture: elements not found');
 			return null;
@@ -130,6 +135,12 @@ export default class extends CamagruModule {
 		const selectedItem = document.querySelector(`[data-sticker-id="${stickerId}"]`);
 		if (selectedItem) {
 			selectedItem.classList.add('is-active');
+		}
+
+		// Enable capture button
+		const captureBtn = document.querySelector('#capture-btn');
+		if (captureBtn) {
+			captureBtn.disabled = false;
 		}
 	}
 

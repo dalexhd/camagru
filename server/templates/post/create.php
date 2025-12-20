@@ -93,17 +93,15 @@ $stickers = $stickers ?? [];
 
 								<!-- Capture Preview (hidden initially) -->
 								<div id="preview-container" class="is-hidden">
-									<img id="capture-preview"
-										style="width: 100%; max-width: 640px; border-radius: 8px;"
+									<img id="capture-preview" style="width: 100%; max-width: 640px; border-radius: 8px;"
 										alt="Preview of the captured photo" />
 								</div>
 
 								<!-- Hidden canvas for capture -->
 								<canvas id="webcam-canvas" style="display: none;"></canvas>
 
-								<!-- Capture Controls -->
 								<div id="capture-controls" class="mt-3">
-									<button type="button" id="capture-btn" class="button is-primary">
+									<button type="button" id="capture-btn" class="button is-primary" disabled>
 										<span class="icon"><i class="fas fa-camera"></i></span>
 										<span>Capture Photo</span>
 									</button>
