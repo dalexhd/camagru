@@ -44,6 +44,8 @@ $this->setTitle('Register');
 						<div class="control column">
 							<input class="input" type="password" name="password" placeholder="Create a password"
 								required>
+							<p class="help">Password must be at least 8 characters long and include at least one
+								uppercase letter, one lowercase letter, one number, and one special character.</p>
 						</div>
 					</div>
 					<hr>

@@ -59,6 +59,13 @@ class AuthController extends Controller
             $password = $_POST['password'];
             $confirmPassword = $_POST['confirm_password'];
 
+            // Validate password complexity
+            if (!Security::isValidPassword($password)) {
+                $this->Session->setFlash('error', 'Password must be at least 8 characters long and include at least one uppercase letter, one lowercase letter, one number, and one special character.');
+                $this->View->render('auth/register');
+                return;
+            }
+
             // Validate password
             if ($password != $confirmPassword) {
                 $this->Session->setFlash('error', 'Passwords do not match');
@@ -216,6 +223,13 @@ class AuthController extends Controller
 
             if ($password != $confirmPassword) {
                 $this->Session->setFlash('error', 'Passwords do not match');
+                $this->View->render('auth/reset', ['token' => $token]);
+                return;
+            }
+
+            // Validate password complexity
+            if (!Security::isValidPassword($password)) {
+                $this->Session->setFlash('error', 'Password must be at least 8 characters long and include at least one uppercase letter, one lowercase letter, one number, and one special character.');
                 $this->View->render('auth/reset', ['token' => $token]);
                 return;
             }

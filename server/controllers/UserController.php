@@ -31,7 +31,7 @@ class UserController extends Controller
 				$toUpdate = [
 					"email" => $_POST['email'],
 					"nickname" => $_POST['nickname'],
-					"name"  => $_POST['name'],
+					"name" => $_POST['name'],
 				];
 				if (isset($_FILES['avatar']) && $_FILES['avatar']['error'] == false) {
 					$toUpdate["avatar"] = $this->File->upload($_FILES['avatar'], 'img/profiles');
@@ -65,8 +65,10 @@ class UserController extends Controller
 				$currentPassword = $_POST['current_password'];
 
 				$user = $this->userModel->findByEmail($this->Session->get('user_email'));
-				// Validate password
-				if ($password != $confirmPassword) {
+				// Validate password complexity
+				if (!Security::isValidPassword($password)) {
+					$this->Session->setFlash('error', 'Password must be at least 8 characters long and include at least one uppercase letter, one lowercase letter, one number, and one special character.');
+				} else if ($password != $confirmPassword) {
 					$this->Session->setFlash('error', 'Passwords do not match');
 				} else if ($user && !Security::verifyPassword($currentPassword, $user['password'])) {
 					$this->Session->setFlash('error', 'Old password does not match');

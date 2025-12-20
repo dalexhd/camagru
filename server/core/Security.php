@@ -48,4 +48,18 @@ class Security
     {
         return isset($_SESSION['csrf_token']) && hash_equals($_SESSION['csrf_token'], $token);
     }
+
+    public static function isValidPassword($password)
+    {
+        // At least 8 characters, at least one uppercase letter, one lowercase letter, one number and one special character
+        $uppercase = preg_match('@[A-Z]@', $password);
+        $lowercase = preg_match('@[a-z]@', $password);
+        $number = preg_match('@[0-9]@', $password);
+        $specialChars = preg_match('@[^\w]@', $password);
+
+        if (!$uppercase || !$lowercase || !$number || !$specialChars || strlen($password) < 8) {
+            return false;
+        }
+        return true;
+    }
 }

@@ -16,8 +16,10 @@ $this->setTitle('Settings');
         <div class="block settings-tabs">
             <div class="tabs is-medium">
                 <ul>
-                    <li class="<?= $this->Url->isActive('accountSettings') ? 'is-active' : '' ?>"><a href="<?php echo $this->Url->link('accountSettings'); ?>">Account</a>
-                    <li class="<?= $this->Url->isActive('securitySettings') ? 'is-active' : '' ?>"><a href="<?php echo $this->Url->link('securitySettings'); ?>">Security</a>
+                    <li class="<?= $this->Url->isActive('accountSettings') ? 'is-active' : '' ?>"><a
+                            href="<?php echo $this->Url->link('accountSettings'); ?>">Account</a>
+                    <li class="<?= $this->Url->isActive('securitySettings') ? 'is-active' : '' ?>"><a
+                            href="<?php echo $this->Url->link('securitySettings'); ?>">Security</a>
                 </ul>
             </div>
         </div>
@@ -38,6 +40,8 @@ $this->setTitle('Settings');
                         <label class="label column is-one-quarter">New Password</label>
                         <div class="control column">
                             <input class="input" name="password" type="password" placeholder="New Password">
+                            <p class="help">Password must be at least 8 characters long and include at least one
+                                uppercase letter, one lowercase letter, one number, and one special character.</p>
                         </div>
                     </div>
                     <hr>
