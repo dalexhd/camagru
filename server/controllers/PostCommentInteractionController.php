@@ -22,12 +22,7 @@ class PostCommentInteractionController extends Controller
 		$referer = $_SERVER['HTTP_REFERER'] ?? 'home';
 		$this->validateCSRF($referer);
 
-		$creator = $this->Session->get('user_id');
-		if (!$creator) {
-			$this->flash('error', 'User not logged in.');
-			return $this->Url->redirectToUrl($referer);
-		}
-
+		$creator = $this->userId();
 		$commentId = $this->getPostData('comment');
 		$type = $this->getPostData('type');
 

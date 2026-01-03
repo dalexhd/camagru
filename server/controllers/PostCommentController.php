@@ -27,14 +27,9 @@ class PostCommentController extends Controller
 		}
 
 		$referer = $_SERVER['HTTP_REFERER'] ?? 'home';
-		$this->validateCSRF($referer); // This will flash error and redirect if invalid
+		$this->validateCSRF($referer);
 
-		$creator = $this->Session->get('user_id');
-		if (!$creator) {
-			$this->flash('error', 'User not logged in.');
-			return $this->Url->redirectToUrl($referer);
-		}
-
+		$creator = $this->userId();
 		$postId = $this->getPostData('post_id');
 		$comment = $this->getPostData('comment');
 
@@ -46,7 +41,7 @@ class PostCommentController extends Controller
 			if ($post && $post['creator'] != $creator) {
 				$postOwner = $this->userModel->find($post['creator']);
 				if ($postOwner && $postOwner['notifications_enabled']) {
-					$commenter = $this->Session->get('user_nickname');
+					$commenter = $this->userNickname();
 					$subject = "New comment on your post";
 					$message = "
                     <html>

@@ -70,4 +70,14 @@ class Controller
     {
         $this->View->render($view, $data, $title);
     }
+
+    protected function userId()
+    {
+        return $this->Session->get('user_id');
+    }
+
+    protected function userNickname()
+    {
+        return $this->Session->get('user_nickname');
+    }
 }

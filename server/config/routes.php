@@ -51,8 +51,10 @@ $router->connect(
 	'/post/{id}/like',
 	['controller' => 'PostLikeController', 'action' => 'toggle'],
 	'post_like_toggle'
-)->setPass(['id'])
-	->setPatterns(['id' => '[0-9]+']);
+)
+	->setPass(['id'])
+	->setPatterns(['id' => '[0-9]+'])
+	->setMiddleware([AuthMiddleware::class]);
 
 // Auth routes
 $router->connect(
@@ -136,7 +138,8 @@ $router->connect(
 	'post_comment_create'
 )
 	->setPass(['id'])
-	->setPatterns(['id' => '[0-9]+']);
+	->setPatterns(['id' => '[0-9]+'])
+	->setMiddleware([AuthMiddleware::class]);
 
 // Api routes
 $router->connect(

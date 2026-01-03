@@ -19,12 +19,7 @@ class PostLikeController extends Controller
 			$referer = $_SERVER['HTTP_REFERER'] ?? '/';
 			$this->validateCSRF($referer);
 
-			$creator = $this->Session->get('user_id');
-			if (!$creator) {
-				$this->flash('error', 'User not logged in.');
-				return $this->Url->redirectToUrl($referer);
-			}
-
+			$creator = $this->userId();
 			$postId = $this->getPostData('post_id');
 			$like = $this->postLikeModel->toggle($creator, $postId);
 			$this->flash('success', $like ? 'Post liked successfully.' : 'Post unliked successfully.');

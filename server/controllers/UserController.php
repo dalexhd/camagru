@@ -43,7 +43,7 @@ class UserController extends Controller
 					}
 				}
 
-				if ($this->userModel->update($this->Session->get('user_id'), $toUpdate)) {
+				if ($this->userModel->update($this->userId(), $toUpdate)) {
 					$this->Session->set('user_email', $toUpdate['email']);
 					$this->Session->set('user_nickname', $toUpdate['nickname']);
 					$this->Session->set('user_name', $toUpdate['name']);

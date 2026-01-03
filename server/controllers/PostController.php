@@ -31,12 +31,7 @@ class PostController extends Controller
 		if ($this->isPost()) {
 			$this->validateCSRF('post/create');
 
-			$creator = $this->Session->get('user_id');
-			if (!$creator) {
-				$this->flash('error', 'User not logged in.');
-				return $this->Url->redirectToUrl($_SERVER['HTTP_REFERER'] ?? 'home');
-			}
-
+			$creator = $this->userId();
 			$title = $this->getPostData('title', '');
 			$body = $this->getPostData('body', '');
 			$stickerId = $this->getPostData('sticker_id');
@@ -92,8 +87,7 @@ class PostController extends Controller
 		$stickersDir = __DIR__ . '/../public/img/stickers';
 		$stickers = ImageProcessor::getAvailableStickers($stickersDir);
 
-		$userId = $this->Session->get('user_id');
-		$userPosts = $this->postModel->findByCreator($userId);
+		$userPosts = $this->postModel->findByCreator($this->userId());
 
 		$this->render('post/create', [
 			'stickers' => $stickers,
@@ -110,13 +104,9 @@ class PostController extends Controller
 
 		$this->validateCSRF();
 
-		$userId = $this->Session->get('user_id');
-		if (!$userId) {
-			$this->flash('error', 'Unauthorized');
-			return $this->redirect('login');
-		}
-
+		$userId = $this->userId();
 		$post = $this->postModel->find($id);
+
 		if (!$post) {
 			$this->flash('error', 'Post not found');
 			return $this->redirect('home');
