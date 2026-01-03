@@ -8,13 +8,17 @@ use core\View;
 use core\Response;
 use core\File;
 
+/**
+ * Controller class
+ * 
+ */
 class Controller
 {
-    protected $Url;
-    protected $View;
-    protected $Session;
-    protected $Response;
-    protected $File;
+    protected helpers\UrlHelper $Url;
+    protected View $View;
+    protected Session $Session;
+    protected Response $Response;
+    protected File $File;
 
     public function __construct($router)
     {

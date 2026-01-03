@@ -5,9 +5,9 @@ namespace core\helpers;
 class UrlHelper
 {
 	private $baseUrl;
-	private $router;
+	private \core\Router $router;
 
-	public function __construct($router)
+	public function __construct(\core\Router $router)
 	{
 		$baseUrl = getenv('BASE_URL');
 		if (!$baseUrl) {
@@ -18,6 +18,13 @@ class UrlHelper
 		$this->router = $router;
 	}
 
+	/**
+	 * Get the base URL
+	 * 
+	 * We can define the base URL in the .env file, or we can use the current URL.
+	 * 
+	 * @return string
+	 */
 	public function getBaseUrl()
 	{
 		if (!empty($this->baseUrl)) {
@@ -44,6 +51,12 @@ class UrlHelper
 		return $this->getBaseUrl() . $path;
 	}
 
+	/**
+	 * Check if the current URL matches the generated URL
+	 * 
+	 * @param mixed $name
+	 * @return bool
+	 */
 	public function isActive($name)
 	{
 		$currentUrl = $_SERVER['REQUEST_URI'];

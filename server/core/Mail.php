@@ -4,6 +4,39 @@ namespace core;
 
 class Mail
 {
+    /**
+     * Send an email
+     * 
+     * Why not use directly the mail function? Well it doesn't work on the server. You need in-build SMTP server to make it work.
+     * That's why we use this class. It's a simple SMTP client that uses the SMTP protocol to send emails.
+     * 
+     * How it works:
+     * 1. Connect to the SMTP server
+     * 2. Send the EHLO command
+     * 3. If TLS is enabled, send the STARTTLS command
+     * 4. If authentication is enabled, send the AUTH LOGIN command
+     * 5. Send the MAIL FROM command
+     * 6. Send the RCPT TO command
+     * 7. Send the DATA command
+     * 8. Send the message
+     * 9. Send the QUIT command
+     * 
+     * Commands:
+     * - EHLO: Extended Hello
+     * - STARTTLS: Start TLS
+     * - AUTH LOGIN: Authentication
+     * - MAIL FROM: Mail From
+     * - RCPT TO: Recipient To
+     * - DATA: Data
+     * - QUIT: Quit
+     * More info: https://tools.ietf.org/html/rfc5321
+     * Sample taken from: https://www.fast2host.com/knowledgebase/article/277/php-mail-script-with-smtp-authentication/
+     * 
+     * @param string $to
+     * @param string $subject
+     * @param string $message
+     * @return bool
+     */
     public static function send(string $to, string $subject, string $message): bool
     {
         try {

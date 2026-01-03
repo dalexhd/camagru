@@ -43,6 +43,12 @@ class Route
     }
 }
 
+/**
+ * Router class
+ * 
+ * This class is used to handle all routing logic.
+ * It's inspired by the Router class from cakephp.
+ */
 class Router
 {
     private $routes = [];

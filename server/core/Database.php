@@ -4,10 +4,15 @@ namespace core;
 
 use PDO;
 
+/**
+ * Database class
+ * 
+ * This class is used to handle database operations.
+ */
 class Database
 {
     private static $instance = null;
-    private $pdo;
+    private PDO $pdo;
 
     private function __construct()
     {

@@ -2,6 +2,14 @@
 
 namespace core;
 
+/**
+ * Response class
+ * 
+ * Inspired by the cakephp response class, this class is used to send responses to the client.
+ * We can set the response, the status code, and the headers. All in same -> chainable methods.
+ * So for example, we can do $response->setResponse($data)->status(200)->setHeader('Content-Type', 'application/json')->send();
+ * 
+ */
 class Response
 {
 	protected $response;

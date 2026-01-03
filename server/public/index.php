@@ -2,6 +2,7 @@
 
 use core\Session;
 
+// Include all core files
 require_once '../core/Database.php';
 require_once '../core/Migration.php';
 require_once '../core/Security.php';

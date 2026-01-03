@@ -5,6 +5,13 @@ namespace core;
 use core\Database;
 use PDO;
 
+/**
+ * Model class
+ * 
+ * This class is used to interact with the database.
+ * It's a simple class that extends the PDO class. Here we define useful methods for database interaction.
+ * 
+ */
 class Model
 {
     protected $db;
