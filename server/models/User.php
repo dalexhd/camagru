@@ -17,6 +17,14 @@ class User extends Model
 		return $stmt->fetch(PDO::FETCH_ASSOC);
 	}
 
+	public function findById($id)
+	{
+		$stmt = $this->db->prepare("SELECT * FROM {$this->table} WHERE id = :id LIMIT 1");
+		$stmt->bindParam(':id', $id);
+		$stmt->execute();
+		return $stmt->fetch(PDO::FETCH_ASSOC);
+	}
+
 	public function findByVerificationToken($token)
 	{
 		$stmt = $this->db->prepare("SELECT * FROM {$this->table} WHERE verification_token = :token LIMIT 1");
@@ -48,7 +56,7 @@ class User extends Model
 
 	public function create($name, $nickname, $email, $password, $verificationToken)
 	{
-		$stmt = $this->db->prepare("INSERT INTO {$this->table} (name, nickname, email, password, verification_token, verified) VALUES (:name, :nickname, :email, :password, :verification_token, 0)");
+		$stmt = $this->db->prepare("INSERT INTO {$this->table} (name, nickname, email, password, verification_token, verified, notifications_enabled) VALUES (:name, :nickname, :email, :password, :verification_token, 0, 1)");
 		$stmt->bindParam(':name', $name);
 		$stmt->bindParam(':nickname', $nickname);
 		$stmt->bindParam(':email', $email);
