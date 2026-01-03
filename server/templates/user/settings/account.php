@@ -79,6 +79,16 @@ $this->setTitle('Settings');
                             </div>
                         </div>
                     </div>
+                    <hr>
+                    <div class="field columns">
+                        <label class="label column is-one-quarter">Notifications</label>
+                        <div class="control column">
+                            <label class="checkbox">
+                                <input type="checkbox" name="notifications_enabled" value="1" <?= $this->Session->get('user_notifications_enabled') ? 'checked' : '' ?>>
+                                Receive comment notifications
+                            </label>
+                        </div>
+                    </div>
                     <div class="field is-grouped is-justify-content-end">
                         <div class="control">
                             <button class="button is-link">Submit</button>

@@ -36,6 +36,7 @@ class AuthController extends Controller
                 $this->Session->set('user_name', $user['name']);
                 $this->Session->set('user_nickname', $user['nickname']);
                 $this->Session->set('user_avatar', $user['avatar'] ? $this->Url->asset($user['avatar']) : null);
+                $this->Session->set('user_notifications_enabled', (bool) $user['notifications_enabled']);
 
                 // Redirect to home page
                 $redirect = isset($_GET['redirect']) ? $_GET['redirect'] : 'home';

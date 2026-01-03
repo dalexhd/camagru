@@ -32,6 +32,7 @@ class UserController extends Controller
 					"email" => $_POST['email'],
 					"nickname" => $_POST['nickname'],
 					"name" => $_POST['name'],
+					"notifications_enabled" => isset($_POST['notifications_enabled']) ? 1 : 0,
 				];
 				if (isset($_FILES['avatar']) && $_FILES['avatar']['error'] == false) {
 					$toUpdate["avatar"] = $this->File->upload($_FILES['avatar'], 'img/profiles');
@@ -44,6 +45,7 @@ class UserController extends Controller
 					$this->Session->set('user_email', $_POST['email']);
 					$this->Session->set('user_nickname', $_POST['nickname']);
 					$this->Session->set('user_name', $_POST['name']);
+					$this->Session->set('user_notifications_enabled', (bool) $toUpdate["notifications_enabled"]);
 					if (isset($toUpdate["avatar"])) {
 						$this->Session->set('user_avatar', $this->Url->asset($toUpdate["avatar"]));
 					}
