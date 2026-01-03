@@ -18,11 +18,11 @@ class AuthController extends Controller
     public function login()
     {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $email = $_POST['email'];
+            $nickname = $_POST['nickname'];
             $password = $_POST['password'];
 
-            // Find user by email
-            $user = $this->userModel->findByEmail($email);
+            // Find user by nickname
+            $user = $this->userModel->findByNickname($nickname);
 
             if ($user && Security::verifyPassword($password, $user['password'])) {
                 if ($user['verified'] == 0) {
@@ -43,7 +43,7 @@ class AuthController extends Controller
                 $this->Url->{isset($_GET['redirect']) ? 'redirectToUrl' : 'redirect'}($redirect);
             } else {
                 // Invalid login
-                $this->Session->setFlash('error', 'Invalid email or password');
+                $this->Session->setFlash('error', 'Invalid username or password');
                 $this->View->render('auth/login');
             }
         } else {

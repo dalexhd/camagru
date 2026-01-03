@@ -22,9 +22,9 @@ $link = $this->Url->link('login') . ($redirect ? '?redirect=' . urlencode($redir
 				<form action="<?= $link ?>" method="post">
 					<input type="hidden" name="csrf_token" value="<?= \core\Security::generateCSRFToken() ?>">
 					<div class="field columns">
-						<label class="label column is-one-quarter">Email</label>
+						<label class="label column is-one-quarter">Nickname</label>
 						<div class="control column">
-							<input class="input" type="email" name="email" placeholder="Enter your email" required>
+							<input class="input" type="text" name="nickname" placeholder="Enter your nickname" required>
 						</div>
 					</div>
 					<hr>

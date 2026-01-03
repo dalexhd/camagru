@@ -25,6 +25,14 @@ class User extends Model
 		return $stmt->fetch(PDO::FETCH_ASSOC);
 	}
 
+	public function findByNickname($nickname)
+	{
+		$stmt = $this->db->prepare("SELECT * FROM {$this->table} WHERE nickname = :nickname LIMIT 1");
+		$stmt->bindParam(':nickname', $nickname);
+		$stmt->execute();
+		return $stmt->fetch(PDO::FETCH_ASSOC);
+	}
+
 	public function findByVerificationToken($token)
 	{
 		$stmt = $this->db->prepare("SELECT * FROM {$this->table} WHERE verification_token = :token LIMIT 1");
