@@ -11,17 +11,37 @@ class UrlHelper
 	{
 		$baseUrl = getenv('BASE_URL');
 		if (!$baseUrl) {
-			$baseUrl = '';
+			$this->baseUrl = '';
 		} else {
-			$this->baseUrl = $baseUrl . substr($baseUrl, -1) == '/' ? '' : '/';
+			$this->baseUrl = rtrim($baseUrl, '/');
 		}
 		$this->router = $router;
+	}
+
+	public function getBaseUrl()
+	{
+		if (!empty($this->baseUrl)) {
+			return $this->baseUrl;
+		}
+
+		$protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
+		$domainName = $_SERVER['HTTP_HOST'];
+		return $protocol . $domainName;
 	}
 
 	public function link($name, $params = [])
 	{
 		$url = $this->router->generate($name, $params);
-		return $this->baseUrl . $url;
+		return ($this->baseUrl ?? '') . $url;
+	}
+
+	public function absoluteLink($name, $params = [])
+	{
+		$path = $this->link($name, $params);
+		if (strpos($path, 'http') === 0) {
+			return $path;
+		}
+		return $this->getBaseUrl() . $path;
 	}
 
 	public function isActive($name)

@@ -17,32 +17,27 @@ class AuthController extends Controller
 
     public function login()
     {
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            if (!Security::verifyCSRFToken($_POST['csrf_token'] ?? '')) {
-                $this->Session->setFlash('error', 'Security token mismatch. Please try again.');
-                $this->View->render('auth/login');
-                return;
-            }
+        if ($this->isPost()) {
+            $this->validateCSRF('auth/login');
 
-            $nickname = trim($_POST['nickname'] ?? '');
-            $password = $_POST['password'] ?? '';
+            $nickname = trim($this->getPostData('nickname', ''));
+            $password = $this->getPostData('password', '');
 
             if (empty($nickname) || empty($password)) {
-                $this->Session->setFlash('error', 'Please fill in all fields.');
-                $this->View->render('auth/login');
+                $this->flash('error', 'Please fill in all fields.');
+                $this->render('auth/login');
                 return;
             }
 
-            // Find user by nickname
             $user = $this->userModel->findByNickname($nickname);
 
             if ($user && Security::verifyPassword($password, $user['password'])) {
                 if ($user['verified'] == 0) {
-                    $this->Session->setFlash('error', 'Please verify your email address before logging in.');
-                    $this->View->render('auth/login');
+                    $this->flash('error', 'Please verify your email address before logging in.');
+                    $this->render('auth/login');
                     return;
                 }
-                // Create user session
+
                 $this->Session->set('user_id', $user['id']);
                 $this->Session->set('user_email', $user['email']);
                 $this->Session->set('user_name', $user['name']);
@@ -50,165 +45,119 @@ class AuthController extends Controller
                 $this->Session->set('user_avatar', $user['avatar'] ? $this->Url->asset($user['avatar']) : $this->Url->asset(User::DEFAULT_AVATAR));
                 $this->Session->set('user_notifications_enabled', (bool) $user['notifications_enabled']);
 
-                // Redirect to home page
                 $redirect = isset($_GET['redirect']) ? $_GET['redirect'] : 'home';
                 $this->Url->{isset($_GET['redirect']) ? 'redirectToUrl' : 'redirect'}($redirect);
             } else {
-                // Invalid login
-                $this->Session->setFlash('error', 'Invalid username or password');
-                $this->View->render('auth/login');
+                $this->flash('error', 'Invalid username or password');
+                $this->render('auth/login');
             }
         } else {
-            $this->View->render('auth/login');
+            $this->render('auth/login');
         }
     }
 
     public function register()
     {
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            if (!Security::verifyCSRFToken($_POST['csrf_token'] ?? '')) {
-                $this->Session->setFlash('error', 'Security token mismatch. Please try again.');
-                $this->View->render('auth/register');
-                return;
-            }
+        if ($this->isPost()) {
+            $this->validateCSRF('auth/register');
 
-            $name = trim($_POST['name'] ?? '');
-            $nickname = trim($_POST['nickname'] ?? '');
-            $email = trim($_POST['email'] ?? '');
-            $password = $_POST['password'] ?? '';
-            $confirmPassword = $_POST['confirm_password'] ?? '';
+            $name = trim($this->getPostData('name', ''));
+            $nickname = trim($this->getPostData('nickname', ''));
+            $email = trim($this->getPostData('email', ''));
+            $password = $this->getPostData('password', '');
+            $confirmPassword = $this->getPostData('confirm_password', '');
 
-            // Validate fields
             if (empty($name) || empty($nickname) || empty($email) || empty($password)) {
-                $this->Session->setFlash('error', 'Please fill in all fields.');
-                $this->View->render('auth/register');
+                $this->flash('error', 'Please fill in all fields.');
+                $this->render('auth/register');
                 return;
             }
 
-            // Validate email
             if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                $this->Session->setFlash('error', 'Invalid email format.');
-                $this->View->render('auth/register');
+                $this->flash('error', 'Invalid email format.');
+                $this->render('auth/register');
                 return;
             }
 
-            // Check if nickname already exists
             if ($this->userModel->findByNickname($nickname)) {
-                $this->Session->setFlash('error', 'Nickname already taken.');
-                $this->View->render('auth/register');
+                $this->flash('error', 'Nickname already taken.');
+                $this->render('auth/register');
                 return;
             }
 
-            // Check if email already exists
             if ($this->userModel->findByEmail($email)) {
-                $this->Session->setFlash('error', 'Email already registered.');
-                $this->View->render('auth/register');
+                $this->flash('error', 'Email already registered.');
+                $this->render('auth/register');
                 return;
             }
 
-            // Validate password complexity
             if (!Security::isValidPassword($password)) {
-                $this->Session->setFlash('error', 'Password must be at least 8 characters long and include at least one uppercase letter, one lowercase letter, one number, and one special character.');
-                $this->View->render('auth/register');
+                $this->flash('error', 'Password must be at least 8 characters long and include at least one uppercase letter, one lowercase letter, one number, and one special character.');
+                $this->render('auth/register');
                 return;
             }
 
-            // Validate password
             if ($password != $confirmPassword) {
-                $this->Session->setFlash('error', 'Passwords do not match');
-                $this->View->render('auth/register');
+                $this->flash('error', 'Passwords do not match');
+                $this->render('auth/register');
                 return;
             }
 
-            // Hash password
             $password = Security::hashPassword($password);
             $verificationToken = bin2hex(random_bytes(32));
 
-            // Register user
             $this->userModel->create($name, $nickname, $email, $password, $verificationToken);
 
-            // Send verification email
-            $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
-            $domainName = $_SERVER['HTTP_HOST'];
-            $verifyPath = $this->Url->link('verify', ['token' => $verificationToken]);
-
-            if (strpos($verifyPath, 'http') !== 0) {
-                $verifyLink = $protocol . $domainName . $verifyPath;
-            } else {
-                $verifyLink = $verifyPath;
-            }
+            $verifyLink = $this->Url->absoluteLink('verify', ['token' => $verificationToken]);
 
             $subject = 'Account Verification';
             $message = "
             <html>
-            <head>
-                <title>Account Verification</title>
-            </head>
+            <head><title>Account Verification</title></head>
             <body>
                 <h2>Welcome to Camagru!</h2>
                 <p>Thank you for registering. Please click the link below to verify your account:</p>
                 <p><a href='{$verifyLink}'>{$verifyLink}</a></p>
                 <p>If you did not register for this account, please ignore this email.</p>
             </body>
-            </html>
-            ";
+            </html>";
 
             Mail::send($email, $subject, $message);
 
-            // Redirect to login page
-            $this->Session->setFlash('success', 'Registration successful! Please check your email to verify your account.');
-            $this->Url->redirect('login');
+            $this->flash('success', 'Registration successful! Please check your email to verify your account.');
+            $this->redirect('login');
         } else {
-            $this->View->render('auth/register');
+            $this->render('auth/register');
         }
     }
 
     public function recover()
     {
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            if (!Security::verifyCSRFToken($_POST['csrf_token'] ?? '')) {
-                $this->Session->setFlash('error', 'Security token mismatch. Please try again.');
-                $this->Url->redirect('recover');
-                return;
-            }
+        if ($this->isPost()) {
+            $this->validateCSRF();
 
-            $email = trim($_POST['email'] ?? '');
+            $email = trim($this->getPostData('email', ''));
             if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                $this->Session->setFlash('error', 'Please provide a valid email address.');
-                $this->Url->redirect('recover');
+                $this->flash('error', 'Please provide a valid email address.');
+                $this->redirect('recover');
                 return;
             }
 
-            // Check if user exists
             $user = $this->userModel->findByEmail($email);
             if ($user) {
                 $data = [
                     'user_id' => $user['id'],
                     'email' => $user['email'],
-                    'hash_check' => substr($user['password'], 0, 10), // Include part of hash for invalidation
+                    'hash_check' => substr($user['password'], 0, 10),
                     'created_at' => date('Y-m-d H:i:s')
                 ];
                 $encryptedData = base64_encode(Security::encrypt(json_encode($data)));
+                $recoveryLink = $this->Url->absoluteLink('reset', ['token' => $encryptedData]);
 
-                // Construct full URL
-                $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
-                $domainName = $_SERVER['HTTP_HOST'];
-                $resetPath = $this->Url->link('reset', ['token' => $encryptedData]);
-
-                // If UrlHelper returns a relative path, prepend protocol and domain
-                if (strpos($resetPath, 'http') !== 0) {
-                    $recoveryLink = $protocol . $domainName . $resetPath;
-                } else {
-                    $recoveryLink = $resetPath;
-                }
-
-                // Send recovery email
                 $subject = 'Password Recovery';
                 $message = "
                 <html>
-                <head>
-                    <title>Password Recovery</title>
-                </head>
+                <head><title>Password Recovery</title></head>
                 <body>
                     <h2>Password Recovery</h2>
                     <p>You requested a password reset for your Camagru account.</p>
@@ -217,94 +166,75 @@ class AuthController extends Controller
                     <p>This link will expire in 1 hour.</p>
                     <p>If you did not request this, please ignore this email.</p>
                 </body>
-                </html>
-                ";
+                </html>";
 
-                $success = Mail::send($user['email'], $subject, $message);
-                if ($success) {
-                    $this->Session->setFlash('success', 'Password recovery instructions have been sent to your email.');
+                if (Mail::send($user['email'], $subject, $message)) {
+                    $this->flash('success', 'Password recovery instructions have been sent to your email.');
                 } else {
-                    $this->Session->setFlash('error', 'Failed to send recovery email. Please try again later.');
+                    $this->flash('error', 'Failed to send recovery email. Please try again later.');
                 }
             } else {
-                $this->Session->setFlash('error', 'No account found with that email address.');
+                $this->flash('error', 'No account found with that email address.');
             }
-            $this->Url->redirect('recover');
+            $this->redirect('recover');
         } else {
-            $this->View->render('auth/recover');
+            $this->render('auth/recover');
         }
     }
 
     public function reset($token)
     {
-        // Decrypt token
         try {
             $json = Security::decrypt(base64_decode($token));
             $data = json_decode($json, true);
         } catch (Exception $e) {
-            $this->Session->setFlash('error', 'Invalid or expired token');
-            $this->Url->redirect('login');
+            $this->flash('error', 'Invalid or expired token');
+            $this->redirect('login');
             return;
         }
 
         if (!$data || !isset($data['email']) || !isset($data['created_at']) || !isset($data['hash_check'])) {
-            $this->Session->setFlash('error', 'Invalid token structure');
-            $this->Url->redirect('login');
+            $this->flash('error', 'Invalid token structure');
+            $this->redirect('login');
             return;
         }
 
-        // Check token expiration (e.g., 1 hour)
-        $createdAt = strtotime($data['created_at']);
-        if (time() - $createdAt > 3600) {
-            $this->Session->setFlash('error', 'Token has expired');
-            $this->Url->redirect('recover');
+        if (time() - strtotime($data['created_at']) > 3600) {
+            $this->flash('error', 'Token has expired');
+            $this->redirect('recover');
             return;
         }
 
-        // Check if token is invalidated (password changed)
         $user = $this->userModel->findByEmail($data['email']);
-        if (!$user) {
-            $this->Session->setFlash('error', 'User not found');
-            $this->Url->redirect('login');
+        if (!$user || substr($user['password'], 0, 10) !== $data['hash_check']) {
+            $this->flash('error', 'Invalid or expired token');
+            $this->redirect('login');
             return;
         }
 
-        if (substr($user['password'], 0, 10) !== $data['hash_check']) {
-            $this->Session->setFlash('error', 'This password reset link is invalid because the password has already been changed.');
-            $this->Url->redirect('login');
-            return;
-        }
+        if ($this->isPost()) {
+            $this->validateCSRF('auth/reset', ['token' => $token]);
 
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            if (!Security::verifyCSRFToken($_POST['csrf_token'] ?? '')) {
-                $this->Session->setFlash('error', 'Security token mismatch. Please try again.');
-                $this->View->render('auth/reset', ['token' => $token]);
-                return;
-            }
-
-            $password = $_POST['password'] ?? '';
-            $confirmPassword = $_POST['confirm_password'] ?? '';
+            $password = $this->getPostData('password', '');
+            $confirmPassword = $this->getPostData('confirm_password', '');
 
             if ($password != $confirmPassword) {
-                $this->Session->setFlash('error', 'Passwords do not match');
-                $this->View->render('auth/reset', ['token' => $token]);
+                $this->flash('error', 'Passwords do not match');
+                $this->render('auth/reset', ['token' => $token]);
                 return;
             }
 
-            // Validate password complexity
             if (!Security::isValidPassword($password)) {
-                $this->Session->setFlash('error', 'Password must be at least 8 characters long and include at least one uppercase letter, one lowercase letter, one number, and one special character.');
-                $this->View->render('auth/reset', ['token' => $token]);
+                $this->flash('error', 'Password must be at least 8 characters long and include at least one uppercase letter, one lowercase letter, one number, and one special character.');
+                $this->render('auth/reset', ['token' => $token]);
                 return;
             }
 
-            // Update password
-            $hash = Security::hashPassword($password);
-            $this->userModel->update($user['id'], ['password' => $hash]);
-            $this->Session->setFlash('success', 'Your password has been updated');
-            $this->Url->redirect('login');
+            $this->userModel->update($user['id'], ['password' => Security::hashPassword($password)]);
+            $this->flash('success', 'Your password has been updated');
+            $this->redirect('login');
         } else {
-            $this->View->render('auth/reset', ['token' => $token]);
+            $this->render('auth/reset', ['token' => $token]);
         }
     }
 
@@ -314,19 +244,16 @@ class AuthController extends Controller
 
         if ($user) {
             $this->userModel->update($user['id'], ['verified' => 1, 'verification_token' => null]);
-            $this->Session->setFlash('success', 'Your account has been verified. You can now log in.');
+            $this->flash('success', 'Your account has been verified. You can now log in.');
         } else {
-            $this->Session->setFlash('error', 'Invalid verification token.');
+            $this->flash('error', 'Invalid verification token.');
         }
-        $this->Url->redirect('login');
+        $this->redirect('login');
     }
 
     public function logout()
     {
-        // Unset all session values
         $this->Session->destroy();
-
-        // Redirect to login page
-        $this->Url->redirect('home');
+        $this->redirect('home');
     }
 }
