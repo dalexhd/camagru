@@ -27,6 +27,11 @@ class UserController extends Controller
 	public function accountSettings()
 	{
 		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+			if (!Security::verifyCSRFToken($_POST['csrf_token'] ?? '')) {
+				$this->Session->setFlash('error', 'Security token mismatch. Please try again.');
+				$this->View->render('user/settings/account');
+				return;
+			}
 			try {
 				$toUpdate = [
 					"email" => $_POST['email'],
@@ -63,6 +68,11 @@ class UserController extends Controller
 	public function securitySettings()
 	{
 		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+			if (!Security::verifyCSRFToken($_POST['csrf_token'] ?? '')) {
+				$this->Session->setFlash('error', 'Security token mismatch. Please try again.');
+				$this->View->render('user/settings/security');
+				return;
+			}
 			try {
 				$password = $_POST['password'];
 				$confirmPassword = $_POST['confirm_password'];

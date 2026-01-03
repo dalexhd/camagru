@@ -5,6 +5,7 @@ use app\models\PostComment;
 use app\models\Post;
 use app\models\User;
 use core\Mail;
+use core\Security;
 
 class PostCommentController extends Controller
 {
@@ -26,6 +27,10 @@ class PostCommentController extends Controller
 			$creator = $this->Session->get('user_id');
 			if (!$creator) {
 				$this->Session->setFlash('error', 'User not logged in.');
+				return $this->Url->redirectToUrl($_SERVER['HTTP_REFERER'] ?? 'home');
+			}
+			if (!Security::verifyCSRFToken($_POST['csrf_token'] ?? '')) {
+				$this->Session->setFlash('error', 'Security token mismatch. Please try again.');
 				return $this->Url->redirectToUrl($_SERVER['HTTP_REFERER'] ?? 'home');
 			}
 			$postId = $_POST['post_id'];

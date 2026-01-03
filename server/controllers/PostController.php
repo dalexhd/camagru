@@ -2,6 +2,7 @@
 
 use core\Controller;
 use core\ImageProcessor;
+use core\Security;
 use app\models\Post;
 
 class PostController extends Controller
@@ -69,6 +70,10 @@ class PostController extends Controller
 	public function create()
 	{
 		if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+			if (!Security::verifyCSRFToken($_POST['csrf_token'] ?? '')) {
+				$this->Session->setFlash('error', 'Security token mismatch. Please try again.');
+				return $this->View->render('post/create');
+			}
 			$creator = $this->Session->get('user_id');
 			if (!$creator) {
 				$this->Session->setFlash('error', 'User not logged in.');
@@ -152,6 +157,11 @@ class PostController extends Controller
 	{
 		if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 			$this->Session->setFlash('error', 'Invalid request method');
+			return $this->Url->redirect('home');
+		}
+
+		if (!Security::verifyCSRFToken($_POST['csrf_token'] ?? '')) {
+			$this->Session->setFlash('error', 'Security token mismatch. Please try again.');
 			return $this->Url->redirect('home');
 		}
 

@@ -18,8 +18,20 @@ class AuthController extends Controller
     public function login()
     {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $nickname = $_POST['nickname'];
-            $password = $_POST['password'];
+            if (!Security::verifyCSRFToken($_POST['csrf_token'] ?? '')) {
+                $this->Session->setFlash('error', 'Security token mismatch. Please try again.');
+                $this->View->render('auth/login');
+                return;
+            }
+
+            $nickname = trim($_POST['nickname'] ?? '');
+            $password = $_POST['password'] ?? '';
+
+            if (empty($nickname) || empty($password)) {
+                $this->Session->setFlash('error', 'Please fill in all fields.');
+                $this->View->render('auth/login');
+                return;
+            }
 
             // Find user by nickname
             $user = $this->userModel->findByNickname($nickname);
@@ -54,11 +66,45 @@ class AuthController extends Controller
     public function register()
     {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $name = $_POST['name'];
-            $nickname = $_POST['nickname'];
-            $email = $_POST['email'];
-            $password = $_POST['password'];
-            $confirmPassword = $_POST['confirm_password'];
+            if (!Security::verifyCSRFToken($_POST['csrf_token'] ?? '')) {
+                $this->Session->setFlash('error', 'Security token mismatch. Please try again.');
+                $this->View->render('auth/register');
+                return;
+            }
+
+            $name = trim($_POST['name'] ?? '');
+            $nickname = trim($_POST['nickname'] ?? '');
+            $email = trim($_POST['email'] ?? '');
+            $password = $_POST['password'] ?? '';
+            $confirmPassword = $_POST['confirm_password'] ?? '';
+
+            // Validate fields
+            if (empty($name) || empty($nickname) || empty($email) || empty($password)) {
+                $this->Session->setFlash('error', 'Please fill in all fields.');
+                $this->View->render('auth/register');
+                return;
+            }
+
+            // Validate email
+            if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                $this->Session->setFlash('error', 'Invalid email format.');
+                $this->View->render('auth/register');
+                return;
+            }
+
+            // Check if nickname already exists
+            if ($this->userModel->findByNickname($nickname)) {
+                $this->Session->setFlash('error', 'Nickname already taken.');
+                $this->View->render('auth/register');
+                return;
+            }
+
+            // Check if email already exists
+            if ($this->userModel->findByEmail($email)) {
+                $this->Session->setFlash('error', 'Email already registered.');
+                $this->View->render('auth/register');
+                return;
+            }
 
             // Validate password complexity
             if (!Security::isValidPassword($password)) {
@@ -120,7 +166,18 @@ class AuthController extends Controller
     public function recover()
     {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $email = $_POST['email'];
+            if (!Security::verifyCSRFToken($_POST['csrf_token'] ?? '')) {
+                $this->Session->setFlash('error', 'Security token mismatch. Please try again.');
+                $this->Url->redirect('recover');
+                return;
+            }
+
+            $email = trim($_POST['email'] ?? '');
+            if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                $this->Session->setFlash('error', 'Please provide a valid email address.');
+                $this->Url->redirect('recover');
+                return;
+            }
 
             // Check if user exists
             $user = $this->userModel->findByEmail($email);
@@ -219,8 +276,14 @@ class AuthController extends Controller
         }
 
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $password = $_POST['password'];
-            $confirmPassword = $_POST['confirm_password'];
+            if (!Security::verifyCSRFToken($_POST['csrf_token'] ?? '')) {
+                $this->Session->setFlash('error', 'Security token mismatch. Please try again.');
+                $this->View->render('auth/reset', ['token' => $token]);
+                return;
+            }
+
+            $password = $_POST['password'] ?? '';
+            $confirmPassword = $_POST['confirm_password'] ?? '';
 
             if ($password != $confirmPassword) {
                 $this->Session->setFlash('error', 'Passwords do not match');
