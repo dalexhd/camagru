@@ -85,7 +85,7 @@ class Post extends Model
 
         // Prepare reusable statements for comments and author
         $commentsStmt = $this->db->prepare(
-            "SELECT post_comments.*, post_comments.created_at as created_at, users.*
+            "SELECT post_comments.*, post_comments.created_at as created_at, users.nickname, users.avatar, users.id, users.name
              FROM post_comments
              INNER JOIN users ON post_comments.user_id = users.id
              WHERE post_comments.post_id = :post_id
@@ -93,7 +93,7 @@ class Post extends Model
         );
 
         $authorStmt = $this->db->prepare(
-            "SELECT * FROM users WHERE id = :creator_id LIMIT 1"
+            "SELECT nickname, avatar, id, name FROM users WHERE id = :creator_id LIMIT 1"
         );
 
         foreach ($rows as &$row) {
