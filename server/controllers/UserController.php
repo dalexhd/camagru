@@ -48,6 +48,8 @@ class UserController extends Controller
 					$this->Session->set('user_notifications_enabled', (bool) $toUpdate["notifications_enabled"]);
 					if (isset($toUpdate["avatar"])) {
 						$this->Session->set('user_avatar', $this->Url->asset($toUpdate["avatar"]));
+					} elseif (!$this->Session->has('user_avatar')) {
+						$this->Session->set('user_avatar', $this->Url->asset(User::DEFAULT_AVATAR));
 					}
 					$this->Session->setFlash('success', 'Your account has been updated successfully');
 				}

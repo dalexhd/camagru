@@ -6,6 +6,7 @@
 
 $this->setTitle('Create');
 $stickers = $stickers ?? [];
+$userPosts = $userPosts ?? [];
 ?>
 
 <div class="columns m-0" id="create-post-wrapper">
@@ -157,6 +158,49 @@ $stickers = $stickers ?? [];
 			</div>
 		</div>
 	</div>
+
+	<!-- Side Section (User History) -->
+	<div class="column is-one-third">
+		<div class="block pt-5">
+			<h4 class="title is-4 m-0">
+				Previous Captures
+			</h4>
+		</div>
+		<div class="block p-3">
+			<?php if (!empty($userPosts)): ?>
+				<div class="slider-container is-relative">
+					<div id="sidebar-slider" class="carousel-inner">
+						<div class="columns is-multiline is-mobile m-0">
+							<?php foreach ($userPosts as $post): ?>
+								<div class="column is-6 p-1 slider-item">
+									<a href="<?php echo $this->Url->link('post_view', ['id' => $post['id']]); ?>">
+										<figure class="image is-square">
+											<img src="<?= $this->Url->asset($post['media_src']) ?>" alt="Previous capture">
+										</figure>
+									</a>
+								</div>
+							<?php endforeach; ?>
+						</div>
+					</div>
+
+					<!-- Slider Controls -->
+					<button type="button" id="slider-prev" class="button is-rounded is-white is-small slider-control prev">
+						<span class="icon is-small"><i class="fas fa-chevron-up"></i></span>
+					</button>
+					<button type="button" id="slider-next" class="button is-rounded is-white is-small slider-control next">
+						<span class="icon is-small"><i class="fas fa-chevron-down"></i></span>
+					</button>
+				</div>
+			<?php else: ?>
+				<div class="has-text-centered p-5">
+					<span class="icon is-large has-text-grey-light">
+						<i class="fas fa-images fa-3x"></i>
+					</span>
+					<p class="mt-3 has-text-grey">You haven't captured any photos yet.</p>
+				</div>
+			<?php endif; ?>
+		</div>
+	</div>
 </div>
 
 <style>
@@ -167,6 +211,54 @@ $stickers = $stickers ?? [];
 
 	.sticker-item:hover {
 		border-color: #b5b5b5 !important;
+	}
+
+	.carousel-inner {
+		height: 100%;
+		overflow-y: auto;
+		scroll-snap-type: y proximity;
+		scroll-behavior: smooth;
+		-ms-overflow-style: none;
+		scrollbar-width: none;
+	}
+
+	.carousel-inner::-webkit-scrollbar {
+		display: none;
+	}
+
+	.slider-container {
+		height: 70vh;
+	}
+
+	.slider-item {
+		scroll-snap-align: start;
+	}
+
+	.slider-item img {
+		border-radius: 4px;
+		object-fit: cover;
+		border: 1px solid #eee;
+		transition: opacity 0.2s;
+	}
+
+	.slider-item img:hover {
+		opacity: 0.8;
+	}
+
+	.slider-control {
+		position: absolute;
+		left: 50%;
+		transform: translateX(-50%);
+		z-index: 10;
+		box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+	}
+
+	.slider-control.prev {
+		top: -15px;
+	}
+
+	.slider-control.next {
+		bottom: -15px;
 	}
 </style>
 
@@ -180,5 +272,40 @@ $stickers = $stickers ?? [];
 				fileName.textContent = fileInput.files[0].name;
 			}
 		};
+	}
+
+	// Slider navigation
+	const slider = document.getElementById('sidebar-slider');
+	const prevBtn = document.getElementById('slider-prev');
+	const nextBtn = document.getElementById('slider-next');
+
+	if (slider && prevBtn && nextBtn) {
+		const scrollAmount = 300;
+
+		prevBtn.onclick = () => {
+			slider.scrollBy({
+				top: -scrollAmount,
+				behavior: 'smooth'
+			});
+		};
+
+		nextBtn.onclick = () => {
+			slider.scrollBy({
+				top: scrollAmount,
+				behavior: 'smooth'
+			});
+		};
+
+		// Hide/show buttons based on scroll position
+		const toggleButtons = () => {
+			prevBtn.style.display = slider.scrollTop <= 5 ? 'none' : 'flex';
+			nextBtn.style.display = (slider.scrollTop + slider.offsetHeight) >= slider.scrollHeight - 5 ? 'none' : 'flex';
+		};
+
+		slider.onscroll = toggleButtons;
+		window.onresize = toggleButtons;
+		// Initial check after images might have loaded
+		setTimeout(toggleButtons, 500);
+		toggleButtons();
 	}
 </script>

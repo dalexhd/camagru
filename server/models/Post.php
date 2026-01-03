@@ -4,6 +4,7 @@ namespace app\models;
 
 use core\Model;
 use core\Session;
+use app\models\User;
 use PDO;
 
 class Post extends Model
@@ -27,7 +28,7 @@ class Post extends Model
 
     public function findByCreator($creatorId)
     {
-        $stmt = $this->db->prepare("SELECT * FROM {$this->table} WHERE creator = :creatorId");
+        $stmt = $this->db->prepare("SELECT * FROM {$this->table} WHERE creator = :creatorId ORDER BY created_at DESC");
         $stmt->bindParam(':creatorId', $creatorId);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -107,7 +108,18 @@ class Post extends Model
             // Load author safely with bound parameter
             $authorStmt->bindValue(':creator_id', (int) $row['creator'], PDO::PARAM_INT);
             $authorStmt->execute();
-            $row['author'] = $authorStmt->fetch(PDO::FETCH_ASSOC);
+            $author = $authorStmt->fetch(PDO::FETCH_ASSOC);
+            if ($author && empty($author['avatar'])) {
+                $author['avatar'] = User::DEFAULT_AVATAR;
+            }
+            $row['author'] = $author;
+
+            // Process comment avatars
+            foreach ($row['comments'] as &$comment) {
+                if (empty($comment['avatar'])) {
+                    $comment['avatar'] = User::DEFAULT_AVATAR;
+                }
+            }
         }
 
         return $rows;

@@ -9,18 +9,18 @@ $links = [
 		'route' => 'home',
 		'icon' => 'fas fa-home',
 	],
-	[
-		'route' => 'search',
-		'icon' => 'fas fa-search',
-	],
+	// [
+	// 	'route' => 'search',
+	// 	'icon' => 'fas fa-search',
+	// ],
 	[
 		'route' => 'create',
 		'icon' => 'fas fa-plus',
 	],
-	[
-		'route' => 'profile',
-		'icon' => 'fas fa-user',
-	],
+	// [
+	// 	'route' => 'profile',
+	// 	'icon' => 'fas fa-user',
+	// ],
 	[
 		'route' => 'accountSettings',
 		'icon' => 'fas fa-cog',
@@ -30,7 +30,7 @@ $links = [
 <footer class="footer is-hidden-tablet is-fixed-bottom">
 	<div class="tabs is-fullwidth">
 		<ul>
-			<?php foreach ($links as $link) : ?>
+			<?php foreach ($links as $link): ?>
 				<li class="<?= $this->Url->isActive($link['route']) ? 'is-active' : '' ?>">
 					<a href="<?= $this->Url->link($link['route']) ?>">
 						<span class="icon">

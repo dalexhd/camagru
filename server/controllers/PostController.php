@@ -138,7 +138,14 @@ class PostController extends Controller
 		$stickersDir = __DIR__ . '/../public/img/stickers';
 		$stickers = ImageProcessor::getAvailableStickers($stickersDir);
 
-		$this->View->render('post/create', ['stickers' => $stickers], 'Post Create Page');
+		// Get user's previous captures
+		$userId = $this->Session->get('user_id');
+		$userPosts = $this->postModel->findByCreator($userId);
+
+		$this->View->render('post/create', [
+			'stickers' => $stickers,
+			'userPosts' => $userPosts
+		], 'Post Create Page');
 	}
 
 	public function delete($id)

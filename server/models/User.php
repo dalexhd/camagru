@@ -8,6 +8,7 @@ use PDO;
 class User extends Model
 {
 	protected $table = 'users';
+	const DEFAULT_AVATAR = 'img/default_avatar.png';
 
 	public function findByEmail($email)
 	{
