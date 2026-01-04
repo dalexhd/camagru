@@ -13,6 +13,15 @@ class PostLikeController extends Controller
 		$this->postLikeModel = new PostLikes();
 	}
 
+	/**
+	 * Toggle like on a post.
+	 * 
+	 * If you liked it, it unlikes it.
+	 * If you haven't liked it, it likes it.
+	 * Simple toggle logic.
+	 * 
+	 * @return void
+	 */
 	public function toggle()
 	{
 		if ($this->isPost()) {

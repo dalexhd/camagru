@@ -2,6 +2,13 @@
 
 namespace core\helpers;
 
+/**
+ * UrlHelper class
+ * 
+ * Helper for generating and managing URLs.
+ * Works closely with the Router to generate named routes.
+ * This is how we avoid hardcoding URLs everywhere.
+ */
 class UrlHelper
 {
 	private $baseUrl;
@@ -36,12 +43,31 @@ class UrlHelper
 		return $protocol . $domainName;
 	}
 
+	/**
+	 * Generate a link from a route name
+	 * 
+	 * Takes a route name (like 'home') and returns the ful URL.
+	 * 
+	 * @param string $name
+	 * @param array $params
+	 * @return string
+	 */
 	public function link($name, $params = [])
 	{
 		$url = $this->router->generate($name, $params);
 		return ($this->baseUrl ?? '') . $url;
 	}
 
+	/**
+	 * Generate an absolute link
+	 * 
+	 * Returns the full URL including protocol and domain.
+	 * Useful for emails or external links.
+	 * 
+	 * @param string $name
+	 * @param array $params
+	 * @return string
+	 */
 	public function absoluteLink($name, $params = [])
 	{
 		$path = $this->link($name, $params);
@@ -52,9 +78,12 @@ class UrlHelper
 	}
 
 	/**
-	 * Check if the current URL matches the generated URL
+	 * Check if a route is active
 	 * 
-	 * @param mixed $name
+	 * Returns true if the current URL matches the route name.
+	 * Great for highliting navigation menu items.
+	 * 
+	 * @param string $name
 	 * @return bool
 	 */
 	public function isActive($name)
@@ -64,6 +93,13 @@ class UrlHelper
 		return $currentUrl === $generatedUrl;
 	}
 
+	/**
+	 * Get the name of the active route
+	 * 
+	 * Trys to find which named route matches the current URL.
+	 * 
+	 * @return string|null
+	 */
 	public function getActiveName()
 	{
 		$currentUrl = $_SERVER['REQUEST_URI'];
@@ -76,11 +112,28 @@ class UrlHelper
 		return null;
 	}
 
+	/**
+	 * Get URL for an asset
+	 * 
+	 * Apends the path to the base URL.
+	 * 
+	 * @param string $path
+	 * @return string
+	 */
 	public function asset($path)
 	{
 		return $this->baseUrl . '/' . $path;
 	}
 
+	/**
+	 * Redirect to a named route
+	 * 
+	 * Sends a Location header and exits.
+	 * 
+	 * @param string $name
+	 * @param array $params
+	 * @return void
+	 */
 	public function redirect($name, $params = [])
 	{
 		$url = $this->router->generate($name, $params);
@@ -88,6 +141,14 @@ class UrlHelper
 		exit;
 	}
 
+	/**
+	 * Redirect to a specific URL
+	 * 
+	 * Sends a Location header and exits.
+	 * 
+	 * @param string $url
+	 * @return void
+	 */
 	public function redirectToUrl($url)
 	{
 		header("Location: {$url}");

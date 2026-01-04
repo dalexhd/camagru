@@ -14,6 +14,8 @@ class Post extends Model
     /**
      * Find all posts by creator id.
      * 
+     * Handy for showing a user their own gallery.
+     * 
      * @param int $creatorId
      * @return array
      */
@@ -27,6 +29,9 @@ class Post extends Model
 
     /**
      * Create a new post.
+     * 
+     * Saves the post info to the database.
+     * Media source can be null if it's just text, but who does that on Instagram?
      * 
      * @param int $creatorId
      * @param string $title
@@ -47,6 +52,10 @@ class Post extends Model
 
     /**
      * Paginate posts.
+     * 
+     * Fetches posts with infinite scroll in mind.
+     * Also joins with likes and comments so we get everything in one go.
+     * It's a bit of a monster query but it saves round trips.
      * 
      * @param int $page
      * @param int $limit

@@ -10,7 +10,11 @@ class PostLikes extends Model
     protected string $table = 'post_likes';
 
     /**
-     * Toggle a like. If the user has already liked the post, it will be deleted. Otherwise, it will be created.
+     * Toggle a like.
+     * 
+     * If the user has already liked the post, it will be deleted (unliked).
+     * Otherwise, it will be created (liked).
+     * Returns true if liked, false if unliked.
      * 
      * @param int $userId
      * @param int $postId
@@ -30,6 +34,8 @@ class PostLikes extends Model
     /**
      * Create a new like.
      * 
+     * Adds a row to the post_likes table.
+     * 
      * @param int $postId
      * @param int $userId
      * @return bool|string
@@ -47,6 +53,8 @@ class PostLikes extends Model
     /**
      * Find if a user has liked a post.
      * 
+     * Checks if a record exists for this user and post combo.
+     * 
      * @param int $userId
      * @param int $postId
      * @return array
@@ -61,7 +69,9 @@ class PostLikes extends Model
     }
 
     /**
-     * Delete a like. Basically, unlikes a post.
+     * Delete a like.
+     * 
+     * Basically, unlikes a post.
      * 
      * @param int $id
      * @return void

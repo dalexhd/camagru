@@ -8,12 +8,28 @@ use core\View;
 
 class NotFoundException extends Exception
 {
-    public function __construct($message = 'Not Found', $code = 404, Exception $previous = null)
+    /**
+     * Exception thrown when a route is not found.
+     * 
+     * Just a wrapper around the standard Exception, but specific to 404s.
+     * 
+     * @param string $message
+     * @param int $code
+     * @param Exception $previous
+     */
+    public function __construct($message = 'Not Found', $code = 404, ?Exception $previous = null)
     {
         parent::__construct($message, $code, $previous);
     }
 }
 
+/**
+ * Route class
+ * 
+ * Represents a single route definition.
+ * Holds all the config for a route like method, path, callback, etc.
+ * We use this object to pass data around easly.
+ */
 class Route
 {
     public string $method;
@@ -24,18 +40,27 @@ class Route
     public array $pass = [];
     public array $middleware = [];
 
+    /**
+     * @param array $patterns
+     */
     public function setPatterns(array $patterns)
     {
         $this->patterns = $patterns;
         return $this;
     }
 
+    /**
+     * @param array $pass
+     */
     public function setPass(array $pass)
     {
         $this->pass = $pass;
         return $this;
     }
 
+    /**
+     * @param array $middleware
+     */
     public function setMiddleware(array $middleware)
     {
         $this->middleware = $middleware;
@@ -48,6 +73,7 @@ class Route
  * 
  * This class is used to handle all routing logic.
  * It's inspired by the Router class from cakephp.
+ * We define routes, and then resolve URLs to those routes.
  */
 class Router
 {
@@ -55,12 +81,30 @@ class Router
     private array $namedRoutes = [];
     private array $globalMiddleware = [];
 
+    /**
+     * Sets middleware that runs on every request.
+     * 
+     * Usefull for things like CSRF protection, session starting, etc.
+     * Things that need to happen no matter what page you're on.
+     * 
+     * @param array $middleware
+     */
     public function setGlobalMiddleware(array $middleware)
     {
         $this->globalMiddleware = $middleware;
         return $this;
     }
 
+    /**
+     * Connects a new route.
+     * 
+     * Creates a Route object and adds it to our list.
+     * We convert the simple route sintax (like /users/{id}) to regex for matching later.
+     * 
+     * @param string $route
+     * @param mixed $callback
+     * @param string|null $name
+     */
     public function connect($route, $callback, $name = null)
     {
         $routeObj = new Route();
@@ -79,11 +123,30 @@ class Router
         return $this->routes;
     }
 
+    /**
+     * Converts a route string to a regular expression.
+     * 
+     * We replace parameters like {id} with named capture groups.
+     * This alows us to extract the values later when matching.
+     * 
+     * @param string $route
+     * @return string
+     */
     private function convertToRegex($route)
     {
         return '@^' . preg_replace('/\{(\w+)\}/', '(?P<\1>[^/]+)', $route) . '$@';
     }
 
+    /**
+     * Resolves a URL to a route callback.
+     * 
+     * This is the majic part. We loop through all routes and try to match the URL.
+     * If we match, we check method, patterns, run middleware, and finally call the controller.
+     * If nothing matches, 404.
+     * 
+     * @param string $url
+     * @param string $method
+     */
     public function resolve($url, $method)
     {
         foreach ($this->routes as $route) {
@@ -137,6 +200,15 @@ class Router
         $view->render('errors/' . $code, ['message' => $message]);
     }
 
+    /**
+     * Invokes the callback for a matched route.
+     * 
+     * Handles both closure callbacks and controller@action strings.
+     * Instantiates the controller and calls the method with params.
+     * 
+     * @param mixed $callback
+     * @param array $params
+     */
     private function invokeCallback($callback, $params)
     {
         if (is_callable($callback)) {
@@ -166,6 +238,16 @@ class Router
         return call_user_func_array([$controller, $action], $params);
     }
 
+    /**
+     * Generates a URL for a named route.
+     * 
+     * Reverse routing! We take a route name and params, and give you back the URL.
+     * Super usefull so we don't hardcode URLs in views.
+     * 
+     * @param string $name
+     * @param array $params
+     * @return string
+     */
     public function generate($name, $params = [])
     {
         if (!isset($this->namedRoutes[$name])) {

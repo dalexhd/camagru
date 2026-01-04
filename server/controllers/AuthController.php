@@ -15,6 +15,14 @@ class AuthController extends Controller
         $this->userModel = new User();
     }
 
+    /**
+     * Handle user login.
+     * 
+     * Checks credentials, verifies account status, and sets up the session.
+     * If they haven't clicked the email link yet, we tell them to go check their inbox.
+     * 
+     * @return void
+     */
     public function login()
     {
         if ($this->isPost()) {
@@ -56,6 +64,14 @@ class AuthController extends Controller
         }
     }
 
+    /**
+     * Handle user registration.
+     * 
+     * Validates input, checks for duplicates, creates the user, and sends a verification email.
+     * We require strong passwords because security is important.
+     * 
+     * @return void
+     */
     public function register()
     {
         if ($this->isPost()) {
@@ -131,6 +147,14 @@ class AuthController extends Controller
         }
     }
 
+    /**
+     * Handle password recovery request.
+     * 
+     * Sends an email with a reset link if the account exists.
+     * We pretend it worked even if the email isn't found to prevent user enumeration.
+     * 
+     * @return void
+     */
     public function recover()
     {
         if ($this->isPost()) {
@@ -182,6 +206,15 @@ class AuthController extends Controller
         }
     }
 
+    /**
+     * Handle password reset.
+     * 
+     * Verifies the token and updates the password.
+     * The token contains encrypted data to verify identity and expiration.
+     * 
+     * @param string $token
+     * @return void
+     */
     public function reset($token)
     {
         try {
@@ -238,6 +271,15 @@ class AuthController extends Controller
         }
     }
 
+    /**
+     * Verify user account.
+     * 
+     * Activates the account if the token is valid.
+     * Allows them to log in afterwards.
+     * 
+     * @param string $token
+     * @return void
+     */
     public function verify($token)
     {
         $user = $this->userModel->findByVerificationToken($token);
@@ -251,6 +293,14 @@ class AuthController extends Controller
         $this->redirect('login');
     }
 
+    /**
+     * Log out the user.
+     * 
+     * Destroys the session and redirects to home.
+     * Bye bye!
+     * 
+     * @return void
+     */
     public function logout()
     {
         $this->Session->destroy();

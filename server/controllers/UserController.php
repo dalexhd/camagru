@@ -14,16 +14,38 @@ class UserController extends Controller
 		$this->userModel = new User();
 	}
 
+	/**
+	 * Show user profile.
+	 * 
+	 * Displays the logged-in user's profile.
+	 * 
+	 * @return void
+	 */
 	public function profile()
 	{
 		$this->render('user/profile', [], 'User Profile Page');
 	}
 
+	/**
+	 * Show user settings.
+	 * 
+	 * Main settings page.
+	 * 
+	 * @return void
+	 */
 	public function settings()
 	{
 		$this->render('user/settings', [], 'User Settings Page');
 	}
 
+	/**
+	 * Update account settings.
+	 * 
+	 * Handles updating basic info like email, nickname, and avatar.
+	 * Also updates the session with new data so you don't have to relogin.
+	 * 
+	 * @return void
+	 */
 	public function accountSettings()
 	{
 		if ($this->isPost()) {
@@ -63,6 +85,14 @@ class UserController extends Controller
 		$this->render('user/settings/account', [], 'User Settings Page');
 	}
 
+	/**
+	 * Update security settings.
+	 * 
+	 * Handles password changes.
+	 * Requires current password for verification.
+	 * 
+	 * @return void
+	 */
 	public function securitySettings()
 	{
 		if ($this->isPost()) {
@@ -93,6 +123,13 @@ class UserController extends Controller
 		$this->render('user/settings/security', [], 'User Settings Page');
 	}
 
+	/**
+	 * View user profile (public).
+	 * 
+	 * Currently just renders a placeholder.
+	 * 
+	 * @return void
+	 */
 	public function view()
 	{
 		$this->render('user/view', [], 'User View Page');

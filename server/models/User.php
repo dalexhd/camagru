@@ -13,6 +13,8 @@ class User extends Model
 	/**
 	 * Find a user by email.
 	 * 
+	 * Useful for login and password recovery.
+	 * 
 	 * @param string $email
 	 * @return array
 	 */
@@ -26,6 +28,8 @@ class User extends Model
 
 	/**
 	 * Find a user by nickname.
+	 * 
+	 * Useful for checking duplicate nicknames during registration.
 	 * 
 	 * @param string $nickname
 	 * @return array
@@ -41,6 +45,8 @@ class User extends Model
 	/**
 	 * Find a user by verification token.
 	 * 
+	 * Used when the user clicks the verification link in their email.
+	 * 
 	 * @param string $token
 	 * @return array
 	 */
@@ -55,6 +61,9 @@ class User extends Model
 
 	/**
 	 * Create a new user.
+	 * 
+	 * Inserts a new user record.
+	 * Verified is false by default until they click the link.
 	 * 
 	 * @param string $name
 	 * @param string $nickname

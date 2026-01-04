@@ -6,6 +6,7 @@ namespace core;
  * File class
  * 
  * This class is used to handle file operations.
+ * Wraps low-level filesystem stuff so we don't have to deal with it directly.
  */
 class File
 {
@@ -18,7 +19,7 @@ class File
      * Some checks done here:
      * - Check if the file is allowed
      * - Check if the file is too big
-     * - Check if the file is uploaded successfully
+     * - Check if the file is uploaded sucessfully
      * 
      * @param array $file
      * @param string $path
@@ -59,6 +60,15 @@ class File
         }
     }
 
+    /**
+     * Remove a file
+     * 
+     * Deletes a file from the disk. 
+     * Throws an exception if the file doesn't exist, so check first!
+     * 
+     * @param string $file
+     * @return bool
+     */
     public function remove($file)
     {
         $fileDestination = $_SERVER['DOCUMENT_ROOT'] . '/' . $file;
@@ -69,6 +79,16 @@ class File
         }
     }
 
+    /**
+     * Remove a file if it exists
+     * 
+     * Safer version of remove().
+     * Checks if file exists before trying to delete it.
+     * Returns true if deleted, false if not found.
+     * 
+     * @param string $file
+     * @return bool
+     */
     public function removeIfExists($file)
     {
         if ($this->exists($file)) {
@@ -79,6 +99,15 @@ class File
         }
     }
 
+    /**
+     * Check if a file exists
+     * 
+     * Simple wrapper around file_exists.
+     * Helpful because it handles the document root path logic for us.
+     * 
+     * @param string $file
+     * @return bool
+     */
     public function exists($file)
     {
         $fileDestination = $_SERVER['DOCUMENT_ROOT'] . '/' . $file;

@@ -13,6 +13,9 @@ class PostComment extends Model
     /**
      * Create a new comment for a post.
      * 
+     * Insert the comment into the database.
+     * Simple enough.
+     * 
      * @param int $postId
      * @param int $userId
      * @param string $comment

@@ -8,9 +8,9 @@ use PDO;
 /**
  * Model class
  * 
- * This class is used to interact with the database.
- * It's a simple class that extends the PDO class. Here we define useful methods for database interaction.
- * 
+ * Base class for all models.
+ * It connects to the database and provides helper methods for common operations.
+ * Extend this to talk to your specific tables.
  */
 class Model
 {
@@ -23,7 +23,10 @@ class Model
     }
 
     /**
-     * Paginate the model.
+     * Paginate results
+     * 
+     * Fetches a slice of records for pagination.
+     * Calculates offset based on page number and limit.
      * 
      * @param int $page
      * @param int $limit
@@ -40,7 +43,10 @@ class Model
     }
 
     /**
-     * Update a record by id.
+     * Update a record
+     * 
+     * Dynamically builds an UPDATE query based on the data array.
+     * Securely binds parameters to prevent SQL injection.
      * 
      * @param int $id
      * @param array $data
@@ -67,10 +73,12 @@ class Model
     }
 
     /**
-     * Find a record by id.
+     * Find a record by ID
+     * 
+     * Simple lookup. Returns null if not found.
      * 
      * @param int $id
-     * @return array
+     * @return array|false
      */
     public function find($id)
     {
@@ -81,7 +89,9 @@ class Model
     }
 
     /**
-     * Delete a record by id.
+     * Delete a record by ID
+     * 
+     * Removes the row from the database permanently.
      * 
      * @param int $id
      * @return bool

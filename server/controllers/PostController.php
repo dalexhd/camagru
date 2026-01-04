@@ -14,17 +14,42 @@ class PostController extends Controller
 		$this->postModel = new Post();
 	}
 
+	/**
+	 * Show the post feed.
+	 * 
+	 * Renders the main gallery page where users can see all the cool cat photos.
+	 * 
+	 * @return void
+	 */
 	public function index()
 	{
 		$this->render('post/index', [], 'Post Page');
 	}
 
+	/**
+	 * Get posts for infinite scroll.
+	 * 
+	 * Returns a JSON list of posts.
+	 * Used by the frontend JS to load more posts as you scroll down.
+	 * 
+	 * @param int $page
+	 * @param int $limit
+	 * @return void
+	 */
 	public function posts($page, $limit)
 	{
 		$posts = $this->postModel->paginate($page, $limit);
 		$this->Response->setHeader('Content-Type', 'application/json')->setResponse($posts)->send();
 	}
 
+	/**
+	 * Create a new post.
+	 * 
+	 * Handles both webcam uploads and file uploads.
+	 * Also applies stickers if selected. This is where the magic happens!
+	 * 
+	 * @return void
+	 */
 	public function create()
 	{
 		if ($this->isPost()) {
@@ -94,6 +119,15 @@ class PostController extends Controller
 		], 'Post Create Page');
 	}
 
+	/**
+	 * Delete a post.
+	 * 
+	 * Removes the post and its image file.
+	 * Checks if you actually own the post first, obviously.
+	 * 
+	 * @param int $id
+	 * @return void
+	 */
 	public function delete($id)
 	{
 		if (!$this->isPost()) {

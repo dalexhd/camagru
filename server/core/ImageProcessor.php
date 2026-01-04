@@ -2,8 +2,24 @@
 
 namespace core;
 
+/**
+ * ImageProcessor class
+ * 
+ * Handles all the heavy lifting for image manipulation.
+ * We use GD library because it's standard and available everywhere.
+ * Basically: load, edit, save.
+ */
 class ImageProcessor
 {
+    /**
+     * Converts a base64 string to a GD image resource.
+     * 
+     * Front-end sends us base64 strings (data uris), so we need to clean them up and decode them.
+     * If it fails, we throw exceptions because silent failurs are bad.
+     * 
+     * @param string $base64Data
+     * @return resource
+     */
     public static function base64ToImage($base64Data)
     {
         // Remove data URI scheme if present
@@ -24,6 +40,19 @@ class ImageProcessor
         return $image;
     }
 
+    /**
+     * Merges a sticker onto a base image.
+     * 
+     * This is the core feature. We take a webcam shot and slap a cat sticker on it.
+     * We handdle alpha blending to make sure transparency works correctly.
+     * Also scales the sticker relative to the base image so it doesn't look tiny or huge.
+     * 
+     * @param resource $baseImage
+     * @param string $stickerPath
+     * @param int|null $x
+     * @param int|null $y
+     * @return resource
+     */
     public static function mergeImages($baseImage, $stickerPath, $x = null, $y = null)
     {
         if (!file_exists($stickerPath)) {
@@ -82,6 +111,18 @@ class ImageProcessor
         return $baseImage;
     }
 
+    /**
+     * Saves the image resource to a file.
+     * 
+     * Supports PNG and JPEG.
+     * Also creates the directory if it doesn't exist, because we're nice like that.
+     * 
+     * @param resource $image
+     * @param string $path
+     * @param string $format
+     * @param int $quality
+     * @return bool
+     */
     public static function saveImage($image, $path, $format = 'png', $quality = 90)
     {
         $dir = dirname($path);
@@ -102,6 +143,17 @@ class ImageProcessor
         }
     }
 
+    /**
+     * Resizes an image.
+     * 
+     * Uses resampling for better qualty.
+     * Useful for thumbnails or normalizing sizes.
+     * 
+     * @param resource $image
+     * @param int $width
+     * @param int $height
+     * @return resource
+     */
     public static function resizeImage($image, $width, $height)
     {
         $newImage = imagecreatetruecolor($width, $height);
@@ -109,6 +161,14 @@ class ImageProcessor
         return $newImage;
     }
 
+    /**
+     * Lists all available stickers.
+     * 
+     * Scans the stickers directory and returns a list so the UI can render the gallary.
+     * 
+     * @param string $stickersDir
+     * @return array
+     */
     public static function getAvailableStickers($stickersDir)
     {
         if (!is_dir($stickersDir)) {
@@ -131,6 +191,16 @@ class ImageProcessor
         return $stickers;
     }
 
+    /**
+     * Gets the safe path for a sticker ID.
+     * 
+     * Prevents directory traversal attacks by sanitizing the ID.
+     * We don't want people loading /etc/passwd as a sticker.
+     * 
+     * @param string $stickerId
+     * @param string $stickersDir
+     * @return string
+     */
     public static function getStickerPath($stickerId, $stickersDir)
     {
         // Sanitize sticker ID to prevent path traversal

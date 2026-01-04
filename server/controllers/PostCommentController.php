@@ -20,6 +20,15 @@ class PostCommentController extends Controller
 		$this->userModel = new User();
 	}
 
+	/**
+	 * Create a new comment.
+	 * 
+	 * Adds a comment to a post.
+	 * Also sends an email notification to the post owner if they have it enabled.
+	 * We love spamming people (jk, it's optional).
+	 * 
+	 * @return void
+	 */
 	public function create()
 	{
 		if (!$this->isPost()) {
