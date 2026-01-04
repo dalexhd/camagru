@@ -9,18 +9,10 @@ $links = [
 		'route' => 'home',
 		'icon' => 'fas fa-home',
 	],
-	// [
-	// 	'route' => 'search',
-	// 	'icon' => 'fas fa-search',
-	// ],
 	[
 		'route' => 'create',
 		'icon' => 'fas fa-plus',
 	],
-	// [
-	// 	'route' => 'profile',
-	// 	'icon' => 'fas fa-user',
-	// ],
 	[
 		'route' => 'accountSettings',
 		'icon' => 'fas fa-cog',

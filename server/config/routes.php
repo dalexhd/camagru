@@ -95,12 +95,6 @@ $router->connect(
 
 // User routes
 $router->connect(
-	'/profile',
-	['controller' => 'UserController', 'action' => 'profile'],
-	'profile'
-)->setMiddleware([AuthMiddleware::class]);
-
-$router->connect(
 	'/settings',
 	['controller' => 'UserController', 'action' => 'settings'],
 	'settings'
@@ -123,13 +117,6 @@ $router->connect(
 	['controller' => 'UserController', 'action' => 'view'],
 	'user_view'
 )->setPatterns(['nickname' => '[a-zA-Z0-9]+'])->setMiddleware([AuthMiddleware::class]);
-
-// Search routes
-$router->connect(
-	'/search',
-	['controller' => 'SearchController', 'action' => 'index'],
-	'search'
-);
 
 // Post comment routes
 $router->connect(

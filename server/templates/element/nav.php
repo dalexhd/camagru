@@ -30,18 +30,6 @@
 	<div id="navbarBasicExample" class="navbar-menu">
 		<div class="navbar-end">
 			<?php if ($this->Session->has('user_id')): ?>
-				<a class="navbar-item is-hidden-mobile is-hidden" href="<?php echo $this->Url->link('search'); ?>">
-					<span class="icon">
-						<i class="fas fa-magnifying-glass"></i>
-					</span>
-					<span>Search</span>
-				</a>
-				<a class="navbar-item is-hidden-mobile is-hidden" href="<?php echo $this->Url->link('profile'); ?>">
-					<span class="icon">
-						<i class="fas fa-user"></i>
-					</span>
-					<span>Profile</span>
-				</a>
 				<a class="navbar-item is-hidden-mobile" href="<?php echo $this->Url->link('accountSettings'); ?>">
 					<span class="icon">
 						<i class="fas fa-cog"></i>
