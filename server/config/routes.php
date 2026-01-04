@@ -39,13 +39,6 @@ $router->connect(
 	'create'
 )->setMiddleware([AuthMiddleware::class]);
 
-// Post comment interaction routes
-$router->connect(
-	'/comment/interact',
-	['controller' => 'PostCommentInteractionController', 'action' => 'create'],
-	'post_comment_interaction_create'
-)->setMiddleware([AuthMiddleware::class]);
-
 // Post like routes
 $router->connect(
 	'/post/{id}/like',
