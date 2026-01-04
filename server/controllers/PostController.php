@@ -2,7 +2,6 @@
 
 use core\Controller;
 use core\ImageProcessor;
-use core\Security;
 use app\models\Post;
 
 class PostController extends Controller
@@ -17,7 +16,7 @@ class PostController extends Controller
 
 	public function index()
 	{
-		$this->render('post/index', ['message' => 'Hello, World!'], 'Post Page');
+		$this->render('post/index', [], 'Post Page');
 	}
 
 	public function posts($page, $limit)

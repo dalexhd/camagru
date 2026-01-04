@@ -16,12 +16,12 @@ class UserController extends Controller
 
 	public function profile()
 	{
-		$this->render('user/profile', ['message' => 'Hello, World!'], 'User Profile Page');
+		$this->render('user/profile', [], 'User Profile Page');
 	}
 
 	public function settings()
 	{
-		$this->render('user/settings', ['message' => 'Hello, World!'], 'User Settings Page');
+		$this->render('user/settings', [], 'User Settings Page');
 	}
 
 	public function accountSettings()
@@ -60,7 +60,7 @@ class UserController extends Controller
 				$this->flash('error', $th->getMessage());
 			}
 		}
-		$this->render('user/settings/account', ['message' => 'Hello, World!'], 'User Settings Page');
+		$this->render('user/settings/account', [], 'User Settings Page');
 	}
 
 	public function securitySettings()
@@ -90,11 +90,11 @@ class UserController extends Controller
 			}
 		}
 
-		$this->render('user/settings/security', ['message' => 'Hello, World!'], 'User Settings Page');
+		$this->render('user/settings/security', [], 'User Settings Page');
 	}
 
 	public function view()
 	{
-		$this->render('user/view', ['message' => 'Hello, World!'], 'User View Page');
+		$this->render('user/view', [], 'User View Page');
 	}
 }
