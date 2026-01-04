@@ -62,20 +62,8 @@ services:
       - camagru
     restart: always
 
-  redis:
-    image: "redis:alpine"
-    container_name: camagru_redis
-    volumes:
-      - "redis_data:/data"
-    ports:
-      - ${REDIS_PORT}:6379
-    networks:
-      - camagru
-    restart: always
-
 volumes:
   db_data:
-  redis_data:
 
 
 networks:
