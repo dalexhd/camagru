@@ -1,3 +1,4 @@
 .env
 server/public/img/uploads/*
 server/public/img/profiles/*
+!.gitkeep

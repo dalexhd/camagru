@@ -147,7 +147,6 @@ class Router
             } catch (NotFoundException $e) {
                 $this->renderErrorPage(404, 'Not Found');
             } catch (Exception $e) {
-                print_r($e);
                 $this->renderErrorPage(500, 'Internal Server Error' . $e->getMessage());
             }
         }

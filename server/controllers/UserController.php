@@ -38,7 +38,7 @@ class UserController extends Controller
 
 				if (isset($_FILES['avatar']) && $_FILES['avatar']['error'] == false) {
 					$toUpdate["avatar"] = $this->File->upload($_FILES['avatar'], 'img/profiles');
-					if ($this->Session->has('user_avatar')) {
+					if ($this->Session->has('user_avatar') && $this->Session->get('user_avatar') != $this->Url->asset(User::DEFAULT_AVATAR)) {
 						$this->File->removeIfExists($this->Session->get('user_avatar'));
 					}
 				}

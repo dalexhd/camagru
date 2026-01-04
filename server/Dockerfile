@@ -25,13 +25,13 @@ RUN echo "upload_max_filesize = 50M" > /usr/local/etc/php/conf.d/uploads.ini \
     && echo "max_execution_time = 300" >> /usr/local/etc/php/conf.d/uploads.ini
 
 # Create uploads directory
-RUN mkdir -p public/img/uploads
-RUN mkdir -p public/img/profiles
+RUN mkdir -p /app/public/img/uploads
+RUN mkdir -p /app/public/img/profiles
 
 # Set permissions
-RUN chmod -R 777 public/img
-RUN chmod 777 public/img/uploads
-RUN chmod 777 public/img/profiles
+RUN chmod -R 777 /app/public/img
+RUN chmod 777 /app/public/img/uploads
+RUN chmod 777 /app/public/img/profiles
 
 # Expose port 9000 and start php-fpm server
 EXPOSE 9000
