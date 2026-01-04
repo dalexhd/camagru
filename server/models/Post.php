@@ -11,6 +11,12 @@ class Post extends Model
 {
     protected $table = 'posts';
 
+    /**
+     * Find a post by id.
+     * 
+     * @param int $id
+     * @return array
+     */
     public function findById($id)
     {
         $stmt = $this->db->prepare("SELECT * FROM {$this->table} WHERE id = :id LIMIT 1");
@@ -19,6 +25,12 @@ class Post extends Model
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
+    /**
+     * Delete a post.
+     * 
+     * @param int $id
+     * @return bool
+     */
     public function delete($id)
     {
         $stmt = $this->db->prepare("DELETE FROM {$this->table} WHERE id = :id");
@@ -26,6 +38,12 @@ class Post extends Model
         return $stmt->execute();
     }
 
+    /**
+     * Find all posts by creator id.
+     * 
+     * @param int $creatorId
+     * @return array
+     */
     public function findByCreator($creatorId)
     {
         $stmt = $this->db->prepare("SELECT * FROM {$this->table} WHERE creator = :creatorId ORDER BY created_at DESC");
@@ -34,6 +52,15 @@ class Post extends Model
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    /**
+     * Create a new post.
+     * 
+     * @param int $creatorId
+     * @param string $title
+     * @param string $body
+     * @param string $mediaSrc
+     * @return bool|string
+     */
     public function create($creatorId, $title, $body, $mediaSrc = null)
     {
         $stmt = $this->db->prepare("INSERT INTO {$this->table} (creator, title, body, media_src) VALUES (:creatorId, :title, :body, :mediaSrc)");
@@ -45,14 +72,13 @@ class Post extends Model
         return $this->db->lastInsertId();
     }
 
-    public function search($query)
-    {
-        $stmt = $this->db->prepare("SELECT * FROM {$this->table} WHERE title LIKE :query OR body LIKE :query");
-        $stmt->bindValue(':query', "%$query%");
-        $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    }
-
+    /**
+     * Paginate posts.
+     * 
+     * @param int $page
+     * @param int $limit
+     * @return array
+     */
     public function paginate($page, $limit)
     {
         $page = (int) $page;

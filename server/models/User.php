@@ -10,6 +10,12 @@ class User extends Model
 	protected $table = 'users';
 	const DEFAULT_AVATAR = 'img/default_avatar.png';
 
+	/**
+	 * Find a user by email.
+	 * 
+	 * @param string $email
+	 * @return array
+	 */
 	public function findByEmail($email)
 	{
 		$stmt = $this->db->prepare("SELECT * FROM {$this->table} WHERE email = :email LIMIT 1");
@@ -18,6 +24,12 @@ class User extends Model
 		return $stmt->fetch(PDO::FETCH_ASSOC);
 	}
 
+	/**
+	 * Find a user by id.
+	 * 
+	 * @param int $id
+	 * @return array
+	 */
 	public function findById($id)
 	{
 		$stmt = $this->db->prepare("SELECT * FROM {$this->table} WHERE id = :id LIMIT 1");
@@ -26,6 +38,12 @@ class User extends Model
 		return $stmt->fetch(PDO::FETCH_ASSOC);
 	}
 
+	/**
+	 * Find a user by nickname.
+	 * 
+	 * @param string $nickname
+	 * @return array
+	 */
 	public function findByNickname($nickname)
 	{
 		$stmt = $this->db->prepare("SELECT * FROM {$this->table} WHERE nickname = :nickname LIMIT 1");
@@ -34,6 +52,12 @@ class User extends Model
 		return $stmt->fetch(PDO::FETCH_ASSOC);
 	}
 
+	/**
+	 * Find a user by verification token.
+	 * 
+	 * @param string $token
+	 * @return array
+	 */
 	public function findByVerificationToken($token)
 	{
 		$stmt = $this->db->prepare("SELECT * FROM {$this->table} WHERE verification_token = :token LIMIT 1");
@@ -42,6 +66,13 @@ class User extends Model
 		return $stmt->fetch(PDO::FETCH_ASSOC);
 	}
 
+	/**
+	 * Update a user.
+	 * 
+	 * @param int $id
+	 * @param array $data
+	 * @return bool
+	 */
 	public function update($id, $data)
 	{
 		if (empty($data)) {
@@ -63,6 +94,16 @@ class User extends Model
 	}
 
 
+	/**
+	 * Create a new user.
+	 * 
+	 * @param string $name
+	 * @param string $nickname
+	 * @param string $email
+	 * @param string $password
+	 * @param string $verificationToken
+	 * @return bool|string
+	 */
 	public function create($name, $nickname, $email, $password, $verificationToken)
 	{
 		$stmt = $this->db->prepare("INSERT INTO {$this->table} (name, nickname, email, password, verification_token, verified, notifications_enabled) VALUES (:name, :nickname, :email, :password, :verification_token, 0, 1)");
