@@ -7,7 +7,7 @@ use PDO;
 
 class User extends Model
 {
-	protected $table = 'users';
+	protected string $table = 'users';
 	const DEFAULT_AVATAR = 'img/default_avatar.png';
 
 	/**
@@ -20,20 +20,6 @@ class User extends Model
 	{
 		$stmt = $this->db->prepare("SELECT * FROM {$this->table} WHERE email = :email LIMIT 1");
 		$stmt->bindParam(':email', $email);
-		$stmt->execute();
-		return $stmt->fetch(PDO::FETCH_ASSOC);
-	}
-
-	/**
-	 * Find a user by id.
-	 * 
-	 * @param int $id
-	 * @return array
-	 */
-	public function findById($id)
-	{
-		$stmt = $this->db->prepare("SELECT * FROM {$this->table} WHERE id = :id LIMIT 1");
-		$stmt->bindParam(':id', $id);
 		$stmt->execute();
 		return $stmt->fetch(PDO::FETCH_ASSOC);
 	}
@@ -64,33 +50,6 @@ class User extends Model
 		$stmt->bindParam(':token', $token);
 		$stmt->execute();
 		return $stmt->fetch(PDO::FETCH_ASSOC);
-	}
-
-	/**
-	 * Update a user.
-	 * 
-	 * @param int $id
-	 * @param array $data
-	 * @return bool
-	 */
-	public function update($id, $data)
-	{
-		if (empty($data)) {
-			return false;
-		}
-
-		// Dynamically build the SET part of the query
-		$setClauses = [];
-		foreach ($data as $key => $value) {
-			$setClauses[] = "`$key` = :$key"; // Using backticks to prevent SQL keyword conflicts
-		}
-		$setQuery = implode(', ', $setClauses);
-		$stmt = $this->db->prepare("UPDATE {$this->table} SET $setQuery WHERE id = :id");
-		foreach ($data as $key => $value) {
-			$stmt->bindValue(":$key", $value);
-		}
-		$stmt->bindValue(":id", $id, PDO::PARAM_INT);
-		return $stmt->execute(); // Returns true on success, false on failure
 	}
 
 

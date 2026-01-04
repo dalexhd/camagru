@@ -7,7 +7,7 @@ use PDO;
 
 class PostCommentInteraction extends Model
 {
-    protected $table = 'post_comment_interaction';
+    protected string $table = 'post_comment_interaction';
 
     /**
      * Create a new comment interaction. For now, this feature is not implemented.

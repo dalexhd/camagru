@@ -16,13 +16,13 @@ class NotFoundException extends Exception
 
 class Route
 {
-    public $method;
-    public $route;
-    public $callback;
-    public $name;
-    public $patterns = [];
-    public $pass = [];
-    public $middleware = [];
+    public string $method;
+    public string $route;
+    public string $callback;
+    public string $name;
+    public array $patterns = [];
+    public array $pass = [];
+    public array $middleware = [];
 
     public function setPatterns(array $patterns)
     {
@@ -51,9 +51,9 @@ class Route
  */
 class Router
 {
-    private $routes = [];
-    private $namedRoutes = [];
-    private $globalMiddleware = [];
+    private array $routes = [];
+    private array $namedRoutes = [];
+    private array $globalMiddleware = [];
 
     public function setGlobalMiddleware(array $middleware)
     {

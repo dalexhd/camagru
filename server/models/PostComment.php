@@ -7,21 +7,8 @@ use PDO;
 
 class PostComment extends Model
 {
-    protected $table = 'post_comments';
+    protected string $table = 'post_comments';
 
-    /**
-     * Find all comments for a post.
-     * 
-     * @param int $postId
-     * @return array
-     */
-    public function findByPost($postId)
-    {
-        $stmt = $this->db->prepare("SELECT * FROM {$this->table} WHERE post_id = :postId");
-        $stmt->bindParam(':postId', $postId);
-        $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    }
 
     /**
      * Create a new comment for a post.

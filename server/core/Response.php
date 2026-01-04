@@ -12,14 +12,14 @@ namespace core;
  */
 class Response
 {
-	protected $response;
+	protected array $response;
 
 	public function __construct()
 	{
 		$this->response = [];
 	}
 
-	public function setResponse($response)
+	public function setResponse(array $response)
 	{
 		$this->response = $response;
 		return $this;
@@ -35,13 +35,13 @@ class Response
 		echo json_encode($this->response);
 	}
 
-	public function status($code)
+	public function status(int $code)
 	{
 		http_response_code($code);
 		return $this;
 	}
 
-	public function setHeader($key, $value)
+	public function setHeader(string $key, string $value)
 	{
 		header("$key: $value");
 		return $this;

@@ -7,21 +7,7 @@ use PDO;
 
 class PostLikes extends Model
 {
-    protected $table = 'post_likes';
-
-    /**
-     * Find a like by id.
-     * 
-     * @param int $id
-     * @return array
-     */
-    public function findById($id)
-    {
-        $stmt = $this->db->prepare("SELECT * FROM {$this->table} WHERE id = :id LIMIT 1");
-        $stmt->bindParam(':id', $id);
-        $stmt->execute();
-        return $stmt->fetch(PDO::FETCH_ASSOC);
-    }
+    protected string $table = 'post_likes';
 
     /**
      * Toggle a like. If the user has already liked the post, it will be deleted. Otherwise, it will be created.
