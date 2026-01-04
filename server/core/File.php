@@ -41,7 +41,11 @@ class File
             if ($fileError === 0) {
                 if ($fileSize < 50000000) { // 50MB limit
                     $fileNameNew = uniqid('', true) . '.' . $fileActualExt;
-                    $fileDestination = $_SERVER['DOCUMENT_ROOT'] . '/' . $path . '/' . $fileNameNew;
+                    $targetDir = $_SERVER['DOCUMENT_ROOT'] . '/' . $path;
+                    if (!is_dir($targetDir)) {
+                        mkdir($targetDir, 0755, true);
+                    }
+                    $fileDestination = $targetDir . '/' . $fileNameNew;
                     move_uploaded_file($fileTmpName, $fileDestination);
                     return $path . '/' . $fileNameNew;
                 } else {
