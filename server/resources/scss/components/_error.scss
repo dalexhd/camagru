@@ -1,0 +1,40 @@
+#error-wrapper {
+	height: 100%;
+
+	>.column {
+		height: 100%;
+	}
+
+	#error-container-wrapper {
+		overflow: auto;
+		scroll-snap-type: y mandatory;
+	}
+
+	#error-content-wrapper {
+		z-index: 1;
+		overflow: hidden;
+
+		@include mobile {
+			position: absolute;
+			bottom: 0;
+			width: 100%;
+			padding: 0;
+			background-color: var(--bulma-hr-background-color);
+			border-radius: 10px 10px 0 0;
+			max-height: 50%;
+			box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+		}
+	}
+}
+
+#error-container-wrapper:has(#error-content-wrapper) {
+	width: 100%;
+	height: 100%;
+	text-align: center;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	& + #error-content-wrapper {
+		display: none;
+	}
+}

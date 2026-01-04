@@ -19,7 +19,7 @@
         rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/1.0.1/css/bulma.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
-    <?php echo $this->Html->css('style.css'); ?>
+    <?php echo $this->Html->css('style.min.css'); ?>
 </head>
 
 <body>

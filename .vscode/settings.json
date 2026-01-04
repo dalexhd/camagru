@@ -6,14 +6,16 @@
 			"extensionName": ".css",
 			// null for all three -> denotes the same path as the SASS file
 			"savePath": "~/../../public/css",
-			"savePathReplacementPairs": null
+			"savePathReplacementPairs": null,
+			"generateMap": false
 		},
 		// You can add more
 		{
 			"format": "compressed",
+			"generateMap": false,
 			"extensionName": ".min.css",
 			// / -> denotes relative to the workspace root
-			"savePath": "/dist/css"
+			"savePath": "~/../../public/css"
 		},
 	],
 	"editor.formatOnSave": true
