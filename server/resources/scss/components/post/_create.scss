@@ -1,0 +1,87 @@
+#webcam-preview {
+	width: 100%;
+	max-width: 640px;
+	border-radius: 8px;
+	background: #000;
+}
+
+#capture-preview {
+	width: 100%;
+	max-width: 640px;
+	border-radius: 8px;
+}
+
+#webcam-canvas {
+	display: none;
+}
+
+.sticker-item {
+	cursor: pointer;
+	border: 3px solid transparent;
+	border-radius: 8px;
+	padding: 8px;
+	transition: all 0.2s;
+
+	img {
+		width: 100%;
+		height: auto;
+	}
+
+	&.is-active {
+		border-color: #3273dc !important;
+		background-color: #f0f7ff;
+	}
+
+	&:hover {
+		border-color: #b5b5b5 !important;
+	}
+}
+
+.carousel-inner {
+	height: 100%;
+	overflow-y: auto;
+	scroll-snap-type: y proximity;
+	scroll-behavior: smooth;
+	-ms-overflow-style: none;
+	scrollbar-width: none;
+
+	&::-webkit-scrollbar {
+		display: none;
+	}
+}
+
+.slider-container {
+	height: 70vh;
+}
+
+.slider-item {
+	scroll-snap-align: start;
+
+	img {
+		border-radius: 4px;
+		object-fit: cover;
+		border: 1px solid #eee;
+		transition: opacity 0.2s;
+
+		&:hover {
+			opacity: 0.8;
+		}
+	}
+}
+
+.slider-control {
+	position: absolute;
+	left: 50%;
+	transform: translateX(-50%);
+	z-index: 10;
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+
+	&.prev {
+		top: -15px;
+	}
+
+	&.next {
+		bottom: -15px;
+	}
+}
+

@@ -45,10 +45,9 @@ $userPosts = $userPosts ?? [];
 					<div class="columns is-multiline">
 						<?php foreach ($stickers as $sticker): ?>
 							<div class="column is-one-fifth">
-								<div class="sticker-item" data-sticker-id="<?= $sticker['id'] ?>"
-									style="cursor: pointer; border: 3px solid transparent; border-radius: 8px; padding: 8px; transition: all 0.2s;">
+								<div class="sticker-item" data-sticker-id="<?= $sticker['id'] ?>">
 									<img src="<?= $this->Url->asset('img/stickers/' . $sticker['filename']) ?>"
-										alt="<?= $sticker['id'] ?>" style="width: 100%; height: auto;">
+										alt="<?= $sticker['id'] ?>">
 								</div>
 							</div>
 						<?php endforeach; ?>
@@ -89,17 +88,15 @@ $userPosts = $userPosts ?? [];
 							<div class="column">
 								<!-- Webcam Preview -->
 								<video id="webcam-preview" autoplay playsinline
-									style="width: 100%; max-width: 640px; border-radius: 8px; background: #000;"
 									aria-label="Live webcam preview of the photo to be captured"></video>
 
 								<!-- Capture Preview (hidden initially) -->
 								<div id="preview-container" class="is-hidden">
-									<img id="capture-preview" style="width: 100%; max-width: 640px; border-radius: 8px;"
-										alt="Preview of the captured photo" />
+									<img id="capture-preview" alt="Preview of the captured photo" />
 								</div>
 
 								<!-- Hidden canvas for capture -->
-								<canvas id="webcam-canvas" style="display: none;"></canvas>
+								<canvas id="webcam-canvas"></canvas>
 
 								<div id="capture-controls" class="mt-3">
 									<button type="button" id="capture-btn" class="button is-primary" disabled>
@@ -203,64 +200,6 @@ $userPosts = $userPosts ?? [];
 	</div>
 </div>
 
-<style>
-	.sticker-item.is-active {
-		border-color: #3273dc !important;
-		background-color: #f0f7ff;
-	}
-
-	.sticker-item:hover {
-		border-color: #b5b5b5 !important;
-	}
-
-	.carousel-inner {
-		height: 100%;
-		overflow-y: auto;
-		scroll-snap-type: y proximity;
-		scroll-behavior: smooth;
-		-ms-overflow-style: none;
-		scrollbar-width: none;
-	}
-
-	.carousel-inner::-webkit-scrollbar {
-		display: none;
-	}
-
-	.slider-container {
-		height: 70vh;
-	}
-
-	.slider-item {
-		scroll-snap-align: start;
-	}
-
-	.slider-item img {
-		border-radius: 4px;
-		object-fit: cover;
-		border: 1px solid #eee;
-		transition: opacity 0.2s;
-	}
-
-	.slider-item img:hover {
-		opacity: 0.8;
-	}
-
-	.slider-control {
-		position: absolute;
-		left: 50%;
-		transform: translateX(-50%);
-		z-index: 10;
-		box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-	}
-
-	.slider-control.prev {
-		top: -15px;
-	}
-
-	.slider-control.next {
-		bottom: -15px;
-	}
-</style>
 
 <script>
 	// File input name display

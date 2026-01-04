@@ -13,14 +13,14 @@ use core\Session;
  */
 class View
 {
-	public $layout = 'layouts/default'; // Default layout
-	public $Html;
-	public $Url;
-	public $Session;
+	public string $layout = 'layouts/default'; // Default layout
+	public HtmlHelper $Html;
+	public UrlHelper $Url;
+	public Session $Session;
 
-	public $title;
-	public $name;
-	public $view;
+	public string $title;
+	public string $name;
+	public string $view;
 
 	/**
 	 * View constructor.

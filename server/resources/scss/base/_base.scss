@@ -4,6 +4,7 @@ html {
   font-optical-sizing: auto;
 
   main {
+    position: relative;
     overflow: auto;
     height: calc(100vh - var(--bulma-navbar-height));
 

@@ -25,7 +25,7 @@
 <body>
     <div id="app"></div>
     <?php $this->element('nav'); ?>
-    <main class="container-fluid" style="position: relative;">
+    <main class="container-fluid">
         <?php if ($this->Session->hasFlash('success')): ?>
             <div class="notification is-success m-2">
                 <button class="delete"></button>
