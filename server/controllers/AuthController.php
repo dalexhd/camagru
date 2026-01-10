@@ -120,6 +120,7 @@ class AuthController extends Controller
 
             $this->userModel->create($name, $nickname, $email, $password, $verificationToken);
 
+            // We need to set it as absolute
             $verifyLink = $this->Url->absoluteLink('verify', ['token' => $verificationToken]);
 
             $subject = 'Account Verification';

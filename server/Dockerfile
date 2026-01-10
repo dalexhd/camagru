@@ -10,13 +10,13 @@ COPY . .
 # Install required PHP extensions
 RUN docker-php-ext-install pdo_mysql
 
-# Install GD library for image processing
+# Install GD library for image processing and EXIF extension for image type detection
 RUN apk add --no-cache \
     freetype-dev \
     libjpeg-turbo-dev \
     libpng-dev \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install gd
+    && docker-php-ext-install gd exif
 
 # Configure PHP for larger uploads
 RUN echo "upload_max_filesize = 50M" > /usr/local/etc/php/conf.d/uploads.ini \

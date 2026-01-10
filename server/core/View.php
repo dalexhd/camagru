@@ -40,7 +40,7 @@ class View
 		$this->Html = new HtmlHelper();
 		$this->Url = new UrlHelper($router);
 		$this->Session = new Session();
-		$this->name = getenv('SERVER_APP_NAME') ?: 'App';
+		$this->name = getenv('SERVER_APP_NAME') ?: 'Camgru';
 		$this->title = $this->name;
 	}
 
@@ -54,7 +54,7 @@ class View
 	 */
 	public function setTitle($title)
 	{
-		$this->title = $this->title . ' - ' . $title;
+		$this->title .= ' - ' . $title;
 	}
 
 	/**
@@ -62,6 +62,7 @@ class View
 	 * 
 	 * Switch layouts on the fly.
 	 * Useful for login pages or dashboards that look different.
+	 * For now we dont use it
 	 * 
 	 * @param string $layout
 	 */
@@ -87,6 +88,7 @@ class View
 		ob_start();
 		$this->view = $view;
 		require "../templates/{$view}.php";
+		// Content is the output of the view template. So we use it in the layout. We use clean to get the content without the layout.
 		$content = ob_get_clean();
 		require "../templates/{$this->layout}.php";
 	}
@@ -110,6 +112,7 @@ class View
 	 * Render a partial
 	 * 
 	 * Similar to an element, but usually for larger sections.
+	 * It holds basically the custom x-camgru-templates.
 	 * 
 	 * @param string $component
 	 * @param array $data

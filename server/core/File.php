@@ -33,10 +33,18 @@ class File
         $fileError = $file['error'];
         $fileType = $file['type'];
 
+        // We grab it by takinng the content after the last dot.
         $fileExt = explode('.', $fileName);
+        // We convert it to lowercase.
         $fileActualExt = strtolower(end($fileExt));
 
-        $allowed = ['jpg', 'jpeg', 'png', 'pdf'];
+        $allowed = ['jpg', 'jpeg', 'png'];
+        $allowedMimeTypes = [IMAGETYPE_JPEG, IMAGETYPE_JPEG, IMAGETYPE_PNG];
+        $mimeType = exif_imagetype($fileTmpName);
+        // We use built-in function to get the mime type of the file.
+        if (!in_array($mimeType, $allowedMimeTypes)) {
+            throw new \Exception('You cannot upload files of this type!');
+        }
 
         if (in_array($fileActualExt, $allowed)) {
             if ($fileError === 0) {

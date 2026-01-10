@@ -38,6 +38,7 @@ class UrlHelper
 			return $this->baseUrl;
 		}
 
+		// Little check to see if the user is using HTTPS.
 		$protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
 		$domainName = $_SERVER['HTTP_HOST'];
 		return $protocol . $domainName;
@@ -71,6 +72,8 @@ class UrlHelper
 	public function absoluteLink($name, $params = [])
 	{
 		$path = $this->link($name, $params);
+		// In case the path already contains the protocol, we return it as is.
+		// This is why we check if === 0. This means that the first occurrence of http is at the beginning of the string.
 		if (strpos($path, 'http') === 0) {
 			return $path;
 		}
@@ -115,7 +118,7 @@ class UrlHelper
 	/**
 	 * Get URL for an asset
 	 * 
-	 * Apends the path to the base URL.
+	 * Appends the path to the base URL.
 	 * 
 	 * @param string $path
 	 * @return string

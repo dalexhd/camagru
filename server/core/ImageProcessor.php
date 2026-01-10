@@ -97,10 +97,10 @@ class ImageProcessor
 
         // Center sticker if position not specified
         if ($x === null) {
-            $x = ($baseWidth - $stickerWidth) / 2;
+            $x = intval(($baseWidth - $stickerWidth) / 2);
         }
         if ($y === null) {
-            $y = ($baseHeight - $stickerHeight) / 2;
+            $y = intval(($baseHeight - $stickerHeight) / 2);
         }
 
         // Copy sticker onto base image

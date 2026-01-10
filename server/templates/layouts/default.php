@@ -9,7 +9,7 @@
 <html class="has-navbar-fixed-top" lang="en">
 
 <head>
-    <title><?php echo $this->title ?? 'My App'; ?></title>
+    <title><?php echo $this->title ?? 'Camgru'; ?></title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="favshortcut icon" href="<?php echo $this->Url->asset('img/favicon.ico'); ?>">

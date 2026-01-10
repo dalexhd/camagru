@@ -37,6 +37,9 @@ class Session
      */
     public static function init()
     {
+        // We check if is eqal to PHP_SESSION_NONE.
+        // This means that the session is not started.
+        // https://www.php.net/manual/en/function.session-status.php
         if (session_status() == PHP_SESSION_NONE) {
             session_start();
         }
@@ -53,6 +56,7 @@ class Session
      */
     public static function set($key, $value)
     {
+        // We set the session variable with the key and the value.
         $_SESSION[$key] = $value;
     }
 
