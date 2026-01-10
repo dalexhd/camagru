@@ -23,7 +23,7 @@ class Database
             $this->pdo = new PDO($dsn, getenv('DB_USERNAME'), getenv('DB_PASSWORD'));
             $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch (\PDOException $e) {
-            die($e->getMessage());
+            throw new \Exception('Failed to connect to the database' . $e->getMessage());
         }
     }
 

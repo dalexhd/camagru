@@ -12,6 +12,11 @@ $this->setTitle('500 Internal Server Error');
         <div id="error-content-wrapper">
             <div class="error-content content">
                 <h2><?php echo $message; ?></h2>
+                <?php if ($details): ?>
+                    <code>
+                            <pre><?php echo $details; ?></pre>
+                        </code>
+                <?php endif; ?>
                 <p>Click the button below to go to the home page:</p>
                 <a href="<?php echo $this->Url->link('home'); ?>" class="button is-primary">Go to Home</a>
             </div>

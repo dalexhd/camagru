@@ -206,11 +206,11 @@ class Router
         $this->renderErrorPage(404, 'Page Not Found');
     }
 
-    private function renderErrorPage($code, $message)
+    private function renderErrorPage($code, $message, $details = null)
     {
         http_response_code($code);
         $view = new View($this);
-        $view->render('errors/' . $code, ['message' => $message]);
+        $view->render('errors/' . $code, compact('message', 'details'));
     }
 
     /**
@@ -234,7 +234,7 @@ class Router
             } catch (NotFoundException $e) {
                 $this->renderErrorPage(404, 'Not Found');
             } catch (Exception $e) {
-                $this->renderErrorPage(500, 'Internal Server Error' . $e->getMessage());
+                $this->renderErrorPage(500, 'Internal Server Error', $e->getMessage());
             }
         }
     }
