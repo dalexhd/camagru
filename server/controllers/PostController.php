@@ -102,7 +102,6 @@ class PostController extends Controller
 				}
 			} catch (\Throwable $th) {
 				$this->flash('error', 'Failed to create post! ' . $th->getMessage());
-				return $this->render('post/create');
 			}
 		}
 
