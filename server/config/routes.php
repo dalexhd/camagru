@@ -88,12 +88,6 @@ $router->connect(
 
 // User routes
 $router->connect(
-	'/settings',
-	['controller' => 'UserController', 'action' => 'settings'],
-	'settings'
-)->setMiddleware([AuthMiddleware::class]);
-
-$router->connect(
 	'/settings/account',
 	['controller' => 'UserController', 'action' => 'accountSettings'],
 	'accountSettings'

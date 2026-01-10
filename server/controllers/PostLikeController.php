@@ -5,12 +5,12 @@ use app\models\PostLikes;
 
 class PostLikeController extends Controller
 {
-	private $postLikeModel;
+	private PostLikes $postLikesModel;
 
 	public function __construct($router)
 	{
 		parent::__construct($router);
-		$this->postLikeModel = new PostLikes();
+		$this->postLikesModel = new PostLikes();
 	}
 
 	/**
@@ -28,7 +28,7 @@ class PostLikeController extends Controller
 
 		$creator = $this->userId();
 		$postId = $this->getPostData('post_id');
-		$like = $this->postLikeModel->toggle($creator, $postId);
+		$like = $this->postLikesModel->toggle($creator, $postId);
 		$this->flash('success', $like ? 'Post liked successfully.' : 'Post unliked successfully.');
 		$this->Url->redirectToUrl($referer);
 	}

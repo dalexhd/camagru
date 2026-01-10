@@ -6,7 +6,7 @@ use core\Security;
 
 class UserController extends Controller
 {
-	private $userModel;
+	private User $userModel;
 
 	public function __construct($router)
 	{
@@ -24,18 +24,6 @@ class UserController extends Controller
 	public function profile()
 	{
 		$this->render('user/profile', [], 'User Profile Page');
-	}
-
-	/**
-	 * Show user settings.
-	 * 
-	 * Main settings page.
-	 * 
-	 * @return void
-	 */
-	public function settings()
-	{
-		$this->render('user/settings', [], 'User Settings Page');
 	}
 
 	/**
@@ -81,7 +69,7 @@ class UserController extends Controller
 				$this->flash('error', $th->getMessage());
 			}
 		}
-		$this->render('user/settings/account', [], 'User Settings Page');
+		$this->render('user/settings/account');
 	}
 
 	/**
@@ -118,18 +106,6 @@ class UserController extends Controller
 			}
 		}
 
-		$this->render('user/settings/security', [], 'User Settings Page');
-	}
-
-	/**
-	 * View user profile (public).
-	 * 
-	 * Currently just renders a placeholder.
-	 * 
-	 * @return void
-	 */
-	public function view()
-	{
-		$this->render('user/view', [], 'User View Page');
+		$this->render('user/settings/security');
 	}
 }

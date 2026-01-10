@@ -6,7 +6,7 @@ use app\models\Post;
 
 class PostController extends Controller
 {
-	private $postModel;
+	private Post $postModel;
 
 	public function __construct($router)
 	{

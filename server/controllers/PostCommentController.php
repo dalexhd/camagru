@@ -8,9 +8,9 @@ use core\Mail;
 
 class PostCommentController extends Controller
 {
-	private $postCommentModel;
-	private $postModel;
-	private $userModel;
+	private PostComment $postCommentModel;
+	private Post $postModel;
+	private User $userModel;
 
 	public function __construct($router)
 	{
