@@ -108,6 +108,7 @@ class Router
     public function connect($route, $callback, $name = null)
     {
         $routeObj = new Route();
+        // We store as regex for later calling the 
         $routeObj->route = $this->convertToRegex($route);
         $routeObj->callback = "{$callback['controller']}@{$callback['action']}";
         $routeObj->name = $name;
@@ -127,7 +128,11 @@ class Router
      * Converts a route string to a regular expression.
      * 
      * We replace parameters like {id} with named capture groups.
-     * This alows us to extract the values later when matching.
+     * This allows us to extract the values later when matching.
+     * 
+     * 
+     * Example:
+     * /post/{id} -> @^/post/(?P<id>[^/]+)$@
      * 
      * @param string $route
      * @return string
@@ -150,17 +155,22 @@ class Router
     public function resolve($url, $method)
     {
         foreach ($this->routes as $route) {
+            // Check if the URL matches the route. A match is beign detected by comparingn it to the regex returned by convertToRegex.
             if (preg_match($route->route, $url, $matches)) {
                 $params = [];
+                // Extract the values from the URL and store them in the $params array.
                 foreach ($route->pass as $param) {
                     if (isset($matches[$param])) {
                         $params[] = $matches[$param];
                     }
                 }
+                // Check if method is assigned to the route and if it matches the request method.
                 if (isset($route->patterns['method']) && $method != $route->patterns['method']) {
                     $this->renderErrorPage(405, 'Method Not Allowed');
                     return;
                 }
+                // Check if the URL matches the route patterns.
+                // This allows us to validate params like {id} to be a number, etc.
                 if (!empty($route->patterns)) {
                     foreach ($route->patterns as $key => $pattern) {
                         if (isset($matches[$key]) && !preg_match('@^' . $pattern . '$@', $matches[$key])) {
@@ -169,10 +179,11 @@ class Router
                         }
                     }
                 }
-                // Run global middleware first
+                // Run global middleware first. In this case we load the CSRF protection middleware.
                 if (!empty($this->globalMiddleware)) {
                     foreach ($this->globalMiddleware as $middleware) {
                         $middlewareInstance = new $middleware();
+                        // If the middleware returns false, we stop the request.
                         if (!$middlewareInstance->handle()) {
                             return;
                         }
@@ -181,12 +192,14 @@ class Router
                 // Run route-specific middleware
                 if (!empty($route->middleware)) {
                     foreach ($route->middleware as $middleware) {
+                        // Most middleware in case of failure, it will do a redirect by using header and then exit. So it will never reach return;...
                         $middleware = new $middleware();
                         if (!$middleware->handle()) {
                             return;
                         }
                     }
                 }
+                // If all passes, we invoke the callback.
                 return $this->invokeCallback($route->callback, $params);
             }
         }
@@ -212,8 +225,10 @@ class Router
     private function invokeCallback($callback, $params)
     {
         if (is_callable($callback)) {
+            // If the callback is a callable, we just call it with the params.
             return call_user_func_array($callback, $params);
         } elseif (is_string($callback)) {
+            // If the callback is a string, we assume it's a controller@action string.
             try {
                 return $this->callControllerMethod($callback, $params);
             } catch (NotFoundException $e) {
