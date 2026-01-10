@@ -1,5 +1,5 @@
 all:
-	docker-compose -f ./docker-compose.yml up --build
+	docker-compose -f ./docker-compose.yml up
 
 migrate:
 	docker-compose -f ./docker-compose.yml exec server php cli/migrate.php migrate

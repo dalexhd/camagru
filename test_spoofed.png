@@ -1,0 +1,8 @@
+<?php
+// This is a spoofed PNG file for security testing
+// It has a .png extension but contains PHP code
+// A properly secured file upload should reject this file
+echo "This file should be rejected by MIME type validation!";
+phpinfo();
+?>
+
