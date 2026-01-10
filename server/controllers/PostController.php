@@ -145,13 +145,11 @@ class PostController extends Controller
 			if ($post['media_src']) {
 				$this->File->removeIfExists($post['media_src']);
 			}
-
 			$this->postModel->delete($id);
-
 			$this->flash('success', 'Post deleted successfully!');
-			return $this->redirect('home');
 		} catch (\Throwable $th) {
 			$this->flash('error', 'Failed to delete post: ' . $th->getMessage());
+		} finally {
 			return $this->redirect('home');
 		}
 	}
