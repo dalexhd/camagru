@@ -36,6 +36,11 @@ class PostCommentController extends Controller
 		$postId = $this->getPostData('post_id');
 		$comment = $this->getPostData('comment');
 
+		if (empty($creator) || empty($postId) || empty($comment)) {
+			$this->flash('error', 'Invalid comment data');
+			return $this->Url->redirectToUrl($referer);
+		}
+
 		try {
 			$this->postCommentModel->create($postId, $creator, $comment);
 
