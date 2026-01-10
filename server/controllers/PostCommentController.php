@@ -31,13 +31,7 @@ class PostCommentController extends Controller
 	 */
 	public function create()
 	{
-		if (!$this->isPost()) {
-			return $this->Response->status(405)->setHeader('Allow', 'POST')->setResponse(['error' => 'Method Not Allowed'])->send();
-		}
-
 		$referer = $_SERVER['HTTP_REFERER'] ?? 'home';
-		$this->validateCSRF($referer);
-
 		$creator = $this->userId();
 		$postId = $this->getPostData('post_id');
 		$comment = $this->getPostData('comment');

@@ -26,8 +26,6 @@ class AuthController extends Controller
     public function login()
     {
         if ($this->isPost()) {
-            $this->validateCSRF('auth/login');
-
             $nickname = trim($this->getPostData('nickname', ''));
             $password = $this->getPostData('password', '');
 
@@ -75,8 +73,6 @@ class AuthController extends Controller
     public function register()
     {
         if ($this->isPost()) {
-            $this->validateCSRF('auth/register');
-
             $name = trim($this->getPostData('name', ''));
             $nickname = trim($this->getPostData('nickname', ''));
             $email = trim($this->getPostData('email', ''));
@@ -158,7 +154,6 @@ class AuthController extends Controller
     public function recover()
     {
         if ($this->isPost()) {
-            $this->validateCSRF();
 
             $email = trim($this->getPostData('email', ''));
             if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
@@ -246,8 +241,6 @@ class AuthController extends Controller
         }
 
         if ($this->isPost()) {
-            $this->validateCSRF('auth/reset', ['token' => $token]);
-
             $password = $this->getPostData('password', '');
             $confirmPassword = $this->getPostData('confirm_password', '');
 

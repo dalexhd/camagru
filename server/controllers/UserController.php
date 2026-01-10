@@ -49,7 +49,6 @@ class UserController extends Controller
 	public function accountSettings()
 	{
 		if ($this->isPost()) {
-			$this->validateCSRF('user/settings/account');
 			try {
 				$toUpdate = [
 					"email" => $this->getPostData('email'),
@@ -96,7 +95,6 @@ class UserController extends Controller
 	public function securitySettings()
 	{
 		if ($this->isPost()) {
-			$this->validateCSRF('user/settings/security');
 			try {
 				$password = $this->getPostData('password');
 				$confirmPassword = $this->getPostData('confirm_password');

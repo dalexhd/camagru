@@ -19,19 +19,19 @@ $this->setTitle('Reset Password');
                 <form action="<?= $this->Url->link('reset', ['token' => $token]) ?>" method="post">
                     <input type="hidden" name="csrf_token" value="<?= \core\Security::generateCSRFToken() ?>">
                     <div class="field columns">
-                        <label class="label column is-one-quarter">New Password</label>
+                        <label class="label column is-one-quarter" for="password">New Password</label>
                         <div class="control column">
-                            <input class="input" type="password" name="password" placeholder="Enter new password"
-                                required>
+                            <input class="input" type="password" name="password" id="password"
+                                placeholder="Enter new password" required>
                             <p class="help">Password must be at least 8 characters long and include at least one
                                 uppercase letter, one lowercase letter, one number, and one special character.</p>
                         </div>
                     </div>
                     <hr>
                     <div class="field columns">
-                        <label class="label column is-one-quarter">Confirm Password</label>
+                        <label class="label column is-one-quarter" for="confirm_password">Confirm Password</label>
                         <div class="control column">
-                            <input class="input" type="password" name="confirm_password"
+                            <input class="input" type="password" name="confirm_password" id="confirm_password"
                                 placeholder="Confirm new password" required>
                         </div>
                     </div>

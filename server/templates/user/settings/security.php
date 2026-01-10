@@ -30,25 +30,28 @@ $this->setTitle('Settings');
                 <form action="<?= $this->Url->link('securitySettings') ?>" method="post">
                     <input type="hidden" name="csrf_token" value="<?= \core\Security::generateCSRFToken() ?>">
                     <div class="field columns">
-                        <label class="label column is-one-quarter">Current Password</label>
+                        <label class="label column is-one-quarter" for="current_password">Current Password</label>
                         <div class="control column">
-                            <input class="input" name="current_password" type="password" placeholder="Current Password">
+                            <input class="input" name="current_password" type="password" id="current_password"
+                                placeholder="Current Password" required>
                         </div>
                     </div>
                     <hr>
                     <div class="field columns">
-                        <label class="label column is-one-quarter">New Password</label>
+                        <label class="label column is-one-quarter" for="password">New Password</label>
                         <div class="control column">
-                            <input class="input" name="password" type="password" placeholder="New Password">
+                            <input class="input" name="password" type="password" id="password"
+                                placeholder="New Password" required>
                             <p class="help">Password must be at least 8 characters long and include at least one
                                 uppercase letter, one lowercase letter, one number, and one special character.</p>
                         </div>
                     </div>
                     <hr>
                     <div class="field columns">
-                        <label class="label column is-one-quarter">Confirm Password</label>
+                        <label class="label column is-one-quarter" for="confirm_password">Confirm Password</label>
                         <div class="control column">
-                            <input class="input" name="confirm_password" type="password" placeholder="Confirm Password">
+                            <input class="input" name="confirm_password" type="password" id="confirm_password"
+                                placeholder="Confirm Password" required>
                         </div>
                     </div>
                     <div class="field is-grouped is-justify-content-end">

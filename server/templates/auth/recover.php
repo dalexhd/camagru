@@ -19,9 +19,10 @@ $this->setTitle('Recover Password');
 				<form action="<?php echo $this->Url->link('recover'); ?>" method="post">
 					<input type="hidden" name="csrf_token" value="<?= \core\Security::generateCSRFToken() ?>">
 					<div class="field columns">
-						<label class="label column is-one-quarter">Email</label>
+						<label class="label column is-one-quarter" for="email">Email</label>
 						<div class="control column">
-							<input class="input" type="email" name="email" placeholder="Enter your email" required>
+							<input class="input" type="email" name="email" id="email" placeholder="Enter your email"
+								required>
 						</div>
 					</div>
 					<div class="field is-grouped is-justify-content-end">

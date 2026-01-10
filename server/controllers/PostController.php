@@ -53,8 +53,6 @@ class PostController extends Controller
 	public function create()
 	{
 		if ($this->isPost()) {
-			$this->validateCSRF('post/create');
-
 			$creator = $this->userId();
 			$title = $this->getPostData('title', '');
 			$body = $this->getPostData('body', '');
@@ -130,13 +128,6 @@ class PostController extends Controller
 	 */
 	public function delete($id)
 	{
-		if (!$this->isPost()) {
-			$this->flash('error', 'Invalid request method');
-			return $this->redirect('home');
-		}
-
-		$this->validateCSRF();
-
 		$userId = $this->userId();
 		$post = $this->postModel->find($id);
 

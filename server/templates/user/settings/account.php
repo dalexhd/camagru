@@ -31,32 +31,32 @@ $this->setTitle('Settings');
                 <form action="<?= $this->Url->link('accountSettings') ?>" method="post" enctype="multipart/form-data">
                     <input type="hidden" name="csrf_token" value="<?= \core\Security::generateCSRFToken() ?>">
                     <div class="field columns">
-                        <label class="label column is-one-quarter">Email</label>
+                        <label class="label column is-one-quarter" for="email">Email</label>
                         <div class="control column">
-                            <input class="input" name="email" type="text" placeholder="Email"
-                                value="<?= $this->Session->get('user_email'); ?>">
+                            <input class="input" name="email" type="text" id="email" placeholder="Email"
+                                value="<?= $this->Session->get('user_email'); ?>" required>
                         </div>
                     </div>
                     <hr>
                     <div class="field columns">
-                        <label class="label column is-one-quarter">Nickname</label>
+                        <label class="label column is-one-quarter" for="nickname">Nickname</label>
                         <div class="control column">
-                            <input class="input" name="nickname" type="text" placeholder="Nickname"
-                                value="<?= $this->Session->get('user_nickname'); ?>">
+                            <input class="input" name="nickname" type="text" id="nickname" placeholder="Nickname"
+                                value="<?= $this->Session->get('user_nickname'); ?>" required>
                         </div>
                     </div>
                     <hr>
                     <div class="field columns">
-                        <label class="label column is-one-quarter">Name</label>
+                        <label class="label column is-one-quarter" for="name">Name</label>
                         <div class="control column">
-                            <input class="input" name="name" type="text" placeholder="Name"
-                                value="<?= $this->Session->get('user_name'); ?>">
+                            <input class="input" name="name" type="text" id="name" placeholder="Name"
+                                value="<?= $this->Session->get('user_name'); ?>" required>
                         </div>
                     </div>
                     <hr>
                     <div class="field columns">
                         <div class="column is-one-quarter is-flex is-justify-content-space-between">
-                            <label class="label">Avatar</label>
+                            <label class="label" for="avatar">Avatar</label>
                             <?php if ($this->Session->has('user_avatar')) { ?>
                                 <figure class="image is-128x128 pt-5">
                                     <img class="is-rounded" src="<?= $this->Session->get('user_avatar') ?> "
@@ -67,7 +67,7 @@ $this->setTitle('Settings');
                         <div class="control column">
                             <div id="file-js-example" class="file has-name">
                                 <label class="file-label">
-                                    <input class="file-input" type="file" name="avatar">
+                                    <input class="file-input" type="file" name="avatar" id="avatar">
                                     <span class="file-cta">
                                         <span class="file-icon">
                                             <i class="fas fa-upload"></i>
@@ -81,10 +81,11 @@ $this->setTitle('Settings');
                     </div>
                     <hr>
                     <div class="field columns">
-                        <label class="label column is-one-quarter">Notifications</label>
+                        <label class="label column is-one-quarter" for="notifications_enabled">Notifications</label>
                         <div class="control column">
                             <label class="checkbox">
-                                <input type="checkbox" name="notifications_enabled" value="1" <?= $this->Session->get('user_notifications_enabled') ? 'checked' : '' ?>>
+                                <input type="checkbox" name="notifications_enabled" id="notifications_enabled" value="1"
+                                    <?= $this->Session->get('user_notifications_enabled') ? 'checked' : '' ?>>
                                 Receive comment notifications
                             </label>
                         </div>

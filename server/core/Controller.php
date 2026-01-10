@@ -39,21 +39,6 @@ class Controller
     }
 
     /**
-     * Load a model
-     * 
-     * Dynamically instantiates a model class.
-     * Usefull when you need to talk to a specific database table.
-     * 
-     * @param string $model
-     * @return mixed
-     */
-    public function loadModel($model)
-    {
-        $model = 'app\models\\' . $model;
-        return new $model();
-    }
-
-    /**
      * Check if request is POST
      * 
      * Simple helper to see if the user submitted a form.
@@ -82,30 +67,6 @@ class Controller
         if ($key === null)
             return $_POST;
         return $_POST[$key] ?? $default;
-    }
-
-    /**
-     * Validate CSRF token
-     * 
-     * Checks if the hidden csrf_token field matches our session.
-     * If it fails, we flash an error and optionally render a failure view.
-     * Critical for securty!
-     * 
-     * @param string $viewOnFailure
-     * @param array $data
-     * @return bool
-     */
-    protected function validateCSRF($viewOnFailure = null, $data = [])
-    {
-        if (!\core\Security::verifyCSRFToken($this->getPostData('csrf_token') ?? '')) {
-            $this->flash('error', 'Security token mismatch. Please try again.');
-            if ($viewOnFailure) {
-                $this->render($viewOnFailure, $data);
-                exit;
-            }
-            return false;
-        }
-        return true;
     }
 
     /**

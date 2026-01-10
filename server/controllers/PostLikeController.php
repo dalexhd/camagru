@@ -24,15 +24,12 @@ class PostLikeController extends Controller
 	 */
 	public function toggle()
 	{
-		if ($this->isPost()) {
-			$referer = $_SERVER['HTTP_REFERER'] ?? '/';
-			$this->validateCSRF($referer);
+		$referer = $_SERVER['HTTP_REFERER'] ?? '/';
 
-			$creator = $this->userId();
-			$postId = $this->getPostData('post_id');
-			$like = $this->postLikeModel->toggle($creator, $postId);
-			$this->flash('success', $like ? 'Post liked successfully.' : 'Post unliked successfully.');
-			$this->Url->redirectToUrl($referer);
-		}
+		$creator = $this->userId();
+		$postId = $this->getPostData('post_id');
+		$like = $this->postLikeModel->toggle($creator, $postId);
+		$this->flash('success', $like ? 'Post liked successfully.' : 'Post unliked successfully.');
+		$this->Url->redirectToUrl($referer);
 	}
 }

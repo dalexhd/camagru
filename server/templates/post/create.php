@@ -63,17 +63,18 @@ $userPosts = $userPosts ?? [];
 					<input type="hidden" name="csrf_token" value="<?= \core\Security::generateCSRFToken() ?>">
 
 					<div class="field columns">
-						<label class="label column is-one-quarter">Title</label>
+						<label class="label column is-one-quarter" for="title">Title</label>
 						<div class="control column">
-							<input class="input" type="text" name="title" placeholder="Give your post a title" required>
+							<input class="input" type="text" name="title" id="title"
+								placeholder="Give your post a title" required>
 						</div>
 					</div>
 					<hr>
 
 					<div class="field columns">
-						<label class="label column is-one-quarter">Description</label>
+						<label class="label column is-one-quarter" for="body">Description</label>
 						<div class="control column">
-							<textarea class="textarea" name="body" placeholder="Describe your post..."
+							<textarea class="textarea" name="body" id="body" placeholder="Describe your post..."
 								required></textarea>
 						</div>
 					</div>
@@ -83,7 +84,7 @@ $userPosts = $userPosts ?? [];
 					<div id="webcam-mode">
 						<div class="field columns">
 							<div class="column is-one-quarter">
-								<label class="label">Camera</label>
+								<label class="label" for="camera">Camera</label>
 							</div>
 							<div class="column">
 								<!-- Webcam Preview -->
@@ -124,7 +125,7 @@ $userPosts = $userPosts ?? [];
 					<div id="upload-mode" class="is-hidden">
 						<div class="field columns">
 							<div class="column is-one-quarter">
-								<label class="label">Image</label>
+								<label class="label" for="media">Image</label>
 							</div>
 							<div class="control column">
 								<div id="file-js-example" class="file has-name">

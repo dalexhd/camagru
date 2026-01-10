@@ -30,7 +30,7 @@ $router->connect(
 	'post_delete'
 )
 	->setPass(['id'])
-	->setPatterns(['id' => '[0-9]+'])
+	->setPatterns(['id' => '[0-9]+', 'method' => 'POST'])
 	->setMiddleware([AuthMiddleware::class]);
 
 $router->connect(
@@ -46,7 +46,7 @@ $router->connect(
 	'post_like_toggle'
 )
 	->setPass(['id'])
-	->setPatterns(['id' => '[0-9]+'])
+	->setPatterns(['id' => '[0-9]+', 'method' => 'POST'])
 	->setMiddleware([AuthMiddleware::class]);
 
 // Auth routes
@@ -118,7 +118,7 @@ $router->connect(
 	'post_comment_create'
 )
 	->setPass(['id'])
-	->setPatterns(['id' => '[0-9]+'])
+	->setPatterns(['id' => '[0-9]+', 'method' => 'POST'])
 	->setMiddleware([AuthMiddleware::class]);
 
 // Api routes
