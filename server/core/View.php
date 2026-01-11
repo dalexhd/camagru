@@ -5,6 +5,7 @@ namespace core;
 use core\helpers\HtmlHelper;
 use core\helpers\UrlHelper;
 use core\Session;
+use core\Security;
 
 /**
  * View class
@@ -121,5 +122,22 @@ class View
 	{
 		extract($data);
 		require "../templates/partials/{$component}.php";
+	}
+
+	/**
+	 * Escape output for XSS protection
+	 * 
+	 * Escapes special characters to prevent XSS attacks when displaying user data.
+	 * This should be used whenever displaying user-generated content in templates.
+	 * 
+	 * Example usage in templates:
+	 * <?php echo $this->escape($userInput); ?>
+	 * 
+	 * @param mixed $output The data to escape
+	 * @return string The escaped string safe for HTML output
+	 */
+	public function escape($output)
+	{
+		return Security::escapeOutput($output);
 	}
 }

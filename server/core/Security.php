@@ -10,6 +10,7 @@ namespace core;
  * - Passwords: Hashing and verification
  * - Encryption: Encrypting and decrypting data
  * - CSRF: Preventing Cross-Site Request Forgery
+ * - XSS: Preventing Cross-Site Scripting attacks
  */
 class Security
 {
@@ -137,5 +138,45 @@ class Security
             return false;
         }
         return true;
+    }
+
+    /**
+     * Sanitize user input
+     * 
+     * Removes all HTML tags and potentially dangerous characters from user input in order to prevent XSS attacks.
+     * 
+     * @param string $input The input string to sanitize
+     * @return string The sanitized string
+     */
+    public static function sanitizeInput($input)
+    {
+        if (!is_string($input)) {
+            return $input;
+        }
+
+        // Remove all HTML tags
+        $input = strip_tags($input);
+
+        // Trim whitespace
+        $input = trim($input);
+
+        // Remove null bytes
+        $input = str_replace("\0", '', $input);
+
+        return $input;
+    }
+
+    /**
+     * Escape output for HTML context
+     * 
+     * Escapes special characters to prevent XSS attacks when displaying user data.
+     * This converts characters like <, >, &, ", ' to their HTML entities.
+     * 
+     * @param mixed $output The data to escape
+     * @return string The escaped string safe for HTML output
+     */
+    public static function escapeOutput($output)
+    {
+        return htmlspecialchars((string) $output, ENT_QUOTES | ENT_HTML5, 'UTF-8');
     }
 }
