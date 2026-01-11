@@ -2,6 +2,7 @@
 
 use core\Controller;
 use core\ImageProcessor;
+use core\Security;
 use app\models\Post;
 
 class PostController extends Controller
@@ -39,6 +40,25 @@ class PostController extends Controller
 	public function posts($page, $limit)
 	{
 		$posts = $this->postModel->paginate($page, $limit);
+
+		// Escape user-generated content to prevent XSS
+		foreach ($posts as &$post) {
+			$post['title'] = Security::escapeOutput($post['title']);
+			$post['body'] = Security::escapeOutput($post['body']);
+
+			if (isset($post['author'])) {
+				$post['author']['name'] = Security::escapeOutput($post['author']['name']);
+				$post['author']['nickname'] = Security::escapeOutput($post['author']['nickname']);
+			}
+
+			if (isset($post['comments']) && is_array($post['comments'])) {
+				foreach ($post['comments'] as &$comment) {
+					$comment['comment'] = Security::escapeOutput($comment['comment']);
+					$comment['nickname'] = Security::escapeOutput($comment['nickname']);
+				}
+			}
+		}
+
 		$this->Response->setHeader('Content-Type', 'application/json')->setResponse($posts)->send();
 	}
 
@@ -54,8 +74,8 @@ class PostController extends Controller
 	{
 		if ($this->isPost()) {
 			$creator = $this->userId();
-			$title = $this->getPostData('title', '');
-			$body = $this->getPostData('body', '');
+			$title = Security::sanitizeInput($this->getPostData('title', ''));
+			$body = Security::sanitizeInput($this->getPostData('body', ''));
 			$stickerId = $this->getPostData('sticker_id');
 			$mediaSrc = null;
 

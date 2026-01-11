@@ -34,7 +34,7 @@ $this->setTitle('Settings');
                         <label class="label column is-one-quarter" for="email">Email</label>
                         <div class="control column">
                             <input class="input" name="email" type="text" id="email" placeholder="Email"
-                                value="<?= $this->Session->get('user_email'); ?>" required>
+                                value="<?= $this->escape($this->Session->get('user_email')); ?>" required>
                         </div>
                     </div>
                     <hr>
@@ -42,7 +42,7 @@ $this->setTitle('Settings');
                         <label class="label column is-one-quarter" for="nickname">Nickname</label>
                         <div class="control column">
                             <input class="input" name="nickname" type="text" id="nickname" placeholder="Nickname"
-                                value="<?= $this->Session->get('user_nickname'); ?>" required>
+                                value="<?= $this->escape($this->Session->get('user_nickname')); ?>" required>
                         </div>
                     </div>
                     <hr>
@@ -50,7 +50,7 @@ $this->setTitle('Settings');
                         <label class="label column is-one-quarter" for="name">Name</label>
                         <div class="control column">
                             <input class="input" name="name" type="text" id="name" placeholder="Name"
-                                value="<?= $this->Session->get('user_name'); ?>" required>
+                                value="<?= $this->escape($this->Session->get('user_name')); ?>" required>
                         </div>
                     </div>
                     <hr>
@@ -59,7 +59,7 @@ $this->setTitle('Settings');
                             <label class="label" for="avatar">Avatar</label>
                             <?php if ($this->Session->has('user_avatar')) { ?>
                                 <figure class="image is-128x128 pt-5">
-                                    <img class="is-rounded" src="<?= $this->Session->get('user_avatar') ?> "
+                                    <img class="is-rounded" src="<?= $this->escape($this->Session->get('user_avatar')); ?>"
                                         alt="User avatar">
                                 </figure>
                             <?php } ?>

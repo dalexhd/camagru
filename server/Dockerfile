@@ -33,6 +33,11 @@ RUN chmod -R 777 /app/public/img
 RUN chmod 777 /app/public/img/uploads
 RUN chmod 777 /app/public/img/profiles
 
+# Copy and set up entrypoint script
+COPY docker-entrypoint.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+
 # Expose port 9000 and start php-fpm server
 EXPOSE 9000
+ENTRYPOINT ["docker-entrypoint.sh"]
 CMD ["php-fpm"]

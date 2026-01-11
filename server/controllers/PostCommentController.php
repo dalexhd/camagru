@@ -1,6 +1,7 @@
 <?php
 
 use core\Controller;
+use core\Security;
 use app\models\PostComment;
 use app\models\Post;
 use app\models\User;
@@ -34,7 +35,7 @@ class PostCommentController extends Controller
 		$referer = $_SERVER['HTTP_REFERER'] ?? 'home';
 		$creator = $this->userId();
 		$postId = $this->getPostData('post_id');
-		$comment = $this->getPostData('comment');
+		$comment = Security::sanitizeInput($this->getPostData('comment'));
 
 		if (empty($creator) || empty($postId) || empty($comment)) {
 			$this->flash('error', 'Invalid comment data');
